@@ -1,5 +1,7 @@
 import DataStructure as ds
 
+
+# The following are just test data
 a = ds.Node("A", 0)
 b = ds.Node("B", 0)
 c = ds.Node("C", 0, goal = True)
