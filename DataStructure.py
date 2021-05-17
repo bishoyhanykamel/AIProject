@@ -95,13 +95,15 @@ class Graph:
 
     def depth_first_search(self):
         stack_list = [self.initial_node]
+        visited = []
         while len(stack_list) >= 1:
             current_node = stack_list.pop(-1)
-            if current_node.get_visited():
+            if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
                 return current_node
             current_node.set_visited()
+            visited.append(current_node.get_label())
             for node in sorted(current_node.get_children(), reverse=True, key=lambda x: x.get_label()):
                 temp_node = Node()
                 temp_node.copy_node(node)
@@ -114,13 +116,15 @@ class Graph:
 
     def breadth_first_search(self):
         queue_list = [self.initial_node]
+        visited = []
         while len(queue_list) >= 1:
             current_node = queue_list.pop(0)
-            if current_node.get_visited():
+            if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
                 return current_node
             current_node.set_visited()
+            visited.append(current_node.get_label())
             for node in current_node.get_children():
                 temp_node = Node()
                 temp_node.copy_node(node)
@@ -128,7 +132,7 @@ class Graph:
                 temp_node.set_parent(current_node)
             pass
         self.initial_node.visited = False
-        return "No goal found - Depth First Search"
+        return "No goal found - Breadth First Search"
         pass
 
     def uniform_cost_search(self):
