@@ -23,9 +23,11 @@ g1 = ds.Graph(a,edges)
 #goal_ucs = g1.uniform_cost_search()
 #print(goal_ucs)
 #print(goal_ucs.get_path())
-goal_dls=g1.depth_limited_search(limit=1)
-print(goal_dls)
+goal_dls=g1.depth_limited_search(limit=3)
+#print(goal_dls)
 goal_dls.get_path()
+for node in goal_dls.get_path():
+    print(node);
 print("test")
 
 

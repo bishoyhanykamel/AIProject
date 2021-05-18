@@ -68,8 +68,7 @@ class Node:
             parent = "None"
         else:
             parent = self.get_parent().get_label()
-        return "Node {} Parent {}".format(self.get_label(),
-                                          parent)
+        return "Node {} Parent {}".format(self.get_label(),parent)
 
 
 class Edge:
@@ -102,7 +101,9 @@ class Graph:
         pass
 
     def depth_first_search(self):
-        stack_list = [self.initial_node]
+        inode=Node()
+        inode.copy_node(self.initial_node)
+        stack_list = [inode]
         visited = []
         while len(stack_list) >= 1:
             current_node = stack_list.pop(-1)
@@ -118,12 +119,13 @@ class Graph:
                 stack_list.append(temp_node)
                 temp_node.set_parent(current_node)
             pass
-        self.initial_node.visited = False
         return "No goal found - Depth First Search"
         pass
 
     def breadth_first_search(self):
-        queue_list = [self.initial_node]
+        inode=Node()
+        inode.copy_node(self.initial_node)
+        queue_list = [inode]
         visited = []
         while len(queue_list) >= 1:
             current_node = queue_list.pop(0)
@@ -139,13 +141,14 @@ class Graph:
                 queue_list.append(temp_node)
                 temp_node.set_parent(current_node)
             pass
-        self.initial_node.visited = False
         return "No goal found - Breadth First Search"
         pass
 
     def uniform_cost_search(self):
         self.initial_node.set_node_value(0)
-        fringe = [self.initial_node]
+        inode=Node()
+        inode.copy_node(self.initial_node)
+        fringe = [inode]
         visited = []
         while fringe:
             testednode = fringe.pop(0)
@@ -171,7 +174,9 @@ class Graph:
 
     def depth_limited_search(self, limit):
         self.initial_node.set_depth(0)
-        fringe = [self.initial_node]
+        inode=Node()
+        inode.copy_node(self.initial_node)
+        fringe = [inode]
         visited = []
         while fringe:
             testednode = fringe.pop(-1)
@@ -192,7 +197,9 @@ class Graph:
 
     def iterative_deepening(self):
         initdepth = 0
-        fringe = [self.initial_node]
+        inode=Node()
+        inode.copy_node(self.initial_node)
+        fringe = [inode]
         visited = []
         while fringe:
             continue
@@ -200,7 +207,9 @@ class Graph:
 
     #### --------------not tested yet-------------------#########
     def greedy_search(self):
-        fringe = [self.initial_node]
+        inode=Node()
+        inode.copy_node(self.initial_node)
+        fringe = [inode]
         visited = []
         while fringe:
             testednode = fringe.pop(0)
