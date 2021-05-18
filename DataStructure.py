@@ -8,6 +8,10 @@ class Node:
         self.parent = None
         self.heuristic = heuristic
 
+    def set_depth(self,depth):
+        self.depth=depth
+    def get_depth(self):
+        return self.depth
     def copy_node(self, node):
         self.value = node.get_node_value()
         self.label = node.get_label()
@@ -47,8 +51,9 @@ class Node:
 
     def get_visited(self):
         return self.visited
+
     def set_node_value(self, value):
-        self.value=value
+        self.value = value
 
     def get_path(self):
         prev_node = self.get_parent()
@@ -140,36 +145,80 @@ class Graph:
 
     def uniform_cost_search(self):
         self.initial_node.set_node_value(0)
-        fringe=[self.initial_node]
-        visited=[]
+        fringe = [self.initial_node]
+        visited = []
         while fringe:
-            testednode=fringe.pop(0)
-            if(testednode.get_goal()==True):
+            testednode = fringe.pop(0)
+            if testednode.get_goal() == True:
                 return testednode
             else:
                 visited.append(testednode.get_label())
             for edge in self.edgelist:
-                if edge.get_start_node().get_label()==testednode.get_label() and edge.get_end_node().get_label() not in visited:
-                    newnode=Node()
+                if edge.get_start_node().get_label() == testednode.get_label() and edge.get_end_node().get_label() not in visited:
+                    newnode = Node()
                     newnode.copy_node(edge.get_end_node())
                     newnode.set_parent(testednode)
-                    newnode.set_node_value(edge.get_start_node().get_node_value()+edge.get_value())
+                    newnode.set_node_value(edge.get_start_node().get_node_value() + edge.get_value())
                     fringe.append(newnode)
-                elif edge.get_end_node().get_label()==testednode.get_label() and edge.get_start_node().get_label() not in visited:
-                    newnode=Node()
+                elif edge.get_end_node().get_label() == testednode.get_label() and edge.get_start_node().get_label() not in visited:
+                    newnode = Node()
                     newnode.copy_node(edge.get_start_node())
                     newnode.set_parent(testednode)
-                    newnode.set_node_value(edge.get_end_node().get_node_value()+edge.get_value())
+                    newnode.set_node_value(edge.get_end_node().get_node_value() + edge.get_value())
                     fringe.append(newnode)
             fringe.sort(key=lambda x: x.get_node_value())
-        print("no path found")
+        print("no path found - uniform cost search")
 
+    def depth_limited_search(self, limit):
+        self.initial_node.set_depth(0)
+        fringe = [self.initial_node]
+        visited = []
+        while fringe:
+            testednode = fringe.pop(-1)
+            if testednode.get_depth() >limit:
+                break
+            elif testednode.get_goal() == True and testednode.get_label():
+                return testednode
+            else:
+                visited.append(testednode.get_label())
+                for node in testednode.get_children():
+                     if node.get_label() not in visited:
+                        newnode = Node()
+                        newnode.copy_node(node)
+                        newnode.set_parent(testednode)
+                        newnode.set_depth(testednode.get_depth()+1)
+                        fringe.append(newnode)
+        return -1
 
     def iterative_deepening(self):
+        initdepth = 0
+        fringe = [self.initial_node]
+        visited = []
+        while fringe:
+            continue
         pass
 
+    #### --------------not tested yet-------------------#########
     def greedy_search(self):
-        pass
+        fringe = [self.initial_node]
+        visited = []
+        while fringe:
+            testednode = fringe.pop(0)
+            if (testednode.get_goal() == True):
+                return testednode
+            else:
+                visited.append(testednode.get_label())
+                for node in testednode.get_children():
+                    if node.get_label() not in visited:
+                        newnode = Node()
+                        newnode.copy_node(node)
+                        newnode.set_parent(testednode)
+                        fringe.append(newnode)
+                fringe.sort(key=lambda x: x.get_heuristic())
+        print("no path found - Greedy Search")
 
+        print("no path found")
+
+    #####################################################################
     def a_star_search(self):
         pass
