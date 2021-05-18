@@ -1,3 +1,6 @@
+# import main
+# from main import resetNodeObj
+
 class Node:
     def __init__(self, label="", val=0, visited=False, goal=False, heuristic=-1):
         self.value = val
@@ -23,6 +26,22 @@ class Node:
     def set_visited(self):
         self.visited = True
 
+    #_______
+
+
+    def reset_v(self):
+        self.visited = False
+
+    def SET_AS_GOAL(self):
+        self.goal = True
+
+    def reset_goal(self):
+        self.goal = False
+
+    def reset_parent(self):
+        self.parent = None
+    #_______
+
     def get_children(self):
         return self.children
 
@@ -37,7 +56,11 @@ class Node:
 
     def add_child(self, c1):
         self.children.append(c1)
-        self.children = sorted(self.children)
+        for x in range(len(self.children)):
+            print(x)
+            print("index")
+            print(self.children[x].get_label())
+        #self.children = sorted(self.children)
 
     def get_goal(self):
         return self.goal
@@ -70,8 +93,10 @@ class Edge:
         self.start_node = s
         self.end_node = e
         self.value = v
-        self.start_node.get_children().append(e)
-        self.end_node.get_children().append(s)
+
+        #self.start_node.get_children().append(e)
+        #self.end_node.get_children().append(s)
+
         # self.end_node.set_parent(s)
 
     def get_start_node(self):
@@ -89,21 +114,34 @@ class Edge:
 
 
 class Graph:
-    def __init__(self, inode):
+    def __init__(self, inode, nodeObjList):
         self.initial_node = inode
+        self.nodeObjList = nodeObjList
         pass
 
     def depth_first_search(self):
         stack_list = [self.initial_node]
         visited = []
         while len(stack_list) >= 1:
+            print("been here")
             current_node = stack_list.pop(-1)
+            print(current_node.get_visited())
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
+                print("init node visited or not", self.initial_node.get_visited())
+                print("goal b4 reset", current_node.get_goal())
+                self.reset_visited()
+                stack_list.clear()
+                visited.clear()
+                print("init node visited or not AFTER RESET", self.initial_node.get_visited())
+                print("goal after reset", current_node.get_goal())
                 return current_node
+            print(current_node.get_visited())
             current_node.set_visited()
+            print(current_node.get_visited())
             visited.append(current_node.get_label())
+            print(len(current_node.get_children()))
             for node in sorted(current_node.get_children(), reverse=True, key=lambda x: x.get_label()):
                 temp_node = Node()
                 temp_node.copy_node(node)
@@ -111,6 +149,11 @@ class Graph:
                 temp_node.set_parent(current_node)
             pass
         self.initial_node.visited = False
+        print(current_node.get_visited())
+        self.reset_visited()
+        stack_list.clear()
+        visited.clear()
+        print(current_node.get_visited())
         return "No goal found - Depth First Search"
         pass
 
@@ -146,3 +189,22 @@ class Graph:
 
     def a_star_search(self):
         pass
+
+    def reset_visited(self):
+        # global nodeObjList
+        print("LENGTH: ", len(self.nodeObjList))
+        for x in range(len(self.nodeObjList)):
+            print("IN NODEOBJLIST b4", self.nodeObjList[x].get_visited())
+            print("GOAL THING B4", self.nodeObjList[x].get_goal())
+            self.nodeObjList[x].reset_v()
+            self.nodeObjList[x].reset_goal()
+            self.nodeObjList[x].reset_parent()
+            print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
+            print("GOAL THING after", self.nodeObjList[x].get_goal())
+
+#def reset_visited():
+#    global nodeObjList
+#    for x in range(len(main.nodeObjList)):
+#        main.nodeObjList[x].reset_v()
+#        main.nodeObjList[x].reset_goal()
+#        main.nodeObjList[x].reset_parent()
