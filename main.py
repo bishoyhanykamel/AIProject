@@ -25,6 +25,8 @@ g1 = ds.Graph(a,edges)
 #print(goal_ucs.get_path())
 goal_dls=g1.depth_limited_search(limit=1)
 print(goal_dls)
+goal_dls.get_path()
+print("test")
 
 
 #goal_bfs = g1.breadth_first_search()

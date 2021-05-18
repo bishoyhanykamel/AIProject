@@ -56,12 +56,12 @@ class Node:
         self.value = value
 
     def get_path(self):
-        prev_node = self.get_parent()
-        temp_list = []
-        while prev_node is not None:
-            temp_list.insert(0, prev_node)
-            prev_node = prev_node.get_parent()
-        return temp_list
+        path_list=[]
+        tempnode=self
+        while tempnode is not None:
+            path_list.append(tempnode)
+            tempnode=tempnode.get_parent()
+        return path_list
 
     def __str__(self):
         if self.get_parent() is None:
