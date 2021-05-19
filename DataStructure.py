@@ -1,6 +1,6 @@
 class Node:
-    def __init__(self, label="", val=0, visited=False, goal=False, heuristic=-1,depth=0):
-        self.depth=depth
+    def __init__(self, label="", val=0, visited=False, goal=False, heuristic=-1, depth=0):
+        self.depth = depth
         self.value = val
         self.label = label
         self.children = list()
@@ -196,7 +196,7 @@ class Graph:
                         newnode.set_parent(testednode)
                         newnode.set_depth(testednode.get_depth() + 1)
                         fringe.append(newnode)
-        return -1
+        return None
 
     def iterative_deepening(self, maxlimit):
         for i in range(1, maxlimit + 1):
@@ -230,4 +230,35 @@ class Graph:
 
     #####################################################################
     def a_star_search(self):
+        self.initial_node.set_node_value(0)
+        inode = Node()
+        inode.copy_node(self.initial_node)
+        fringe = [inode]
+        visited_labels = []
+        visited_nodes_values={}
+        while fringe:
+            testednode = fringe.pop(0)
+            if testednode.get_goal() == True:
+                return testednode
+            else:
+                visited_labels.append(testednode.get_label())
+                visited_nodes_values[testednode.get_label()]=testednode.get_node_value()
+            for edge in self.edgelist:
+                if edge.get_start_node().get_label() == testednode.get_label():
+                    if (edge.get_end_node().get_label() not in visited_labels) or(visited_nodes_values[edge.get_end_node()]>edge.get_value()+testednode.get_node_value()):
+                        newnode = Node()
+                        newnode.copy_node(edge.get_end_node())
+                        newnode.set_parent(testednode)
+                        newnode.set_node_value(edge.get_start_node().get_node_value() + edge.get_value()+newnode.get_heuristic())
+                        fringe.append(newnode)
+                elif edge.get_end_node().get_label() == testednode.get_label():
+                    if (edge.get_start_node().get_label() not in visited_labels) or(visited_nodes_values[edge.get_start_node()]>edge.get_value()+testednode.get_node_value()):
+                        newnode = Node()
+                        newnode.copy_node(edge.get_start_node())
+                        newnode.set_parent(testednode)
+                        newnode.set_node_value(edge.get_end_node().get_node_value() + edge.get_value()+newnode.get_heuristic())
+                        fringe.append(newnode)
+            fringe.sort(key=lambda x: x.get_node_value())
+        print("no path found - A* search")
+
         pass
