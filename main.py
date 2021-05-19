@@ -23,22 +23,18 @@ nodes = [a, b, c, d, e, f]
 edges = [e1, e2, e3, e5, e6, e7, e8, e9, e10, e11]
 
 g1 = ds.Graph(b)
-# (goal_dfs, dfs_tree) = g1.depth_first_search()
+(goal_dfs, dfs_tree) = g1.depth_first_search()
 # print(goal_dfs)
-# dfs_tree.print_node_children(dfs_tree.get_initial_node())
-# dfs_tree.print_tree()
-# dfs_tree.reset_levels()
-# dfs_tree.print_tree()
-# map = dfs_tree.get_level_parent()
-# print("\n\n")
-# for key, val in map.items():
-#    for v in val:
-#        print("Key: {} - Value: {}".format(key, v))
-# goal_bfs = g1.breadth_first_search()
-# print(goal_bfs)
+dfs_tree.print_tree()
+level_map = dfs_tree.get_level_parent()
+for key, val in level_map.items():
+    for v in val:
+        print("Key: {} - Value: {}".format(key, v))
+
+
+print("\n\n")
 
 goal_bfs, bfs_tree = g1.breadth_first_search()
-print(goal_bfs)
 bfs_tree.print_tree()
 level_map = bfs_tree.get_level_parent()
 for key, val in level_map.items():

@@ -94,9 +94,8 @@ class Edge:
         self.start_node = s
         self.end_node = e
         self.value = v
-        self.start_node.get_children().append(e)
-        self.end_node.get_children().append(s)
-        # self.end_node.set_parent(s)
+        self.start_node.add_child(e)
+        self.end_node.add_child(s)
 
     def get_start_node(self):
         return self.start_node
@@ -122,9 +121,7 @@ class Graph:
         pass
 
     def depth_first_search(self):
-        # modified version of ds for marking nodes as visited
         initial_node = Node(cpy_node=self.initial_node)
-        # initial_node.copy_node(self.initial_node)
         stack_list = [initial_node]
         # code for tree
         dfs_tree = Tree(initial_node)
@@ -132,9 +129,6 @@ class Graph:
         visited = []
         while len(stack_list) >= 1:
             current_node = stack_list.pop(-1)
-            # code for tree
-            # dfs_tree.add_node(current_node)
-            # continue algorithm
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
@@ -156,7 +150,6 @@ class Graph:
 
     def breadth_first_search(self):
         initial_node = Node(cpy_node=self.initial_node)
-        # initial_node.copy_node(self.initial_node)
         queue_list = [initial_node]
         # code for tree
         bfs_tree = Tree(initial_node)
@@ -164,7 +157,6 @@ class Graph:
         visited = []
         while len(queue_list) >= 1:
             current_node = queue_list.pop(0)
-            # function call to pass current node to tree structure
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
@@ -174,7 +166,6 @@ class Graph:
             visited.append(current_node.get_label())
             for node in sorted(current_node.get_children(), key=lambda x: x.get_label()):
                 temp_node = Node(cpy_node=node)
-                # temp_node.copy_node(node)
                 queue_list.append(temp_node)
                 temp_node.set_parent(current_node)
                 # code for tree
@@ -223,9 +214,6 @@ class Tree:
 
     def print_tree(self):
         for node in self.nodes:
-            # print("Level: {} - Parent: {} - Children: {}".format(
-            #    node.get_tree_level(), node.get_label(), print_node_children(node)
-            # ))
             print("Level: {} - Node: {}".format(node.tree_level, node))
 
     def reset_levels(self):
@@ -251,7 +239,6 @@ class Tree:
                 current_level_children.clear()
                 node.tree_level = level
                 current_level_children.append(node)
-
 
     def get_level_parent(self):
         level_parent_map = dict()
