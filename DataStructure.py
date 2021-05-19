@@ -89,7 +89,6 @@ class Node:
             temp_list.insert(0, prev_node)
             prev_node = prev_node.get_parent()
 
-        temp_list.append(self)
         return temp_list
 
     def __str__(self):
