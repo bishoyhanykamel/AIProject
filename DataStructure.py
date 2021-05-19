@@ -78,12 +78,11 @@ class Node:
         return temp_list
 
     def __str__(self):
-        if self.get_parent() is None:
-            parent = "None"
-        else:
-            parent = self.get_parent().get_label()
-        return "Node {} Parent {}".format(self.get_label(),
-                                          parent)
+#        if self.get_parent() is None:
+#            parent = "None"
+#        else:
+#            parent = self.get_parent().get_label()
+        return "Node {}".format(self.get_label())
 
 
 # =======================================================================================
@@ -133,6 +132,7 @@ class Graph:
                 continue
             if current_node.get_goal():
                 dfs_tree.reset_levels()
+                dfs_tree.set_level_parent()
                 return current_node, dfs_tree
             current_node.set_visited()
             visited.append(current_node.get_label())
@@ -161,6 +161,7 @@ class Graph:
                 continue
             if current_node.get_goal():
                 bfs_tree.reset_levels()
+                bfs_tree.set_level_parent()
                 return current_node, bfs_tree
             current_node.set_visited()
             visited.append(current_node.get_label())
@@ -202,6 +203,7 @@ class Tree:
     def __init__(self, n1):
         self.nodes = list()
         self.add_node(n1)
+        self.level_map = dict()
 
     def add_node(self, n):
         self.nodes.append(n)
@@ -235,14 +237,41 @@ class Tree:
                 continue
             else:
                 level += 1
-                i = i - 1
                 current_level_children.clear()
                 node.tree_level = level
                 current_level_children.append(node)
 
-    def get_level_parent(self):
+    def set_level_parent(self):
         level_parent_map = dict()
         for n in self.nodes:
+            if n is None:
+                continue
             level_parent_map[n.tree_level] = [n.parent] + level_parent_map.get(n.tree_level, [])
-            pass
-        return level_parent_map
+        self.level_map = level_parent_map
+
+    def get_level_parent(self):
+        return self.level_map
+
+    # returns maximum level of generated search tree
+    def get_max_tree_level(self):
+        max_level = 0
+        for level in self.level_map.keys():
+            if max_level < level:
+                max_level = level
+        return max_level
+
+    # returns a list of all parent nodes of a specified level
+    def get_parents_of_level(self, lvl):
+        return self.level_map[lvl]
+
+    # returns a list of all the nodes that belong to the same level
+    def get_nodes_of_level(self, lvl):
+        nodes_list = []
+        for node in self.nodes:
+            if node is None:
+                continue
+            if node.tree_level == lvl:
+                nodes_list.append(node)
+
+        return nodes_list
+        pass

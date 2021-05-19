@@ -1,6 +1,5 @@
 import DataStructure as ds
 
-
 # The following are just test data
 a = ds.Node("A", 0)
 b = ds.Node("B", 0)
@@ -24,13 +23,11 @@ edges = [e1, e2, e3, e5, e6, e7, e8, e9, e10, e11]
 
 g1 = ds.Graph(b)
 (goal_dfs, dfs_tree) = g1.depth_first_search()
-# print(goal_dfs)
 dfs_tree.print_tree()
 level_map = dfs_tree.get_level_parent()
 for key, val in level_map.items():
     for v in val:
         print("Key: {} - Value: {}".format(key, v))
-
 
 print("\n\n")
 
@@ -40,3 +37,21 @@ level_map = bfs_tree.get_level_parent()
 for key, val in level_map.items():
     for v in val:
         print("Key: {} - Value: {}".format(key, v))
+
+dfs_max_level = dfs_tree.get_max_tree_level()
+bfs_max_level = bfs_tree.get_max_tree_level()
+print("Max level of DFS: {} ---- BFS {}".format(dfs_max_level, bfs_max_level))
+
+for i in range(1, dfs_max_level):
+    # print("DFS Level ({}): - Parent: {} \n\tNodes: ({})".format(i,
+    #                                                            dfs_tree.get_parents_of_level(i),
+    #                                                           dfs_tree.get_nodes_of_level(i)))
+    for node in dfs_tree.get_parents_of_level(i):
+        print("DFS Level: {} --- Parent: {}".format(i, node))
+
+for i in range(1, bfs_max_level):
+    # print("DFS Level ({}): - Parent: {} \n\tNodes: ({})".format(i,
+    #                                                           bfs_tree.get_parents_of_level(i),
+    #                                                           bfs_tree.get_nodes_of_level(i)))
+    for node in bfs_tree.get_parents_of_level(i):
+        print("BFS Level: {} --- Parent: {}".format(i, node))
