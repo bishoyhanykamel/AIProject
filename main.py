@@ -1,6 +1,17 @@
-from tkinter import Tk, Canvas, Frame, BOTH, PhotoImage, Button, Label
+from tkinter import Tk, Canvas, Frame, BOTH, PhotoImage, Button, Label, simpledialog
 
 import DataStructure as ds
+
+import enum
+
+class Searches(enum.Enum):
+   DFS = 0
+   BFS = 1
+   UCS = 2
+   D_LIMITED = 3
+   D_ITER = 4
+   GREEDY = 5
+   A_STAR = 6
 
 #import random
 
@@ -34,11 +45,14 @@ import DataStructure as ds
 #         canvas.pack(fill=BOTH, expand=1)
 
 mode_bool=0
+
+which_search = 0
+
 btnIndices = list()
 moveBtn = False
 startGoalIndices = list()
 nodeObjList = list()
-
+edgeObjList = list()
 
 
 
@@ -109,16 +123,32 @@ def main():
 
         global nodeObjList
 
+        global edgeObjList
+
+        global which_search
+
         if len(startGoalIndices) == 2:
 
             startNode = startGoalIndices[0]
             goalNode = startGoalIndices[1]
-            g = ds.Graph(nodeObjList[startNode], nodeObjList)
+            g = ds.Graph(nodeObjList[startNode], nodeObjList, edgeObjList)
             nodeObjList[goalNode].SET_AS_GOAL()
 
-            path = g.depth_first_search()
-            print(path)
+            if which_search == Searches.DFS:
+                path = g.depth_first_search()
+                print(path)
 
+            elif which_search == Searches.BFS:
+                path = g.breadth_first_search()
+                print(path)
+
+            elif which_search == Searches.UCS:
+                path = g.uniform_cost_search()
+                print(path)
+
+            elif which_search == Searches.GREEDY:
+                path = g.greedy_search()
+                print(path)
 
             startGoalIndices.clear()
             mode_bool = 0
@@ -129,7 +159,7 @@ def main():
 
     #nodeObjList = list()
 
-    edgeObjList = list()
+    #edgeObjList = list()
 
     #globalY=0
     def mybtnClick():
@@ -165,13 +195,60 @@ def main():
     mybtn.pack(side='bottom')
 
 
-    def changeModeBool2():
+
+    def costPopUp():
+        for x in range(len(labelList)):
+            labelList[x].config(bg="VioletRed1")
+            e_cost = simpledialog.askstring("Enter costs", "Enter edge "+str(x)+" cost:", parent=root)
+            set_e_cost(x, e_cost)
+
+            #ASKINTEGER
+
+    def set_e_cost(x, e_cost):
+        global edgeObjList
+        labelList[x].config(text="cost " + e_cost, bg="RoyalBlue1")
+        edgeObjList[x].set_value(int(e_cost))
+        #AND EDGEOBJLIST SET VAL
+
+    costbtn = Button(root, text='Enter costs', command=costPopUp)
+    costbtn.pack(side='bottom')
+
+
+    def changeModeBool2_DFS():
         global mode_bool
         mode_bool = 2
+        global which_search
+        which_search = Searches.DFS
 
+    def changeModeBool2_BFS():
+        global mode_bool
+        mode_bool = 2
+        global which_search
+        which_search = Searches.BFS
 
-    startasearchbtn = Button(root, text='Start a search', command=changeModeBool2)
-    startasearchbtn.pack(side='bottom')
+    def changeModeBool2_UCS():
+        global mode_bool
+        mode_bool = 2
+        global which_search
+        which_search = Searches.UCS
+
+    def changeModeBool2_GREEDY():
+        global mode_bool
+        mode_bool = 2
+        global which_search
+        which_search = Searches.GREEDY
+
+    searchDFSbtn = Button(root, text='DFS', command=changeModeBool2_DFS)
+    searchDFSbtn.pack(side='bottom')
+
+    searchBFSbtn = Button(root, text='BFS', command=changeModeBool2_BFS)
+    searchBFSbtn.pack(side='bottom')
+
+    searchUCSbtn = Button(root, text='Uniform Cost', command=changeModeBool2_UCS)
+    searchUCSbtn.pack(side='bottom')
+
+    searchGDYbtn = Button(root, text='Greedy', command=changeModeBool2_GREEDY)
+    searchGDYbtn.pack(side='bottom')
 
     #mybtn.place()
 
@@ -227,12 +304,18 @@ def main():
                     xx1, yy1 = btnlist[btnStartInd].winfo_rootx(), btnlist[btnStartInd].winfo_rooty()
                     xx2, yy2 = btnlist[btnEndInd].winfo_rootx(), btnlist[btnEndInd].winfo_rooty()
 
+
                     print("xx1:" + str(xx1))
                     print("yy1:" + str(yy1))
                     print("xx1:" + str(xx2))
                     print("yy2:" + str(yy2))
 
                     my_canvas.coords(lineList[lineInd], xx1, yy1, xx2, yy2)
+
+                    xxmid = (xx1 + xx2) / 2
+                    yymid = (yy1 + yy2) / 2
+                    labelList[lineInd].place(x=xxmid, y=yymid)
+
             except Exception as e:
                 print(e)
 
@@ -266,6 +349,10 @@ def main():
 
     linePoints_Dict = dict()
 
+    labelList = list()
+    #lineLabel_Dict = dict() #might need it
+
+
     #tmp = list()
     #tmp.append('A')
     #tmp.append('B')
@@ -275,6 +362,8 @@ def main():
         global mode_bool
 
         global nodeObjList
+
+        global edgeObjList
 
         #x1, y1 = root.btnlist[0].winfo_rootx(), root.btnlist[0].winfo_rooty()
         #x2, y2 = root.btnlist[1].winfo_rootx(), root.btnlist[1].winfo_rooty()
@@ -288,9 +377,21 @@ def main():
             lineList.append(my_canvas.create_line(x1, y1, x2, y2, fill="#000", width=2))
             print(len(lineList))
 
-            edgeObjList.append(ds.Edge(nodeObjList[btnIndices[0]], nodeObjList[btnIndices[0]], 0))
+            labelList.append(Label(root, text="edge "+ str(len(labelList)), bg="#FFFF00", fg="black"))
+            labelx = (x1 + x2) / 2
+            labely = (y1 + y2) / 2
+            labelList[len(labelList)-1].place(x=labelx, y=labely)
+
+
+            # myLabel = Label(root, text="")
+            # myLabel.pack()
+
+            edgeObjList.append(ds.Edge(nodeObjList[btnIndices[0]], nodeObjList[btnIndices[1]], 0))
             nodeObjList[btnIndices[0]].add_child(nodeObjList[btnIndices[1]])
             nodeObjList[btnIndices[1]].add_child(nodeObjList[btnIndices[0]])
+
+            nodeObjList[btnIndices[0]].add_edge(edgeObjList[len(edgeObjList)-1])
+            nodeObjList[btnIndices[1]].add_edge(edgeObjList[len(edgeObjList)-1])
 
 
             linePoints_Dict[(len(lineList)-1)]=list()
@@ -309,7 +410,7 @@ def main():
         mode_bool = 1
 
     linebtn = Button(root, text='Click Lineee', command=changeModeBool)
-    linebtn.pack()
+    linebtn.pack(side='bottom')
 
     #my_canvas.pack(pady=20)
     #         canvas = Canvas(self)
