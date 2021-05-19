@@ -273,7 +273,7 @@ class Graph:
 
     #####################################################################
     def a_star_search(self):
-        self.initial_node.set_node_value(0)
+        self.initial_node.set_node_value(self.initial_node.get_heuristic())
         inode = Node()
         inode.copy_node(self.initial_node)
         fringe = [inode]
@@ -286,18 +286,21 @@ class Graph:
             else:
                 visited_labels.append(testednode.get_label())
                 visited_nodes_values[testednode.get_label()]=testednode.get_node_value()
+                testednode.set_node_value(testednode.get_node_value()-testednode.get_heuristic())
             for edge in self.edgelist:
                 if edge.get_start_node().get_label() == testednode.get_label():
-                    if (edge.get_end_node().get_label() not in visited_labels) or(visited_nodes_values[edge.get_end_node()]>edge.get_value()+testednode.get_node_value()):
-                        newnode = Node()
-                        newnode.copy_node(edge.get_end_node())
+                    newnode = Node()
+                    newnode.copy_node(edge.get_end_node())
+                    newval=edge.get_value()+edge.get_start_node().get_node_value()+newnode.get_heuristic()
+                    if (edge.get_end_node().get_label() not in visited_labels) or(visited_nodes_values[edge.get_end_node().get_label()]>newval):
                         newnode.set_parent(testednode)
-                        newnode.set_node_value(edge.get_start_node().get_node_value() + edge.get_value()+newnode.get_heuristic())
+                        newnode.set_node_value(newval)
                         fringe.append(newnode)
                 elif edge.get_end_node().get_label() == testednode.get_label():
-                    if (edge.get_start_node().get_label() not in visited_labels) or(visited_nodes_values[edge.get_start_node()]>edge.get_value()+testednode.get_node_value()):
-                        newnode = Node()
-                        newnode.copy_node(edge.get_start_node())
+                    newnode = Node()
+                    newnode.copy_node(edge.get_start_node())
+                    newval=edge.get_value()+edge.get_end_node().get_node_value()+newnode.get_heuristic()
+                    if (edge.get_start_node().get_label() not in visited_labels) or(visited_nodes_values[edge.get_start_node().get_label()]>newval):
                         newnode.set_parent(testednode)
                         newnode.set_node_value(edge.get_end_node().get_node_value() + edge.get_value()+newnode.get_heuristic())
                         fringe.append(newnode)
