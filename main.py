@@ -12,23 +12,35 @@ e1 = ds.Edge(a, b, 0)
 e2 = ds.Edge(a, c, 0)
 e3 = ds.Edge(a, d, 0)
 e5 = ds.Edge(a, e, 0)
-e6 = ds.Edge(b, c, 0)
-e7 = ds.Edge(b, d, 0)
-e8 = ds.Edge(b, f, 0)
-e9 = ds.Edge(d, c, 0)
+e6 = ds.Edge(b, e, 0)
+e11 = ds.Edge(b, d, 0)
+e7 = ds.Edge(b, f, 0)
+e8 = ds.Edge(d, c, 0)
+e9 = ds.Edge(d, f, 0)
 e10 = ds.Edge(e, f, 0)
-e11 = ds.Edge(e, d, 0)
 
-
-nodes = [a, b, c, d, e]
+nodes = [a, b, c, d, e, f]
 edges = [e1, e2, e3, e5, e6, e7, e8, e9, e10, e11]
 
 g1 = ds.Graph(b)
-goal_dps = g1.depth_first_search()
-print(goal_dps)
+# (goal_dfs, dfs_tree) = g1.depth_first_search()
+# print(goal_dfs)
+# dfs_tree.print_node_children(dfs_tree.get_initial_node())
+# dfs_tree.print_tree()
+# dfs_tree.reset_levels()
+# dfs_tree.print_tree()
+# map = dfs_tree.get_level_parent()
+# print("\n\n")
+# for key, val in map.items():
+#    for v in val:
+#        print("Key: {} - Value: {}".format(key, v))
+# goal_bfs = g1.breadth_first_search()
+# print(goal_bfs)
 
-for node in nodes:
-    node.visited = False
-
-goal_bfs = g1.breadth_first_search()
+goal_bfs, bfs_tree = g1.breadth_first_search()
 print(goal_bfs)
+bfs_tree.print_tree()
+level_map = bfs_tree.get_level_parent()
+for key, val in level_map.items():
+    for v in val:
+        print("Key: {} - Value: {}".format(key, v))
