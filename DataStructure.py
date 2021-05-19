@@ -2,7 +2,7 @@
 # ====================================[Node of Graph]====================================
 # =======================================================================================
 class Node:
-    def __init__(self, label="", val=0, visited=False, goal=False, heuristic=-1, lvl=0, cpy_node=None):
+    def __init__(self, label="", val=0, visited=False, goal=False, heuristic=-1, lvl=0, cpy_node=None, depth=0):
         if cpy_node is not None:
             self.copy_node(cpy_node)
         else:
@@ -15,6 +15,7 @@ class Node:
             self.heuristic = heuristic
             self.tree_level = lvl
             self.tree_children = list()
+            self.depth = depth
 
     def set_depth(self, depth):
         self.depth = depth
@@ -87,14 +88,16 @@ class Node:
         while prev_node is not None:
             temp_list.insert(0, prev_node)
             prev_node = prev_node.get_parent()
+
+        temp_list.append(self)
         return temp_list
 
     def __str__(self):
-#        if self.get_parent() is None:
-#            parent = "None"
-#        else:
-#            parent = self.get_parent().get_label()
-        return "Node {}".format(self.get_label())
+        if self.get_parent() is None:
+            parent = "None"
+        else:
+            parent = self.get_parent().get_label()
+        return "Node {} - Parent {}".format(self.get_label(), parent)
 
 
 # =======================================================================================
@@ -135,10 +138,10 @@ class Graph:
     def depth_first_search(self):
         initial_node = Node(cpy_node=self.initial_node)
         stack_list = [initial_node]
+        visited = []
         # code for tree
         dfs_tree = Tree(initial_node)
         # continue algorithm
-        visited = []
         while len(stack_list) >= 1:
             current_node = stack_list.pop(-1)
             if current_node.get_visited() or current_node.get_label() in visited:
@@ -164,10 +167,10 @@ class Graph:
     def breadth_first_search(self):
         initial_node = Node(cpy_node=self.initial_node)
         queue_list = [initial_node]
+        visited = []
         # code for tree
         bfs_tree = Tree(initial_node)
         # continue algorithm
-        visited = []
         while len(queue_list) >= 1:
             current_node = queue_list.pop(0)
             if current_node.get_visited() or current_node.get_label() in visited:
@@ -192,29 +195,39 @@ class Graph:
 
     def uniform_cost_search(self):
         self.initial_node.set_node_value(0)
-        inode = Node()
-        inode.copy_node(self.initial_node)
+        inode = Node(cpy_node=self.initial_node)
         fringe = [inode]
         visited = []
+        # code for tree
+        ucs_tree = Tree(inode)
+        # continue algorithm
         while fringe:
             testednode = fringe.pop(0)
             if testednode.get_goal() == True:
-                return testednode
+                ucs_tree.reset_levels()
+                ucs_tree.set_level_parent()
+                return testednode, ucs_tree
             else:
                 visited.append(testednode.get_label())
             for edge in self.edgelist:
                 if edge.get_start_node().get_label() == testednode.get_label() and edge.get_end_node().get_label() not in visited:
-                    newnode = Node()
-                    newnode.copy_node(edge.get_end_node())
+                    newnode = Node(cpy_node=edge.get_end_node())
                     newnode.set_parent(testednode)
                     newnode.set_node_value(edge.get_start_node().get_node_value() + edge.get_value())
                     fringe.append(newnode)
+                    # code for tree
+                    testednode.add_tree_child(newnode)
+                    ucs_tree.add_node(newnode)
+                    # continue algorithm
                 elif edge.get_end_node().get_label() == testednode.get_label() and edge.get_start_node().get_label() not in visited:
-                    newnode = Node()
-                    newnode.copy_node(edge.get_start_node())
+                    newnode = Node(cpy_node=edge.get_end_node())
                     newnode.set_parent(testednode)
                     newnode.set_node_value(edge.get_end_node().get_node_value() + edge.get_value())
                     fringe.append(newnode)
+                    # code for tree
+                    testednode.add_tree_child(newnode)
+                    ucs_tree.add_node(newnode)
+                    # continue algorithm
             fringe.sort(key=lambda x: x.get_node_value())
         print("no path found - uniform cost search")
 
@@ -224,21 +237,30 @@ class Graph:
         inode.copy_node(self.initial_node)
         fringe = [inode]
         visited = []
+        # code for tree
+        dls_tree = Tree(inode)
+        # continue algorithm
         while fringe:
             testednode = fringe.pop(-1)
             if testednode.get_depth() > limit:
                 break
             elif testednode.get_goal() == True and testednode.get_label():
-                return testednode
+                dls_tree.reset_levels()
+                dls_tree.set_level_parent()
+                return testednode, dls_tree
+
             else:
                 visited.append(testednode.get_label())
                 for node in testednode.get_children():
                     if node.get_label() not in visited:
-                        newnode = Node()
-                        newnode.copy_node(node)
+                        newnode = Node(cpy_node=node)
                         newnode.set_parent(testednode)
                         newnode.set_depth(testednode.get_depth() + 1)
                         fringe.append(newnode)
+                        # code for tree
+                        testednode.add_tree_child(newnode)
+                        dls_tree.add_node(newnode)
+                        # continue algorithm
         return None
 
     def iterative_deepening(self, maxlimit):
@@ -254,18 +276,28 @@ class Graph:
         inode.copy_node(self.initial_node)
         fringe = [inode]
         visited = []
+        # code for tree
+        greedy_tree = Tree(inode)
+        # continue algorithm
         while fringe:
             testednode = fringe.pop(0)
             if (testednode.get_goal() == True):
-                return testednode
+                greedy_tree.reset_levels()
+                greedy_tree.set_level_parent()
+                return testednode, greedy_tree
+
             else:
                 visited.append(testednode.get_label())
                 for node in testednode.get_children():
                     if node.get_label() not in visited:
-                        newnode = Node()
+                        newnode = Node(cpy_node=node)
                         newnode.copy_node(node)
                         newnode.set_parent(testednode)
                         fringe.append(newnode)
+                        # code for tree
+                        testednode.add_tree_child(newnode)
+                        greedy_tree.add_node(newnode)
+                        # continue algorithm
                 fringe.sort(key=lambda x: x.get_heuristic())
         print("no path found - Greedy Search")
 
@@ -278,31 +310,37 @@ class Graph:
         inode.copy_node(self.initial_node)
         fringe = [inode]
         visited_labels = []
-        visited_nodes_values={}
+        visited_nodes_values = {}
+        # code for tree
+        dls_tree = Tree(inode)
+        # continue algorithm
         while fringe:
             testednode = fringe.pop(0)
             if testednode.get_goal() == True:
                 return testednode
             else:
                 visited_labels.append(testednode.get_label())
-                visited_nodes_values[testednode.get_label()]=testednode.get_node_value()
-                testednode.set_node_value(testednode.get_node_value()-testednode.get_heuristic())
+                visited_nodes_values[testednode.get_label()] = testednode.get_node_value()
+                testednode.set_node_value(testednode.get_node_value() - testednode.get_heuristic())
             for edge in self.edgelist:
                 if edge.get_start_node().get_label() == testednode.get_label():
                     newnode = Node()
                     newnode.copy_node(edge.get_end_node())
-                    newval=edge.get_value()+edge.get_start_node().get_node_value()+newnode.get_heuristic()
-                    if (edge.get_end_node().get_label() not in visited_labels) or(visited_nodes_values[edge.get_end_node().get_label()]>newval):
+                    newval = edge.get_value() + edge.get_start_node().get_node_value() + newnode.get_heuristic()
+                    if (edge.get_end_node().get_label() not in visited_labels) or (
+                            visited_nodes_values[edge.get_end_node().get_label()] > newval):
                         newnode.set_parent(testednode)
                         newnode.set_node_value(newval)
                         fringe.append(newnode)
                 elif edge.get_end_node().get_label() == testednode.get_label():
                     newnode = Node()
                     newnode.copy_node(edge.get_start_node())
-                    newval=edge.get_value()+edge.get_end_node().get_node_value()+newnode.get_heuristic()
-                    if (edge.get_start_node().get_label() not in visited_labels) or(visited_nodes_values[edge.get_start_node().get_label()]>newval):
+                    newval = edge.get_value() + edge.get_end_node().get_node_value() + newnode.get_heuristic()
+                    if (edge.get_start_node().get_label() not in visited_labels) or (
+                            visited_nodes_values[edge.get_start_node().get_label()] > newval):
                         newnode.set_parent(testednode)
-                        newnode.set_node_value(edge.get_end_node().get_node_value() + edge.get_value()+newnode.get_heuristic())
+                        newnode.set_node_value(
+                            edge.get_end_node().get_node_value() + edge.get_value() + newnode.get_heuristic())
                         fringe.append(newnode)
             fringe.sort(key=lambda x: x.get_node_value())
         print("no path found - A* search")
