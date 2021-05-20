@@ -1,3 +1,6 @@
+# import main
+# from main import resetNodeObj
+
 # =======================================================================================
 # ====================================[Node of Graph]====================================
 # =======================================================================================
@@ -16,6 +19,15 @@ class Node:
             self.tree_level = lvl
             self.tree_children = list()
             self.depth = depth
+            self.edges = list()
+
+    def set_depth(self, depth):
+        self.depth = depth
+
+    def get_depth(self):
+        return self.depth
+
+
 
     def set_depth(self, depth):
         self.depth = depth
@@ -33,6 +45,7 @@ class Node:
         self.heuristic = node.heuristic
         self.tree_level = node.tree_level
         self.tree_children = node.tree_children
+        self.edges = node.edges
 
     def get_tree_level(self):
         return self.tree_level
@@ -45,11 +58,45 @@ class Node:
         temp_tree_node.tree_level += 1
         self.tree_children.append(temp_tree_node)
 
+    def add_edge(self, e):
+        self.edges.append(e)
+
+        # mlhash lzma l cost 0
+        # ASCENDING SORT
+        # self.edges = sorted(self.edges, reverse=False, key=lambda k: k.get_value())
+        # self.children = sorted(self.children)
+
+        #mlhash lzma l cost 0
+        for x in range(len(self.edges)):
+            # print(x, " th child")
+            print("node ", str(self.get_label()), " edge cost: ", self.edges[x].get_value())
+            # print(self.children[x].get_label())
+
+
+    def get_edges(self):
+        return self.edges
+
     def set_parent(self, p):
         self.parent = p
 
     def set_visited(self):
         self.visited = True
+
+    #_______
+
+
+    def reset_v(self):
+        self.visited = False
+
+    def SET_AS_GOAL(self):
+        self.goal = True
+
+    def reset_goal(self):
+        self.goal = False
+
+    def reset_parent(self):
+        self.parent = None
+    #_______
 
     def get_children(self):
         return self.children
@@ -69,6 +116,18 @@ class Node:
     def add_child(self, c1):
         self.children.append(c1)
         self.children = sorted(self.children, key=lambda x: x.label)
+
+    #def add_child(self, c1):
+        #self.children.append(c1)
+
+        #ASCENDING SORT
+        #self.children = sorted(self.children, reverse=False, key=lambda k: k.get_label())
+        #self.children = sorted(self.children)
+
+        #for x in range(len(self.children)):
+            #print(x, " th child")
+            #print("index of ", x, "child (after sort): ", self.children[x].get_label())
+            #print(self.children[x].get_label())
 
     def get_goal(self):
         return self.goal
@@ -110,6 +169,13 @@ class Edge:
         self.start_node.add_child(e)
         self.end_node.add_child(s)
 
+    def set_start_node(self, s):
+        self.start_node = s
+
+    def set_end_node(self, e):
+        self.end_node = e
+
+
     def get_start_node(self):
         return self.start_node
 
@@ -118,6 +184,9 @@ class Edge:
 
     def get_value(self):
         return self.value
+
+    def set_value(self, val):
+        self.value = val
 
     def __str__(self):
         return "Edge: ({}) -> ({})  || Value: {}". \
@@ -129,9 +198,11 @@ class Edge:
 # =======================================================================================
 # note: all algorithms will return a tuple (goal_node, tree generated)
 class Graph:
-    def __init__(self, inode, edges):
-        self.edgelist = edges
+    def __init__(self, inode, edges, nodeObjList, edgeObjList):
         self.initial_node = inode
+        self.edgelist = edges
+        self.nodeObjList = nodeObjList
+        self.edgeObjList = edgeObjList
         pass
 
     def depth_first_search(self):
@@ -191,6 +262,54 @@ class Graph:
             pass
         return "No goal found - Breadth First Search", "No tree generated"
         pass
+
+#    def uniform_cost_search(self):
+#        self.initial_node.set_node_value(0)
+#        inode = Node()
+#        inode.copy_node(self.initial_node)
+#        fringe = [inode]
+#        visited = []
+#        while len(fringe) >= 1:
+#            print("entered here")
+#            current_node = fringe.pop(0)
+
+#            if current_node.get_visited() or current_node.get_label() in visited:
+#                continue
+
+#            if current_node.get_goal() == True:
+#                self.reset_visited()
+#                fringe.clear()
+#                visited.clear()
+#                return current_node
+
+#            current_node.set_visited()
+#            visited.append(current_node.get_label())
+
+#            for edge in current_node.get_edges():
+#                print("entered edge loop")
+#                print(edge.get_start_node().get_label())
+#                print(edge.get_end_node().get_label())
+
+                # if edge.get_end_node().get_label() == current_node.get_label():
+
+            #    if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
+           #         print("this was done")
+          #          new_node = Node()
+         #           if edge.get_end_node().get_label() == current_node.get_label():
+        #                new_node.copy_node(edge.get_start_node())
+       #             else:
+      #                  new_node.copy_node(edge.get_end_node())
+     #               new_node.set_parent(current_node)
+    #                new_node.set_node_value(current_node.get_node_value() + edge.get_value())
+   #                 fringe.append(new_node)
+
+  #          fringe.sort(key=lambda x: x.get_node_value())
+
+ #       self.reset_visited()
+#        fringe.clear()
+#        visited.clear()
+#        print("No goal found - Uniform Cost Search")
+#        pass
 
     def uniform_cost_search(self):
         self.initial_node.set_node_value(0)
@@ -432,3 +551,23 @@ class Tree:
 
         return nodes_list
         pass
+
+    #def reset_visited(self):
+        # global nodeObjList
+        #print("LENGTH: ", len(self.nodeObjList))
+        #for x in range(len(self.nodeObjList)):
+            #print("IN NODEOBJLIST b4", self.nodeObjList[x].get_visited())
+            #print("GOAL THING B4", self.nodeObjList[x].get_goal())
+            #self.nodeObjList[x].reset_v()
+            #self.nodeObjList[x].reset_goal()
+            #self.nodeObjList[x].reset_parent()
+            #self.nodeObjList[x].set_node_value(0)
+            #print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
+            #print("GOAL THING after", self.nodeObjList[x].get_goal())
+
+#def reset_visited():
+#    global nodeObjList
+#    for x in range(len(main.nodeObjList)):
+#        main.nodeObjList[x].reset_v()
+#        main.nodeObjList[x].reset_goal()
+#        main.nodeObjList[x].reset_parent()
