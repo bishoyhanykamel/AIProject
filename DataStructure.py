@@ -27,14 +27,6 @@ class Node:
     def get_depth(self):
         return self.depth
 
-
-
-    def set_depth(self, depth):
-        self.depth = depth
-
-    def get_depth(self):
-        return self.depth
-
     def copy_node(self, node):
         self.value = node.value
         self.label = node.label
@@ -66,12 +58,11 @@ class Node:
         # self.edges = sorted(self.edges, reverse=False, key=lambda k: k.get_value())
         # self.children = sorted(self.children)
 
-        #mlhash lzma l cost 0
+        # mlhash lzma l cost 0
         for x in range(len(self.edges)):
             # print(x, " th child")
             print("node ", str(self.get_label()), " edge cost: ", self.edges[x].get_value())
             # print(self.children[x].get_label())
-
 
     def get_edges(self):
         return self.edges
@@ -82,8 +73,7 @@ class Node:
     def set_visited(self):
         self.visited = True
 
-    #_______
-
+    # _______
 
     def reset_v(self):
         self.visited = False
@@ -96,7 +86,8 @@ class Node:
 
     def reset_parent(self):
         self.parent = None
-    #_______
+
+    # _______
 
     def get_children(self):
         return self.children
@@ -117,17 +108,17 @@ class Node:
         self.children.append(c1)
         self.children = sorted(self.children, key=lambda x: x.label)
 
-    #def add_child(self, c1):
-        #self.children.append(c1)
+    # def add_child(self, c1):
+    # self.children.append(c1)
 
-        #ASCENDING SORT
-        #self.children = sorted(self.children, reverse=False, key=lambda k: k.get_label())
-        #self.children = sorted(self.children)
+    # ASCENDING SORT
+    # self.children = sorted(self.children, reverse=False, key=lambda k: k.get_label())
+    # self.children = sorted(self.children)
 
-        #for x in range(len(self.children)):
-            #print(x, " th child")
-            #print("index of ", x, "child (after sort): ", self.children[x].get_label())
-            #print(self.children[x].get_label())
+    # for x in range(len(self.children)):
+    # print(x, " th child")
+    # print("index of ", x, "child (after sort): ", self.children[x].get_label())
+    # print(self.children[x].get_label())
 
     def get_goal(self):
         return self.goal
@@ -174,7 +165,6 @@ class Edge:
 
     def set_end_node(self, e):
         self.end_node = e
-
 
     def get_start_node(self):
         return self.start_node
@@ -263,53 +253,53 @@ class Graph:
         return "No goal found - Breadth First Search", "No tree generated"
         pass
 
-#    def uniform_cost_search(self):
-#        self.initial_node.set_node_value(0)
-#        inode = Node()
-#        inode.copy_node(self.initial_node)
-#        fringe = [inode]
-#        visited = []
-#        while len(fringe) >= 1:
-#            print("entered here")
-#            current_node = fringe.pop(0)
+    #    def uniform_cost_search(self):
+    #        self.initial_node.set_node_value(0)
+    #        inode = Node()
+    #        inode.copy_node(self.initial_node)
+    #        fringe = [inode]
+    #        visited = []
+    #        while len(fringe) >= 1:
+    #            print("entered here")
+    #            current_node = fringe.pop(0)
 
-#            if current_node.get_visited() or current_node.get_label() in visited:
-#                continue
+    #            if current_node.get_visited() or current_node.get_label() in visited:
+    #                continue
 
-#            if current_node.get_goal() == True:
-#                self.reset_visited()
-#                fringe.clear()
-#                visited.clear()
-#                return current_node
+    #            if current_node.get_goal() == True:
+    #                self.reset_visited()
+    #                fringe.clear()
+    #                visited.clear()
+    #                return current_node
 
-#            current_node.set_visited()
-#            visited.append(current_node.get_label())
+    #            current_node.set_visited()
+    #            visited.append(current_node.get_label())
 
-#            for edge in current_node.get_edges():
-#                print("entered edge loop")
-#                print(edge.get_start_node().get_label())
-#                print(edge.get_end_node().get_label())
+    #            for edge in current_node.get_edges():
+    #                print("entered edge loop")
+    #                print(edge.get_start_node().get_label())
+    #                print(edge.get_end_node().get_label())
 
-                # if edge.get_end_node().get_label() == current_node.get_label():
+    # if edge.get_end_node().get_label() == current_node.get_label():
 
-            #    if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
-           #         print("this was done")
-          #          new_node = Node()
-         #           if edge.get_end_node().get_label() == current_node.get_label():
-        #                new_node.copy_node(edge.get_start_node())
-       #             else:
-      #                  new_node.copy_node(edge.get_end_node())
-     #               new_node.set_parent(current_node)
+    #    if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
+    #         print("this was done")
+    #          new_node = Node()
+    #           if edge.get_end_node().get_label() == current_node.get_label():
+    #                new_node.copy_node(edge.get_start_node())
+    #             else:
+    #                  new_node.copy_node(edge.get_end_node())
+    #               new_node.set_parent(current_node)
     #                new_node.set_node_value(current_node.get_node_value() + edge.get_value())
-   #                 fringe.append(new_node)
+    #                 fringe.append(new_node)
 
-  #          fringe.sort(key=lambda x: x.get_node_value())
+    #          fringe.sort(key=lambda x: x.get_node_value())
 
- #       self.reset_visited()
-#        fringe.clear()
-#        visited.clear()
-#        print("No goal found - Uniform Cost Search")
-#        pass
+    #       self.reset_visited()
+    #        fringe.clear()
+    #        visited.clear()
+    #        print("No goal found - Uniform Cost Search")
+    #        pass
 
     def uniform_cost_search(self):
         self.initial_node.set_node_value(0)
@@ -388,7 +378,7 @@ class Graph:
                 break
         return dls_result
 
-    #### --------------not tested yet-------------------#########
+    # ## --------------not tested yet------------------- #####
     def greedy_search(self):
         inode = Node()
         inode.copy_node(self.initial_node)
@@ -552,20 +542,20 @@ class Tree:
         return nodes_list
         pass
 
-    #def reset_visited(self):
-        # global nodeObjList
-        #print("LENGTH: ", len(self.nodeObjList))
-        #for x in range(len(self.nodeObjList)):
-            #print("IN NODEOBJLIST b4", self.nodeObjList[x].get_visited())
-            #print("GOAL THING B4", self.nodeObjList[x].get_goal())
-            #self.nodeObjList[x].reset_v()
-            #self.nodeObjList[x].reset_goal()
-            #self.nodeObjList[x].reset_parent()
-            #self.nodeObjList[x].set_node_value(0)
-            #print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
-            #print("GOAL THING after", self.nodeObjList[x].get_goal())
+    # def reset_visited(self):
+    # global nodeObjList
+    # print("LENGTH: ", len(self.nodeObjList))
+    # for x in range(len(self.nodeObjList)):
+    # print("IN NODEOBJLIST b4", self.nodeObjList[x].get_visited())
+    # print("GOAL THING B4", self.nodeObjList[x].get_goal())
+    # self.nodeObjList[x].reset_v()
+    # self.nodeObjList[x].reset_goal()
+    # self.nodeObjList[x].reset_parent()
+    # self.nodeObjList[x].set_node_value(0)
+    # print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
+    # print("GOAL THING after", self.nodeObjList[x].get_goal())
 
-#def reset_visited():
+# def reset_visited():
 #    global nodeObjList
 #    for x in range(len(main.nodeObjList)):
 #        main.nodeObjList[x].reset_v()
