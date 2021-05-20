@@ -4,6 +4,7 @@ import DataStructure as ds
 
 import enum
 
+
 class Searches(enum.Enum):
    DFS = 0
    BFS = 1
@@ -54,7 +55,22 @@ startGoalIndices = list()
 nodeObjList = list()
 edgeObjList = list()
 
+#btnlist = list()
 
+#btnlistc=list()
+
+#def illuminateNode(ind):
+#    print(len(btnlistc))
+#    #    #    global btnlist
+#    btnlistc[ind].config(bg="lawn green")
+
+#visited_list = list()
+
+#def illuminateNode(vlist):
+#    global visited_list
+#    #visited_list = g.visited()
+#    visited_list = vlist
+#   btnlistc[ind].config(bg="lawn green")
 
 
 def main():
@@ -150,13 +166,19 @@ def main():
                 path = g.greedy_search()
                 print(path)
 
+            illuminateNodes(g.vlist)
+            g.reset_vlist()
+
             startGoalIndices.clear()
             mode_bool = 0
 
     #______________________________
 
+    #UNDO THIS
     btnlist = list()
 
+
+    #btnlistc = btnlist
     #nodeObjList = list()
 
     #edgeObjList = list()
@@ -169,6 +191,8 @@ def main():
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): print(c)))
 
         global nodeObjList
+
+        #global btnlist
 
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): move(c)))
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): modeSelect(c)))
@@ -194,7 +218,15 @@ def main():
     mybtn = Button(root, text="Create node", command=mybtnClick)
     mybtn.pack(side='bottom')
 
+    def illuminateNodes(vlist):
+        print("LENGTH OF VLIST: ", len(vlist))
+        for j in range(len(vlist)):
+            btnlist[vlist[j]].config(bg="lawn green")
+            #sleep 0.5s
 
+    #def illuminateNode(ind):
+    #    #    global btnlist
+    #    btnlist[ind].config(bg="lawn green")
 
     def costPopUp():
         for x in range(len(labelList)):
@@ -279,6 +311,8 @@ def main():
 
     def motion(event):
         global buttonInd
+
+        #global btnlist
         #x, y = event.x, event.y
         x, y = event.widget.winfo_pointerxy()
         #print(moveBtn)
@@ -364,6 +398,8 @@ def main():
         global nodeObjList
 
         global edgeObjList
+
+        #global btnlist
 
         #x1, y1 = root.btnlist[0].winfo_rootx(), root.btnlist[0].winfo_rooty()
         #x2, y2 = root.btnlist[1].winfo_rootx(), root.btnlist[1].winfo_rooty()

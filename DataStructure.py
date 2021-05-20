@@ -1,5 +1,6 @@
 # import main
-# from main import resetNodeObj
+
+#from main import illuminateNode
 
 class Node:
     def __init__(self, label="", val=0, visited=False, goal=False, heuristic=-1, depth=0):
@@ -127,6 +128,7 @@ class Node:
             tempnode = tempnode.get_parent()
         return path_list
 
+
     def __str__(self):
         if self.get_parent() is None:
             parent = "None"
@@ -178,6 +180,7 @@ class Graph:
         self.initial_node = inode
         self.nodeObjList = nodeObjList
         self.edgeObjList = edgeObjList
+        self.vlist = list()
         pass
 
     def depth_first_search(self):
@@ -190,6 +193,18 @@ class Graph:
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
+                self.vlist = visited.copy()
+
+                #self.illuminate_anim(visited)
+                pathlist = current_node.get_path()
+                print("path found by dfs: ", end=" ")
+                while len(pathlist) > 0:
+                    #print("path: ", pathlist.pop().get_label())
+                    print(pathlist.pop().get_label(), end=" ")
+                print(" ")
+                #for j in range(len(pathlist)):
+                #    print(pathlist[j].get_label()),
+
                 #print("init node visited or not", self.initial_node.get_visited())
                 #print("goal b4 reset", current_node.get_goal())
                 self.reset_visited()
@@ -198,11 +213,14 @@ class Graph:
                 #print("init node visited or not AFTER RESET", self.initial_node.get_visited())
                 #print("goal after reset", current_node.get_goal())
                 return current_node
-            print(current_node.get_visited())
+            #print(current_node.get_visited())
             current_node.set_visited()
-            print(current_node.get_visited())
+
+            #illuminateNode(current_node.get_label())
+
+            #print(current_node.get_visited())
             visited.append(current_node.get_label())
-            print(len(current_node.get_children()))
+            #print(len(current_node.get_children()))
             for node in sorted(current_node.get_children(), reverse=True, key=lambda x: x.get_label()):
                 temp_node = Node()
                 temp_node.copy_node(node)
@@ -226,6 +244,13 @@ class Graph:
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
+
+                pathlist = current_node.get_path()
+                print("path found by bfs: ", end=" ")
+                while len(pathlist) > 0:
+                    print(pathlist.pop().get_label(), end=" ")
+                print(" ")
+
                 self.reset_visited()
                 queue_list.clear()
                 visited.clear()
@@ -259,6 +284,13 @@ class Graph:
                 continue
 
             if current_node.get_goal() == True:
+
+                pathlist = current_node.get_path()
+                print("path found by ucs: ", end=" ")
+                while len(pathlist) > 0:
+                    print(pathlist.pop().get_label(), end=" ")
+                print(" ")
+
                 self.reset_visited()
                 fringe.clear()
                 visited.clear()
@@ -339,6 +371,15 @@ class Graph:
             self.nodeObjList[x].set_node_value(0)
             #print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
             #print("GOAL THING after", self.nodeObjList[x].get_goal())
+
+    def reset_vlist(self):
+        self.vlist = list()
+
+    #def illuminate_anim(self, vlist):
+        #illuminateNode(self)
+    #    illuminateNode(vlist)
+
+    #def illuminate_visited(self, ind):
 
 #def reset_visited():
 #    global nodeObjList
