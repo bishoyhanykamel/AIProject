@@ -13,6 +13,8 @@ class Node:
         self.parent = None
         self.heuristic = heuristic
 
+        self.astar_value = 0
+
         self.edges = list()
 
     def set_depth(self, depth):
@@ -31,7 +33,16 @@ class Node:
         self.goal = node.get_goal()
         self.heuristic = node.get_heuristic()
 
+        self.astar_value = node.get_astar_value()
+
         self.edges = node.get_edges()
+
+
+    def set_astar_value(self, v):
+        self.astar_value = v
+
+    def get_astar_value(self):
+        return self.astar_value
 
     def add_edge(self, e):
         self.edges.append(e)
@@ -105,6 +116,10 @@ class Node:
 
     def get_heuristic(self):
         return self.heuristic
+
+
+    def set_heuristic(self, h):
+        self.heuristic = h
 
     def get_visited(self):
         return self.visited
@@ -194,6 +209,7 @@ class Graph:
                 continue
             if current_node.get_goal():
                 self.vlist = visited.copy()
+                self.vlist.append(current_node.get_label())
 
                 #self.illuminate_anim(visited)
                 pathlist = current_node.get_path()
@@ -244,6 +260,8 @@ class Graph:
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
+                self.vlist = visited.copy()
+                self.vlist.append(current_node.get_label())
 
                 pathlist = current_node.get_path()
                 print("path found by bfs: ", end=" ")
@@ -284,6 +302,9 @@ class Graph:
                 continue
 
             if current_node.get_goal() == True:
+
+                self.vlist = visited.copy()
+                self.vlist.append(current_node.get_label())
 
                 pathlist = current_node.get_path()
                 print("path found by ucs: ", end=" ")
@@ -334,21 +355,36 @@ class Graph:
         fringe = [inode]
         visited = []
         while fringe:
-            testednode = fringe.pop(0)
-            if (testednode.get_goal() == True):
+            current_node = fringe.pop(0)
+
+            if current_node.get_visited() or current_node.get_label() in visited:
+                continue
+
+            if (current_node.get_goal() == True):
+                self.vlist = visited.copy()
+                self.vlist.append(current_node.get_label())
+
+                pathlist = current_node.get_path()
+                print("path found by greedy: ", end=" ")
+                while len(pathlist) > 0:
+                    print(pathlist.pop().get_label(), end=" ")
+                print(" ")
+
                 self.reset_visited()
                 fringe.clear()
                 visited.clear()
-                return testednode
-            else:
-                visited.append(testednode.get_label())
-                for node in testednode.get_children():
-                    if node.get_label() not in visited:
-                        newnode = Node()
-                        newnode.copy_node(node)
-                        newnode.set_parent(testednode)
-                        fringe.append(newnode)
-                fringe.sort(key=lambda x: x.get_heuristic())
+                return current_node
+
+            current_node.set_visited()
+            visited.append(current_node.get_label())
+
+            for node in current_node.get_children():
+                if node.get_label() not in visited:
+                    newnode = Node()
+                    newnode.copy_node(node)
+                    newnode.set_parent(current_node)
+                    fringe.append(newnode)
+            fringe.sort(key=lambda x: x.get_heuristic())
 
         self.reset_visited()
         fringe.clear()
@@ -357,7 +393,67 @@ class Graph:
         pass
 
     def a_star_search(self):
+        self.initial_node.set_astar_value(self.initial_node.get_heuristic())
+        inode = Node()
+        inode.copy_node(self.initial_node)
+        fringe = [inode]
+        visited = []
+        #visited_nodes_values = {}
+        while fringe:
+            current_node = fringe.pop(0)
+
+            if current_node.get_visited() or current_node.get_label() in visited:
+                continue
+
+            if current_node.get_goal() == True:
+                self.vlist = visited.copy()
+                self.vlist.append(current_node.get_label())
+
+                pathlist = current_node.get_path()
+                print("path found by a*: ", end=" ")
+                while len(pathlist) > 0:
+                    print(pathlist.pop().get_label(), end=" ")
+                print(" ")
+
+                self.reset_visited()
+                fringe.clear()
+                visited.clear()
+                return current_node
+
+            current_node.set_visited()
+            visited.append(current_node.get_label())
+
+            #visited_nodes_values[current_node.get_label()] = current_node.get_node_value()
+            #current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
+
+            for edge in current_node.get_edges():
+                print("entered edge loop")
+                print(edge.get_start_node().get_label())
+                print(edge.get_end_node().get_label())
+
+                #if edge.get_end_node().get_label() == current_node.get_label():
+
+                if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
+                    print("this was done")
+                    newnode = Node()
+                    if edge.get_end_node().get_label() == current_node.get_label():
+                        newnode.copy_node(edge.get_start_node())
+                    else:
+                        newnode.copy_node(edge.get_end_node())
+                    newnode.set_parent(current_node)
+                    newnode.set_node_value(current_node.get_node_value() + edge.get_value())
+                    newnode.set_astar_value(newnode.get_node_value() + newnode.get_heuristic())
+                    #mmkn 23ml l astar fl class 3la tul nodevalue+heuristic
+                    fringe.append(newnode)
+
+            fringe.sort(key=lambda x: x.get_astar_value())
+
+        self.reset_visited()
+        fringe.clear()
+        visited.clear()
+        print("no path found - A* Search")
         pass
+
 
     def reset_visited(self):
         # global nodeObjList

@@ -1,4 +1,8 @@
-from tkinter import Tk, Canvas, Frame, BOTH, PhotoImage, Button, Label, simpledialog
+from tkinter import Tk, Canvas, Frame, BOTH, PhotoImage, Button, Label, simpledialog, Toplevel
+
+import math
+
+import time
 
 import DataStructure as ds
 
@@ -166,6 +170,10 @@ def main():
                 path = g.greedy_search()
                 print(path)
 
+            elif which_search == Searches.A_STAR:
+                path = g.a_star_search()
+                print(path)
+
             illuminateNodes(g.vlist)
             g.reset_vlist()
 
@@ -177,6 +185,7 @@ def main():
     #UNDO THIS
     btnlist = list()
 
+    heuristicList = list()
 
     #btnlistc = btnlist
     #nodeObjList = list()
@@ -198,11 +207,17 @@ def main():
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): modeSelect(c)))
         btnlist.append(Button(root, text=len(btnlist), width=3, height=1, command=lambda c=len(btnlist): modeSelect(c)))
 
+        heuristicList.append(Label(root, text="h=?", bg="CadetBlue4", fg="black"))
+
         nodeObjList.append(ds.Node(label=len(nodeObjList)))
 
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=move))
         btnlist[len(btnlist)-1].pack()
         btnline_Dict[len(btnlist)-1] = list()
+
+        #heuristicx = btnlist[len(btnlist)-1].winfo_rootx()
+        #heuristicy = btnlist[len(btnlist)-1].winfo_rooty()-10
+        #heuristicList[len(heuristicList) - 1].place(x=heuristicx, y=heuristicy)
 
         #bb = bb + 1
         #bttn = Button(root, image=nodeimg, width=30,height=30)
@@ -220,9 +235,23 @@ def main():
 
     def illuminateNodes(vlist):
         print("LENGTH OF VLIST: ", len(vlist))
-        for j in range(len(vlist)):
-            btnlist[vlist[j]].config(bg="lawn green")
+        i=0
+        for j in range(len(vlist)-1):
+            #rg3tha zy ma kant
+            #shlt lenvlist-1. k2enny 3mltlha visit. w b3den l2tha goal fa hlwnha lon visited. then lon goal
+            #btnlist[vlist[j]].config(bg="lawn green")
+            #time.sleep(2)
+            root.after(i, lambda x=j: btnlist[vlist[x]].config(bg="lawn green"))
+            i=i+1000
+
+        if len(vlist)>0:
+            root.after(i, lambda k=(vlist[len(vlist)-1]): btnlist[k].config(bg="SeaGreen1"))
+        #btnlist[len(vlist)-1].config(bg="SeaGreen1")
             #sleep 0.5s
+
+    def reset_illumination():
+        for x in range(len(btnlist)):
+            btnlist[x].config(bg="white smoke")
 
     #def illuminateNode(ind):
     #    #    global btnlist
@@ -251,24 +280,36 @@ def main():
         mode_bool = 2
         global which_search
         which_search = Searches.DFS
+        reset_illumination()
 
     def changeModeBool2_BFS():
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.BFS
+        reset_illumination()
 
     def changeModeBool2_UCS():
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.UCS
+        reset_illumination()
 
     def changeModeBool2_GREEDY():
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.GREEDY
+        reset_illumination()
+
+    def changeModeBool2_ASTAR():
+        global mode_bool
+        mode_bool = 2
+        global which_search
+        which_search = Searches.A_STAR
+        reset_illumination()
+
 
     searchDFSbtn = Button(root, text='DFS', command=changeModeBool2_DFS)
     searchDFSbtn.pack(side='bottom')
@@ -281,6 +322,9 @@ def main():
 
     searchGDYbtn = Button(root, text='Greedy', command=changeModeBool2_GREEDY)
     searchGDYbtn.pack(side='bottom')
+
+    searchASTRbtn = Button(root, text='A*', command=changeModeBool2_ASTAR)
+    searchASTRbtn.pack(side='bottom')
 
     #mybtn.place()
 
@@ -323,35 +367,35 @@ def main():
             #moving_button.place(x=event.x, y=event.y, anchor="s")
             #moving_button.place(x=x, y=y, anchor="s")
             btnlist[buttonInd].place(x=x, y=y, anchor="s")
+            heuristicList[buttonInd].place(x=x, y=y)
+
             #myLabel.config(text="Coords: x: "+ str(event.x) + " y: "+ str(event.y))
-            try:
-                for x in range(len(btnline_Dict[buttonInd])):
-                # print("sss" + str(btnline_Dict[buttonInd]))
-                    lineInd=btnline_Dict[buttonInd][x]
-                    print(btnline_Dict)
-                    print(lineInd)
-                    print(btnline_Dict[0][0])
-                    btnStartInd=linePoints_Dict[lineInd][0]
-                    print(btnStartInd)
-                    btnEndInd = linePoints_Dict[lineInd][1]
 
-                    xx1, yy1 = btnlist[btnStartInd].winfo_rootx(), btnlist[btnStartInd].winfo_rooty()
-                    xx2, yy2 = btnlist[btnEndInd].winfo_rootx(), btnlist[btnEndInd].winfo_rooty()
+            for x in range(len(btnline_Dict[buttonInd])):
+            # print("sss" + str(btnline_Dict[buttonInd]))
+                lineInd=btnline_Dict[buttonInd][x]
+                print(btnline_Dict)
+                print(lineInd)
+                #print(btnline_Dict[0][0])
+                btnStartInd=linePoints_Dict[lineInd][0]
+                print(btnStartInd)
+                btnEndInd = linePoints_Dict[lineInd][1]
+
+                xx1, yy1 = btnlist[btnStartInd].winfo_rootx(), btnlist[btnStartInd].winfo_rooty()
+                xx2, yy2 = btnlist[btnEndInd].winfo_rootx(), btnlist[btnEndInd].winfo_rooty()
 
 
-                    print("xx1:" + str(xx1))
-                    print("yy1:" + str(yy1))
-                    print("xx1:" + str(xx2))
-                    print("yy2:" + str(yy2))
+                print("xx1:" + str(xx1))
+                print("yy1:" + str(yy1))
+                print("xx1:" + str(xx2))
+                print("yy2:" + str(yy2))
 
-                    my_canvas.coords(lineList[lineInd], xx1, yy1, xx2, yy2)
+                my_canvas.coords(lineList[lineInd], xx1, yy1, xx2, yy2)
 
-                    xxmid = (xx1 + xx2) / 2
-                    yymid = (yy1 + yy2) / 2
-                    labelList[lineInd].place(x=xxmid, y=yymid)
+                xxmid = (xx1 + xx2) / 2
+                yymid = (yy1 + yy2) / 2
+                labelList[lineInd].place(x=xxmid, y=yymid)
 
-            except Exception as e:
-                print(e)
 
 
     #coordinates label
@@ -367,6 +411,68 @@ def main():
 
 
     #___________________________________________________
+
+    def hInputPopUp():
+        for x in range(len(heuristicList)):
+            heuristicList[x].config(bg="PaleVioletRed1")
+            h_val = simpledialog.askstring("Enter heuristics", "Enter node "+str(x)+" heuristic value:", parent=hpop)
+            set_h_val(x, h_val)
+
+
+    def set_h_val(x, h_val):
+        global nodeObjList
+        heuristicList[x].config(text="h=" + h_val, bg="CadetBlue2")
+        nodeObjList[x].set_heuristic(int(h_val))
+        #AND EDGEOBJLIST SET VAL
+
+
+    def calc_eucl_h(g_ind):
+        global nodeObjList
+        root.update()
+        x_goal = btnlist[g_ind].winfo_x()
+        y_goal = btnlist[g_ind].winfo_y()
+        for i in range(len(btnlist)):
+            x = btnlist[i].winfo_x()
+            y = btnlist[i].winfo_y()
+            delta_x = abs(x_goal-x)
+            delta_y = abs(y_goal-y)
+            h = math.sqrt(delta_x ^ 2 + delta_y ^ 2)
+            heuristicList[i].config(text="h=" + str(int(h)), bg="CadetBlue2")
+            nodeObjList[i].set_heuristic(int(h))
+
+
+    def calc_manh_h(g_ind):
+        global nodeObjList
+        pass
+
+    def hEuclPopUp():
+        goal_ind = simpledialog.askinteger("Enter goal", "Goal index:", parent=hpop)
+        calc_eucl_h(goal_ind)
+
+    def hManhPopUp():
+        goal_ind = simpledialog.askstring("Enter goal", "Goal index:", parent=hpop)
+        calc_manh_h(goal_ind)
+
+
+    def heuristicOptionsPopUp():
+        global hpop
+        hpop = Toplevel(root)
+        hpop.title("Heuristic Options")
+
+        manhattanbtn = Button(hpop, text='Manhattan Distance (could be inadmissible)', command=hManhPopUp) #no command yet
+        euclbtn = Button(hpop, text='Euclidean Distance (could be inadmissible)', command=hEuclPopUp)  # no command yet
+        hinputbtn = Button(hpop, text='User Input', command=hInputPopUp)
+        manhattanbtn.pack(padx=50, pady=10)
+        euclbtn.pack()
+        hinputbtn.pack(pady=10)
+
+
+    heuristicBtn = Button(root, text='Choose a heuristic', command=heuristicOptionsPopUp)
+    heuristicBtn.pack(side='bottom')
+
+
+
+    # ___________________________________________________
 
     #HOMA FEN HOMA FEN HOMA FEN
     #mybtn1 = Button(root, text="Node1")
