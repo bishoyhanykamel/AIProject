@@ -218,6 +218,7 @@ class Graph:
                     #print("path: ", pathlist.pop().get_label())
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
+                #APPEND F PATHLIST ATTRIBUTE FL GRAPH. W TALLA3 MESSAGEBOX FI NO3 L SEARCH,START/GOALINDICES, PATH FOUND
                 #for j in range(len(pathlist)):
                 #    print(pathlist[j].get_label()),
 

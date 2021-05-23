@@ -59,6 +59,10 @@ startGoalIndices = list()
 nodeObjList = list()
 edgeObjList = list()
 
+#no_of_goals = 1
+
+#start_bool=False
+
 #btnlist = list()
 
 #btnlistc=list()
@@ -134,8 +138,13 @@ def main():
 
     def startSearch (c):
         global startGoalIndices
+        #global start_bool
         startGoalIndices.append(c)
-        startandGoal()
+        #startandGoal()
+        if len(startGoalIndices) == 1:
+            btnlist[startGoalIndices[0]].config(bg="pale green")
+        if len(startGoalIndices) > 1:
+            btnlist[startGoalIndices[len(startGoalIndices)-1]].config(bg="IndianRed1")
 
     def startandGoal():
 
@@ -147,12 +156,22 @@ def main():
 
         global which_search
 
-        if len(startGoalIndices) == 2:
+        #if len(startGoalIndices) == 1:
+        #    btnlist[startGoalIndices[0]].config(bg="pale green")
+        #if len(startGoalIndices) > 1:
+        #    btnlist[startGoalIndices[len(startGoalIndices)-1]].config(bg="IndianRed1")
+        #    nodeObjList[startGoalIndices[len(startGoalIndices)-1]].SET_AS_GOAL()
+
+        if len(startGoalIndices) > 1:
 
             startNode = startGoalIndices[0]
-            goalNode = startGoalIndices[1]
+            #goalNode = startGoalIndices[1]
             g = ds.Graph(nodeObjList[startNode], nodeObjList, edgeObjList)
-            nodeObjList[goalNode].SET_AS_GOAL()
+
+            no_of_goals=len(startGoalIndices)-1
+            for j in range(no_of_goals):
+                print("index set as goal:", startGoalIndices[j+1])
+                nodeObjList[startGoalIndices[j+1]].SET_AS_GOAL()
 
             if which_search == Searches.DFS:
                 path = g.depth_first_search()
@@ -235,7 +254,7 @@ def main():
 
     def illuminateNodes(vlist):
         print("LENGTH OF VLIST: ", len(vlist))
-        i=0
+        i=1000
         for j in range(len(vlist)-1):
             #rg3tha zy ma kant
             #shlt lenvlist-1. k2enny 3mltlha visit. w b3den l2tha goal fa hlwnha lon visited. then lon goal
@@ -245,7 +264,7 @@ def main():
             i=i+1000
 
         if len(vlist)>0:
-            root.after(i, lambda k=(vlist[len(vlist)-1]): btnlist[k].config(bg="SeaGreen1"))
+            root.after(i, lambda k=(vlist[len(vlist)-1]): btnlist[k].config(bg="firebrick1"))
         #btnlist[len(vlist)-1].config(bg="SeaGreen1")
             #sleep 0.5s
 
@@ -276,39 +295,49 @@ def main():
 
 
     def changeModeBool2_DFS():
+        #global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.DFS
         reset_illumination()
+        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_BFS():
+        #global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.BFS
         reset_illumination()
+        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_UCS():
+        #global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.UCS
         reset_illumination()
+        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_GREEDY():
+        #global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.GREEDY
         reset_illumination()
+        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_ASTAR():
+        #global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.A_STAR
         reset_illumination()
+        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
 
     searchDFSbtn = Button(root, text='DFS', command=changeModeBool2_DFS)
@@ -497,6 +526,9 @@ def main():
     #tmp.append('A')
     #tmp.append('B')
     #btnline_Dict[4] = tmp
+
+    startbtn = Button(root, text="START", command=startandGoal)
+    startbtn.pack(side='bottom')
 
     def functLine():
         global mode_bool
