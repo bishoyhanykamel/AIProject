@@ -196,6 +196,7 @@ class Graph:
         self.nodeObjList = nodeObjList
         self.edgeObjList = edgeObjList
         self.vlist = list()
+        self.plist = list()
         pass
 
     def depth_first_search(self):
@@ -213,11 +214,15 @@ class Graph:
 
                 #self.illuminate_anim(visited)
                 pathlist = current_node.get_path()
+                #self.plist = pathlist.copy()
+                #self.plist.reverse()
                 print("path found by dfs: ", end=" ")
                 while len(pathlist) > 0:
                     #print("path: ", pathlist.pop().get_label())
+                    self.plist.append(pathlist[len(pathlist)-1].get_label()) #HL DI SHALLOWS COPY???????
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
+                #self.plist.reverse()
                 #APPEND F PATHLIST ATTRIBUTE FL GRAPH. W TALLA3 MESSAGEBOX FI NO3 L SEARCH,START/GOALINDICES, PATH FOUND
                 #for j in range(len(pathlist)):
                 #    print(pathlist[j].get_label()),
@@ -267,6 +272,8 @@ class Graph:
                 pathlist = current_node.get_path()
                 print("path found by bfs: ", end=" ")
                 while len(pathlist) > 0:
+                    self.plist.append(pathlist[len(pathlist) - 1].get_label())
+
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
@@ -310,6 +317,8 @@ class Graph:
                 pathlist = current_node.get_path()
                 print("path found by ucs: ", end=" ")
                 while len(pathlist) > 0:
+                    self.plist.append(pathlist[len(pathlist) - 1].get_label())
+
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
@@ -368,6 +377,8 @@ class Graph:
                 pathlist = current_node.get_path()
                 print("path found by greedy: ", end=" ")
                 while len(pathlist) > 0:
+                    self.plist.append(pathlist[len(pathlist) - 1].get_label())
+
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
@@ -413,6 +424,8 @@ class Graph:
                 pathlist = current_node.get_path()
                 print("path found by a*: ", end=" ")
                 while len(pathlist) > 0:
+                    self.plist.append(pathlist[len(pathlist) - 1].get_label())
+
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
@@ -471,6 +484,10 @@ class Graph:
 
     def reset_vlist(self):
         self.vlist = list()
+
+
+    def reset_plist(self):
+        self.plist = list()
 
     #def illuminate_anim(self, vlist):
         #illuminateNode(self)

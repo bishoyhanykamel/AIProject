@@ -193,8 +193,9 @@ def main():
                 path = g.a_star_search()
                 print(path)
 
-            illuminateNodes(g.vlist)
+            illuminateNodes(g.vlist, g.plist)
             g.reset_vlist()
+            g.reset_plist()
 
             startGoalIndices.clear()
             mode_bool = 0
@@ -252,7 +253,7 @@ def main():
     mybtn = Button(root, text="Create node", command=mybtnClick)
     mybtn.pack(side='bottom')
 
-    def illuminateNodes(vlist):
+    def illuminateNodes(vlist, plist):
         print("LENGTH OF VLIST: ", len(vlist))
         i=1000
         for j in range(len(vlist)-1):
@@ -267,10 +268,43 @@ def main():
             root.after(i, lambda k=(vlist[len(vlist)-1]): btnlist[k].config(bg="firebrick1"))
         #btnlist[len(vlist)-1].config(bg="SeaGreen1")
             #sleep 0.5s
+        #KOLLOHOM F FUNCTION W7DA
+        if len(plist)>0:
+            i = i + 1000
+            root.after(i, lambda p=plist: illuminatePath(p, on_off=1))
+            i = i + 1000
+            root.after(i, lambda p=plist: illuminatePath(p, on_off=2))
+            i = i + 1000
+            root.after(i, lambda p=plist: illuminatePath(p, on_off=1))
+            i = i + 1000
+            root.after(i, lambda p=plist: illuminatePath(p, on_off=2))
+            i = i + 1000
+            root.after(i, lambda p=plist: illuminatePath(p, on_off=1))
+
+            print("PATH LIST AFTER REVERSE: ", plist)
+            #5ALLIHA T FLASH 5 MARRAT W B3DEN TFDL MNWRA
+
+        #ELSE HA SHOW MESSAGE NO PATH FOUND
+
+    def illuminatePath(path, on_off):
+        print(len(path))
+        for j in range(len(path) - 1):
+            line_start_index = path[j]
+            line_end_index = path[j+1]
+            for i in range (len(btnline_Dict[line_start_index])):
+                line_index = btnline_Dict[line_start_index][i]
+                if linePoints_Dict[line_index][0] == line_end_index or linePoints_Dict[line_index][1] == line_end_index:
+                    if on_off==1:
+                        my_canvas.itemconfig(lineList[line_index], fill="magenta2")
+                    else:
+                        my_canvas.itemconfig(lineList[line_index], fill="#000")
+                        #lineList[line_index].config()  # or mayb add the index to a list then color them all. 34an a flash
 
     def reset_illumination():
         for x in range(len(btnlist)):
             btnlist[x].config(bg="white smoke")
+        for y in range(len(lineList)):
+            my_canvas.itemconfig(lineList[y], fill="#000")
 
     #def illuminateNode(ind):
     #    #    global btnlist
