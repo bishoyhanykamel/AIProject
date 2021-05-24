@@ -213,6 +213,29 @@ class Graph:
         self.tree_visit_sequence = list()
         pass
 
+    def reset_levels(self):
+        level = 0
+        current_level_children = [self.tree_draw_sequence[0]]
+        for i in range(len(self.tree_draw_sequence)):
+            node = self.tree_draw_sequence[i]
+            node_parent = node.parent
+            parent_of_brother = current_level_children[-1].parent
+            grand_of_node = None
+            grand_of_brother = None
+            if parent_of_brother is not None:
+                grand_of_brother = parent_of_brother.parent
+            if node_parent is not None:
+                grand_of_node = node_parent.parent
+            if node_parent == parent_of_brother or grand_of_brother == grand_of_node:
+                node.tree_level = level
+                current_level_children.append(node)
+                continue
+            else:
+                level += 1
+                current_level_children.clear()
+                node.tree_level = level
+                current_level_children.append(node)
+
     def depth_first_search(self):
 
         initial_node = Node(cpy_node=self.initial_node)
@@ -258,6 +281,7 @@ class Graph:
                 visited.clear()
                 # print("init node visited or not AFTER RESET", self.initial_node.get_visited())
                 # print("goal after reset", current_node.get_goal())
+                self.reset_levels()
                 return current_node
             # print(current_node.get_visited())
             current_node.set_visited()
@@ -309,6 +333,7 @@ class Graph:
                 self.reset_visited()
                 queue_list.clear()
                 visited.clear()
+                self.reset_levels()
                 return current_node
             current_node.set_visited()
             visited.append(current_node.get_label())
@@ -378,6 +403,13 @@ class Graph:
         inode.copy_node(self.initial_node)
         fringe = [inode]
         visited = []
+
+        # code for tree
+        self.tree_draw_sequence.clear()
+        self.tree_visit_sequence.clear()
+        self.tree_draw_sequence.append(inode)
+        # continue algorithm
+
         while len(fringe) >= 1:
             print("entered here")
             current_node = fringe.pop(0)
@@ -401,9 +433,11 @@ class Graph:
                 self.reset_visited()
                 fringe.clear()
                 visited.clear()
+                self.reset_levels()
                 return current_node
 
             current_node.set_visited()
+            self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
 
             for edge in current_node.get_edges():
@@ -423,6 +457,9 @@ class Graph:
                     new_node.set_parent(current_node)
                     new_node.set_node_value(current_node.get_node_value() + edge.get_value())
                     fringe.append(new_node)
+                    # code for tree
+                    self.tree_draw_sequence.append(new_node)
+                    # continue algorithm
 
             fringe.sort(key=lambda x: x.get_node_value())
 
@@ -445,6 +482,11 @@ class Graph:
         inode.copy_node(self.initial_node)
         fringe = [inode]
         visited = []
+        # code for tree
+        self.tree_draw_sequence.clear()
+        self.tree_visit_sequence.clear()
+        self.tree_draw_sequence.append(inode)
+        # continue algorithm
         while fringe:
             current_node = fringe.pop(0)
 
@@ -466,9 +508,11 @@ class Graph:
                 self.reset_visited()
                 fringe.clear()
                 visited.clear()
+                self.reset_levels()
                 return current_node
 
             current_node.set_visited()
+            self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
 
             for node in current_node.get_children():
@@ -477,6 +521,9 @@ class Graph:
                     newnode.copy_node(node)
                     newnode.set_parent(current_node)
                     fringe.append(newnode)
+                    # code for tree
+                    self.tree_draw_sequence.append(newnode)
+                    # continue algorithm
             fringe.sort(key=lambda x: x.get_heuristic())
 
         self.reset_visited()
@@ -492,6 +539,11 @@ class Graph:
         fringe = [inode]
         visited = []
         # visited_nodes_values = {}
+        # code for tree
+        self.tree_draw_sequence.clear()
+        self.tree_visit_sequence.clear()
+        self.tree_draw_sequence.append(inode)
+        # continue algorithm
         while fringe:
             current_node = fringe.pop(0)
 
@@ -513,9 +565,11 @@ class Graph:
                 self.reset_visited()
                 fringe.clear()
                 visited.clear()
+                self.reset_levels()
                 return current_node
 
             current_node.set_visited()
+            self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
 
             # visited_nodes_values[current_node.get_label()] = current_node.get_node_value()
@@ -540,6 +594,9 @@ class Graph:
                     newnode.set_astar_value(newnode.get_node_value() + newnode.get_heuristic())
                     # mmkn 23ml l astar fl class 3la tul nodevalue+heuristic
                     fringe.append(newnode)
+                    # code for tree
+                    self.tree_draw_sequence.append(newnode)
+                    # continue algorithm
 
             fringe.sort(key=lambda x: x.get_astar_value())
 
