@@ -1,24 +1,27 @@
 # import main
 
-#from main import illuminateNode
+# from main import illuminateNode
 # =======================================================================================
 # ====================================[Node of Graph]====================================
 # =======================================================================================
 class Node:
-    def __init__(self, label="", val=0, visited=False, goal=False, heuristic=-1, depth=0):
-        self.depth = depth
-        self.value = val
-        self.label = label
-        self.children = list()
-        self.visited = visited
-        self.goal = goal
-        self.parent = None
-        self.heuristic = heuristic
-        self.astar_value = 0
-        self.edges = list()
-        self.tree_level = 0
-        self.tree_children = list()
-        self.depth = depth
+    def __init__(self, label="", val=0, visited=False, goal=False, heuristic=-1, depth=0, cpy_node=None):
+        if cpy_node is not None:
+            self.copy_node(cpy_node)
+        else:
+            self.depth = depth
+            self.value = val
+            self.label = label
+            self.children = list()
+            self.visited = visited
+            self.goal = goal
+            self.parent = None
+            self.heuristic = heuristic
+            self.astar_value = 0
+            self.edges = list()
+            self.tree_level = 0
+            self.tree_children = list()
+            self.depth = depth
 
     def set_depth(self, depth):
         self.depth = depth
@@ -39,7 +42,7 @@ class Node:
         self.edges = node.edges
         self.astar_value = node.get_astar_value()
         self.edges = node.get_edges()
-    
+
     def get_tree_level(self):
         return self.tree_level
 
@@ -50,7 +53,6 @@ class Node:
         temp_tree_node = Node(cpy_node=c1)
         temp_tree_node.tree_level += 1
         self.tree_children.append(temp_tree_node)
-
 
     def set_astar_value(self, v):
         self.astar_value = v
@@ -105,7 +107,7 @@ class Node:
 
     def get_value(self):
         return self.value
-    
+
     def get_node_value(self):
         return self.value
 
@@ -116,23 +118,22 @@ class Node:
         self.children.append(c1)
         self.children = sorted(self.children, key=lambda x: x.label)
 
-    # def add_child(self, c1):
-    # self.children.append(c1)
+        # def add_child(self, c1):
+        # self.children.append(c1)
 
-        #ASCENDING SORT
-        #self.children = sorted(self.children)
+        # ASCENDING SORT
+        # self.children = sorted(self.children)
 
         for x in range(len(self.children)):
-            #print(x, " th child")
+            # print(x, " th child")
             print("index of ", x, "child (after sort): ", self.children[x].get_label())
-            #print(self.children[x].get_label())
+            # print(self.children[x].get_label())
 
     def get_goal(self):
         return self.goal
 
     def get_heuristic(self):
         return self.heuristic
-
 
     def set_heuristic(self, h):
         self.heuristic = h
@@ -151,7 +152,6 @@ class Node:
             tempnode = tempnode.get_parent()
         return path_list
 
-
     def __str__(self):
         if self.get_parent() is None:
             parent = "None"
@@ -169,18 +169,16 @@ class Edge:
         self.end_node = e
         self.value = v
 
-        #self.start_node.get_children().append(e)
-        #self.end_node.get_children().append(s)
+        # self.start_node.get_children().append(e)
+        # self.end_node.get_children().append(s)
 
         # self.end_node.set_parent(s)
-
 
     def set_start_node(self, s):
         self.start_node = s
 
     def set_end_node(self, e):
         self.end_node = e
-
 
     def get_start_node(self):
         return self.start_node
@@ -206,7 +204,7 @@ class Edge:
 class Graph:
     def __init__(self, inode, nodeObjList, edgeObjList):
         self.initial_node = inode
-        #self.edgelist = edges
+        # self.edgelist = edges
         self.nodeObjList = nodeObjList
         self.edgeObjList = edgeObjList
         self.vlist = list()
@@ -228,47 +226,48 @@ class Graph:
 
         visited = []
         while len(stack_list) >= 1:
-            #print("been here")
+            # print("been here")
             current_node = stack_list.pop(-1)
-            #print(current_node.get_visited())
+            # print(current_node.get_visited())
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
                 self.vlist = visited.copy()
                 self.vlist.append(current_node.get_label())
 
-                #self.illuminate_anim(visited)
+                # self.illuminate_anim(visited)
                 pathlist = current_node.get_path()
-                #self.plist = pathlist.copy()
-                #self.plist.reverse()
+                # self.plist = pathlist.copy()
+                # self.plist.reverse()
                 print("path found by dfs: ", end=" ")
                 while len(pathlist) > 0:
-                    #print("path: ", pathlist.pop().get_label())
-                    self.plist.append(pathlist[len(pathlist)-1].get_label()) #HL DI SHALLOWS COPY???????
+                    # print("path: ", pathlist.pop().get_label())
+                    self.plist.append(pathlist[len(pathlist) - 1].get_label())  # HL DI SHALLOWS COPY???????
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
-                #self.plist.reverse()
-                #APPEND F PATHLIST ATTRIBUTE FL GRAPH. W TALLA3 MESSAGEBOX FI NO3 L SEARCH,START/GOALINDICES, PATH FOUND
-                #for j in range(len(pathlist)):
+                # self.plist.reverse()
+                # APPEND F PATHLIST ATTRIBUTE FL GRAPH. W TALLA3 MESSAGEBOX FI NO3 L SEARCH,START/GOALINDICES,
+                #                   PATH FOUND
+                # for j in range(len(pathlist)):
                 #    print(pathlist[j].get_label()),
 
-                #print("init node visited or not", self.initial_node.get_visited())
-                #print("goal b4 reset", current_node.get_goal())
+                # print("init node visited or not", self.initial_node.get_visited())
+                # print("goal b4 reset", current_node.get_goal())
                 self.reset_visited()
                 stack_list.clear()
                 visited.clear()
-                #print("init node visited or not AFTER RESET", self.initial_node.get_visited())
-                #print("goal after reset", current_node.get_goal())
+                # print("init node visited or not AFTER RESET", self.initial_node.get_visited())
+                # print("goal after reset", current_node.get_goal())
                 return current_node
-            #print(current_node.get_visited())
+            # print(current_node.get_visited())
             current_node.set_visited()
 
-            #illuminateNode(current_node.get_label())
+            # illuminateNode(current_node.get_label())
 
-            #print(current_node.get_visited())
+            # print(current_node.get_visited())
             self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
-            #print(len(current_node.get_children()))
+            # print(len(current_node.get_children()))
             for node in sorted(current_node.get_children(), reverse=True, key=lambda x: x.get_label()):
                 temp_node = Node(cpy_node=node)
                 stack_list.append(temp_node)
@@ -412,7 +411,7 @@ class Graph:
                 print(edge.get_start_node().get_label())
                 print(edge.get_end_node().get_label())
 
-                #if edge.get_end_node().get_label() == current_node.get_label():
+                # if edge.get_end_node().get_label() == current_node.get_label():
 
                 if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
                     print("this was done")
@@ -434,11 +433,12 @@ class Graph:
         pass
 
     def iterative_deepening(self, maxlimit):
-        for i in range(1, maxlimit + 1):
-            dls_result = self.depth_limited_search(i)
-            if not dls_result == -1:
-                break
-        return dls_result
+        # for i in range(1, maxlimit + 1):
+        #     dls_result = self.depth_limited_search(i)
+        #     if not dls_result == -1:
+        #         break
+        # return dls_result
+        pass
 
     def greedy_search(self):
         inode = Node()
@@ -451,7 +451,7 @@ class Graph:
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
 
-            if (current_node.get_goal() == True):
+            if current_node.get_goal() == True:
                 self.vlist = visited.copy()
                 self.vlist.append(current_node.get_label())
 
@@ -491,7 +491,7 @@ class Graph:
         inode.copy_node(self.initial_node)
         fringe = [inode]
         visited = []
-        #visited_nodes_values = {}
+        # visited_nodes_values = {}
         while fringe:
             current_node = fringe.pop(0)
 
@@ -518,15 +518,15 @@ class Graph:
             current_node.set_visited()
             visited.append(current_node.get_label())
 
-            #visited_nodes_values[current_node.get_label()] = current_node.get_node_value()
-            #current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
+            # visited_nodes_values[current_node.get_label()] = current_node.get_node_value()
+            # current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
 
             for edge in current_node.get_edges():
                 print("entered edge loop")
                 print(edge.get_start_node().get_label())
                 print(edge.get_end_node().get_label())
 
-                #if edge.get_end_node().get_label() == current_node.get_label():
+                # if edge.get_end_node().get_label() == current_node.get_label():
 
                 if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
                     print("this was done")
@@ -538,7 +538,7 @@ class Graph:
                     newnode.set_parent(current_node)
                     newnode.set_node_value(current_node.get_node_value() + edge.get_value())
                     newnode.set_astar_value(newnode.get_node_value() + newnode.get_heuristic())
-                    #mmkn 23ml l astar fl class 3la tul nodevalue+heuristic
+                    # mmkn 23ml l astar fl class 3la tul nodevalue+heuristic
                     fringe.append(newnode)
 
             fringe.sort(key=lambda x: x.get_astar_value())
@@ -549,34 +549,32 @@ class Graph:
         print("no path found - A* Search")
         pass
 
-
     def reset_visited(self):
         # global nodeObjList
-        #print("LENGTH: ", len(self.nodeObjList))
+        # print("LENGTH: ", len(self.nodeObjList))
         for x in range(len(self.nodeObjList)):
-            #print("IN NODEOBJLIST b4", self.nodeObjList[x].get_visited())
-            #print("GOAL THING B4", self.nodeObjList[x].get_goal())
+            # print("IN NODEOBJLIST b4", self.nodeObjList[x].get_visited())
+            # print("GOAL THING B4", self.nodeObjList[x].get_goal())
             self.nodeObjList[x].reset_v()
             self.nodeObjList[x].reset_goal()
             self.nodeObjList[x].reset_parent()
             self.nodeObjList[x].set_node_value(0)
-            #print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
-            #print("GOAL THING after", self.nodeObjList[x].get_goal())
+            # print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
+            # print("GOAL THING after", self.nodeObjList[x].get_goal())
 
     def reset_vlist(self):
         self.vlist = list()
 
-
     def reset_plist(self):
         self.plist = list()
 
-    #def illuminate_anim(self, vlist):
-        #illuminateNode(self)
+    # def illuminate_anim(self, vlist):
+    # illuminateNode(self)
     #    illuminateNode(vlist)
 
-    #def illuminate_visited(self, ind):
+    # def illuminate_visited(self, ind):
 
-#def reset_visited():
+# def reset_visited():
 #    global nodeObjList
 #    for x in range(len(main.nodeObjList)):
 #        main.nodeObjList[x].reset_v()
