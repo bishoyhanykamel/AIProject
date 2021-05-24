@@ -193,35 +193,42 @@ class Graph:
         self.edgelist = edges
         self.nodeObjList = nodeObjList
         self.edgeObjList = edgeObjList
+        self.tree_draw_sequence = list()
+        self.tree_visit_sequence = list()
         pass
 
     def depth_first_search(self):
+
         initial_node = Node(cpy_node=self.initial_node)
         stack_list = [initial_node]
-        visited = []
+
         # code for tree
-        dfs_tree = Tree(initial_node)
+        self.tree_draw_sequence.clear()
+        self.tree_visit_sequence.clear()
+        self.tree_draw_sequence.append(initial_node)
         # continue algorithm
+
+        visited = []
         while len(stack_list) >= 1:
             current_node = stack_list.pop(-1)
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
-                dfs_tree.reset_levels()
-                dfs_tree.set_level_parent()
-                return current_node, dfs_tree
+                return current_node
             current_node.set_visited()
+            self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
             for node in sorted(current_node.get_children(), reverse=True, key=lambda x: x.get_label()):
                 temp_node = Node(cpy_node=node)
                 stack_list.append(temp_node)
                 temp_node.set_parent(current_node)
+
                 # code for tree
-                current_node.add_tree_child(temp_node)
-                dfs_tree.add_node(temp_node)
+                self.tree_draw_sequence.append(temp_node)
                 # continue algorithm
+
             pass
-        return "No goal found - Depth First Search", "No tree generated"
+        return "No goal found - Depth First Search"
         pass
 
     def breadth_first_search(self):
@@ -229,28 +236,28 @@ class Graph:
         queue_list = [initial_node]
         visited = []
         # code for tree
-        bfs_tree = Tree(initial_node)
+        self.tree_draw_sequence.clear()
+        self.tree_visit_sequence.clear()
+        self.tree_draw_sequence.append(initial_node)
         # continue algorithm
         while len(queue_list) >= 1:
             current_node = queue_list.pop(0)
             if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
-                bfs_tree.reset_levels()
-                bfs_tree.set_level_parent()
-                return current_node, bfs_tree
+                return current_node
             current_node.set_visited()
             visited.append(current_node.get_label())
+            self.tree_visit_sequence.append(current_node)
             for node in sorted(current_node.get_children(), key=lambda x: x.get_label()):
                 temp_node = Node(cpy_node=node)
                 queue_list.append(temp_node)
                 temp_node.set_parent(current_node)
                 # code for tree
-                current_node.add_tree_child(temp_node)
-                bfs_tree.add_node(temp_node)
+                self.tree_draw_sequence.append(temp_node)
                 # continue algorithm
             pass
-        return "No goal found - Breadth First Search", "No tree generated"
+        return "No goal found - Breadth First Search"
         pass
 
     #    def uniform_cost_search(self):
