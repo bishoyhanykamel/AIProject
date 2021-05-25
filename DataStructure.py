@@ -205,6 +205,7 @@ class Graph:
         self.tree_draw_sequence = list()
         self.tree_visit_sequence = list()
         self.tree_level_dictionary = dict()
+        self.parent_dictionary = dict()
         pass
 
     def create_level_dictionary(self):
@@ -213,6 +214,14 @@ class Graph:
                                                        + [node]
 
     pass
+
+    def create_parent_dictionary(self):
+        for node in self.tree_draw_sequence:
+            if node.parent is None:
+                continue
+            self.parent_dictionary[node.parent] = self.parent_dictionary.get(node.parent, list()) \
+            + [node]
+        pass
 
     def reset_levels(self):
         level = 1
@@ -237,6 +246,7 @@ class Graph:
                 node.tree_level = level
                 current_level_children.append(node)
         self.create_level_dictionary()
+        self.create_parent_dictionary()
         pass
 
     def depth_first_search(self):
