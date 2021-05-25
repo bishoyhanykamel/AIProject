@@ -474,9 +474,7 @@ class Graph:
                     # code for tree
                     self.tree_draw_sequence.append(new_node)
                     # continue algorithm
-
             fringe.sort(key=lambda x: x.get_node_value())
-
         self.reset_visited()
         fringe.clear()
         visited.clear()
@@ -503,10 +501,6 @@ class Graph:
         # continue algorithm
         while fringe:
             current_node = fringe.pop(0)
-
-            if current_node.get_visited() or current_node.get_label() in visited:
-                continue
-
             if current_node.get_goal() == True:
                 self.vlist = visited.copy()
                 self.vlist.append(current_node.get_label())
@@ -524,11 +518,8 @@ class Graph:
                 visited.clear()
                 self.reset_levels()
                 return current_node
-
-            current_node.set_visited()
             self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
-
             for node in current_node.get_children():
                 if node.get_label() not in visited:
                     newnode = Node()
