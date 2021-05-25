@@ -246,6 +246,7 @@ class Graph:
                 node.tree_level = level
                 current_level_children.append(node)
         self.create_level_dictionary()
+        self.parent_dictionary.clear()
         self.create_parent_dictionary()
         pass
 
