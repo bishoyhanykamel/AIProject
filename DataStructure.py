@@ -543,7 +543,7 @@ class Graph:
         inode.copy_node(self.initial_node)
         fringe = [inode]
         visited = []
-        # visited_nodes_values = {}
+        visited_nodes_values = {}
         # code for tree
         self.tree_draw_sequence.clear()
         self.tree_visit_sequence.clear()
@@ -551,14 +551,9 @@ class Graph:
         # continue algorithm
         while fringe:
             current_node = fringe.pop(0)
-
-            if current_node.get_visited() or current_node.get_label() in visited:
-                continue
-
             if current_node.get_goal() == True:
                 self.vlist = visited.copy()
                 self.vlist.append(current_node.get_label())
-
                 pathlist = current_node.get_path()
                 print("path found by a*: ", end=" ")
                 while len(pathlist) > 0:
@@ -577,7 +572,7 @@ class Graph:
             self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
 
-            # visited_nodes_values[current_node.get_label()] = current_node.get_node_value()
+            visited_nodes_values[current_node.get_label()] = current_node.get_astar_value()
             # current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
 
             for edge in current_node.get_edges():
@@ -587,22 +582,25 @@ class Graph:
 
                 # if edge.get_end_node().get_label() == current_node.get_label():
 
-                if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
-                    print("this was done")
+                if edge.get_start_node().get_label() == current_node.get_label():
                     newnode = Node()
-                    if edge.get_end_node().get_label() == current_node.get_label():
-                        newnode.copy_node(edge.get_start_node())
-                    else:
-                        newnode.copy_node(edge.get_end_node())
-                    newnode.set_parent(current_node)
-                    newnode.set_node_value(current_node.get_node_value() + edge.get_value())
-                    newnode.set_astar_value(newnode.get_node_value() + newnode.get_heuristic())
-                    # mmkn 23ml l astar fl class 3la tul nodevalue+heuristic
-                    fringe.append(newnode)
+                    newnode.copy_node(edge.get_end_node())
+                    newval=current_node.get_node_value()+edge.get_value()
+                    if (edge.get_end_node().get_label() not in visited) or(visited_nodes_values[edge.get_end_node().get_label()]>newval):
+                        newnode.set_parent(current_node)
+                        newnode.set_node_value(newval)
+                        fringe.append(newnode)
+                elif edge.get_end_node().get_label() == current_node.get_label():
+                    newnode = Node()
+                    newnode.copy_node(edge.get_start_node())
+                    newval=edge.get_value()+edge.get_end_node().get_node_value()
+                    if (edge.get_start_node().get_label() not in visited) or(visited_nodes_values[edge.get_start_node().get_label()]>newval):
+                        newnode.set_parent(current_node)
+                        newnode.set_node_value(newval)
+                        fringe.append(newnode)
                     # code for tree
                     self.tree_draw_sequence.append(newnode)
                     # continue algorithm
-
             fringe.sort(key=lambda x: x.get_astar_value())
 
         self.reset_visited()
