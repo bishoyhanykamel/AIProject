@@ -117,13 +117,6 @@ class Node:
     def add_child(self, c1):
         self.children.append(c1)
         self.children = sorted(self.children, key=lambda x: x.label)
-
-        # def add_child(self, c1):
-        # self.children.append(c1)
-
-        # ASCENDING SORT
-        # self.children = sorted(self.children)
-
         for x in range(len(self.children)):
             # print(x, " th child")
             print("index of ", x, "child (after sort): ", self.children[x].get_label())
@@ -211,10 +204,18 @@ class Graph:
         self.plist = list()
         self.tree_draw_sequence = list()
         self.tree_visit_sequence = list()
+        self.tree_level_dictionary = dict()
         pass
 
+    def create_level_dictionary(self):
+        for node in self.tree_draw_sequence:
+            self.tree_level_dictionary[node.tree_level] = self.tree_level_dictionary.get(node.tree_level, list()) \
+                                                       + [node]
+
+    pass
+
     def reset_levels(self):
-        level = 0
+        level = 1
         current_level_children = [self.tree_draw_sequence[0]]
         for i in range(len(self.tree_draw_sequence)):
             node = self.tree_draw_sequence[i]
@@ -235,6 +236,8 @@ class Graph:
                 current_level_children.clear()
                 node.tree_level = level
                 current_level_children.append(node)
+        self.create_level_dictionary()
+        pass
 
     def depth_first_search(self):
 
