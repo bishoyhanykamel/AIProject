@@ -1,5 +1,4 @@
 from tkinter import Tk, Canvas, Frame, BOTH, PhotoImage, Button, Label
-
 import DataStructure as ds
 
 #import random
@@ -34,22 +33,21 @@ import DataStructure as ds
 #         canvas.pack(fill=BOTH, expand=1)
 
 mode_bool=0
-btnIndices = list()
 moveBtn = False
+
+btnIndices = list()
 startGoalIndices = list()
 nodeObjList = list()
-
-
-
-
 
 def main():
 
 
     root = Tk()
-    # ex = Example()
     canvas = Canvas()
-    nodeimg = PhotoImage(file='C:/Users/mohgh/Desktop/rednode2.png')
+    root.state('zoomed')
+
+
+    # nodeimg = PhotoImage(file='C:/Users/mohgh/Desktop/rednode2.png')
     # img = nodeimg.zoom(2)
 
     #most recent
@@ -70,15 +68,10 @@ def main():
 
     #root.geometry("400x250+300+300")
     #root.geometry("400x400")
-
-    root.state('zoomed')
-
     #w, h = root.winfo_screenwidth(), root.winfo_screenheight()
     #root.geometry("%dx%d+0+0" % (w-10, h-100))
-
+    # ex = Example()
     #______________________________
-
-
 
 
     def modeSelect (c):
@@ -128,10 +121,10 @@ def main():
     btnlist = list()
 
     #nodeObjList = list()
-
+    # globalY=0
     edgeObjList = list()
 
-    #globalY=0
+
     def mybtnClick():
         #global globalY
         #global bb
@@ -142,11 +135,12 @@ def main():
 
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): move(c)))
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): modeSelect(c)))
+        # btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=move))
         btnlist.append(Button(root, text=len(btnlist), width=3, height=1, command=lambda c=len(btnlist): modeSelect(c)))
 
         nodeObjList.append(ds.Node(label=len(nodeObjList)))
 
-        #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=move))
+
         btnlist[len(btnlist)-1].pack()
         btnline_Dict[len(btnlist)-1] = list()
 
@@ -246,8 +240,6 @@ def main():
     #CHANGE RELEASE MAYB
     #or winfopointerx
     root.bind('<Motion>', motion)
-
-
 
     #___________________________________________________
 
