@@ -480,7 +480,29 @@ class Graph:
         visited.clear()
         print("No goal found - Uniform Cost Search")
         pass
+    def depth_limited_search(self, limit):
+        self.initial_node.set_depth(0)
+        inode = Node()
+        inode.copy_node(self.initial_node)
+        fringe = [inode]
+        visited = []
+        while fringe:
+            testednode = fringe.pop(-1)
+            if testednode.get_depth()>=limit and testednode.get_goal() ==False:
+                continue
+            elif testednode.get_goal() == True:
+                return testednode
+            else:
+                visited.append(testednode.get_label())
+                for node in testednode.get_children():
+                    if node.get_label() not in visited:
+                        newnode = Node()
+                        newnode.copy_node(node)
+                        newnode.set_parent(testednode)
+                        newnode.set_depth(testednode.get_depth() + 1)
+                        fringe.append(newnode)
 
+        return None
     def iterative_deepening(self, maxlimit):
         # for i in range(1, maxlimit + 1):
         #     dls_result = self.depth_limited_search(i)
