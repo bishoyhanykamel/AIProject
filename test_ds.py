@@ -23,7 +23,6 @@ c.add_child(c)
 c.add_child(g)
 g.add_child(c)
 
-
 g1 = ds.Graph(s, list(), list())
 
 goal = g1.depth_first_search()
@@ -47,3 +46,8 @@ for node in g1.tree_visit_sequence:
 
 for key, val in g1.tree_level_dictionary.items():
     print(key, val)
+
+# notes for usage
+# graph.tree_level_dictionary is an attribute - returns a dictionary, each level is key to identify nodes in such level
+# graph.tree_draw_sequence is sequence of visiting nodes on the tree
+# graph.tree_visit_sequence is sequence of path of nodes LABELS! not nodes themselves, use goal.get_path() instead
