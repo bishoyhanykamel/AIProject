@@ -162,13 +162,13 @@ def second_walk(v, m=0, depth=0, min=None):
 
 
 t=buchheim(trees[12])
-print(t)
-print(t.children)
-print(t.children[0].children)
-print(t.children[1].children)
-
-
-
 # print(t)
+# print(t.children)
+# print(t.children[0].children)
+# print(t.children[1].children)
+
+
+
+print(t.x)
 # print(t.children)
 # print(t.tree)
