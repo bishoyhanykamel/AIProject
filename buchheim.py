@@ -43,8 +43,8 @@ class DrawTree(object):
 
     # def __str__(self): return "%s: x=%s mod=%s" % (self.tree, self.x, self.mod)
 
-    def __str__(self):  return "%s: x=%s" % (self.tree, self.x)
-    def __repr__(self): return self.__str__()
+    # def __str__(self):  return "%s: x=%s" % (self.tree, self.x)
+    # def __repr__(self): return self.__str__()
 
 def buchheim(tree):
     dt = firstwalk(DrawTree(tree))

@@ -1,5 +1,6 @@
 import DataStructure as ds
 from naryTree import Tree
+from buchheim import buchheim
 # The following are just test data
 a = ds.Node("A", 0)
 b = ds.Node("B", 0)
@@ -73,18 +74,8 @@ x=len(g1.tree_level_dictionary)-1
 
 parentLevelDict=dict()
 
-# while x>=1:
-#     for i in range(len(g1.tree_level_dictionary[x])):
-#         node = g1.tree_level_dictionary[x][i]
-#         key=g1.parent_dictionary[node]
-#         if parentLevelDict.get(key)==None:
-#             parentLevelDict[key]=[]
-#             parentLevelDict[key].append(node)
-#         else:parentLevelDict[key].append(node)
-#
-#     x=x-1
-# p=Tree(g1.tree_level_dictionary[4][0].get_label())
-# print(p.)
+
+
 y=len(g1.tree_level_dictionary)
 
 while y>1:
@@ -183,12 +174,43 @@ print(node.get_label(), childList)
 n=Tree(node.get_label(),*childList)
 treeDict[node]=[]
 treeDict[node].append(n)
+print('---------------------------------')
+
+bucTree= buchheim(n)
+# print(bucTree)
+# print(bucTree.children)
+# print(bucTree.children[0].children)
+# print(bucTree.children[1].children)
+# print(bucTree.children[1].children[1].children)
+# print(bucTree.children[1].children[1].children[0].children)
+
+
+# print(bucTree.children.x)
+p=bucTree
+for i in range(len(p.children)):
+
+    c=p.children[i]
+    print(c.tree," :",c.x)
+
+
+# ToDo
+def indicateCoords(pChildren):
+    for i in range(len(pChildren)):
+        if pChildren[i].children==None:
+            print(pChildren[i].x)
+            return
+        indicateCoords(pChildren[i].children)
+
+
+print(indicateCoords(p.children))
 
 
 
 
 
-print(treeDict)
+
+
+# print(treeDict)
 # print(g1.tree_level_dictionary[3][0].get_label())
 # print(g1.tree_level_dictionary[3][1].get_label())
 # print(g1.tree_level_dictionary[3][2].get_label())
@@ -197,7 +219,7 @@ print(treeDict)
 # print(parentLevelDict[g1.tree_level_dictionary[3][0]][2].get_label())
 
 
-print(g1.tree_level_dictionary)
+# print(g1.tree_level_dictionary)
 # node = g1.tree_level_dictionary[y-1][0]
 
 
