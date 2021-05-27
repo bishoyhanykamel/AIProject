@@ -59,6 +59,8 @@ startGoalIndices = list()
 nodeObjList = list()
 edgeObjList = list()
 
+depthlimit = 0
+
 #no_of_goals = 1
 
 #start_bool=False
@@ -156,6 +158,8 @@ def main():
 
         global which_search
 
+        global depthlimit
+
         #if len(startGoalIndices) == 1:
         #    btnlist[startGoalIndices[0]].config(bg="pale green")
         #if len(startGoalIndices) > 1:
@@ -193,9 +197,23 @@ def main():
                 path = g.a_star_search()
                 print(path)
 
-            illuminateNodes(g.vlist, g.plist)
+            elif which_search == Searches.D_LIMITED:
+                path = g.depth_limited_search(depthlimit)
+                print(path)
+                g.reset_visited()
+
+            elif which_search == Searches.D_ITER:
+                path = g.iterative_deepening()
+                print(path)
+                g.reset_visited()
+
+            illuminateNodes(g.vlist, g.ivlist, g.plist, g.iter_goal_found)
             g.reset_vlist()
+            g.reset_ivlist()
             g.reset_plist()
+            g.iter_bool = False
+            g.maxlimit = 0
+            g.stop_iter=False
 
             startGoalIndices.clear()
             mode_bool = 0
@@ -253,22 +271,48 @@ def main():
     mybtn = Button(root, text="Create node", command=mybtnClick)
     mybtn.pack(side='bottom')
 
-    def illuminateNodes(vlist, plist):
-        print("LENGTH OF VLIST: ", len(vlist))
-        i=1000
-        for j in range(len(vlist)-1):
-            #rg3tha zy ma kant
-            #shlt lenvlist-1. k2enny 3mltlha visit. w b3den l2tha goal fa hlwnha lon visited. then lon goal
-            #btnlist[vlist[j]].config(bg="lawn green")
-            #time.sleep(2)
-            root.after(i, lambda x=j: btnlist[vlist[x]].config(bg="lawn green"))
-            i=i+1000
+    def illuminateNodes(vlist, ivlist, plist, iter_goal_found):
+        #IF WHICHSEARCH = ITER
 
-        if len(vlist)>0:
-            root.after(i, lambda k=(vlist[len(vlist)-1]): btnlist[k].config(bg="firebrick1"))
-        #btnlist[len(vlist)-1].config(bg="SeaGreen1")
-            #sleep 0.5s
-        #KOLLOHOM F FUNCTION W7DA
+        global which_search
+
+        if which_search==Searches.D_ITER:
+            if iter_goal_found:
+                i = 1000
+                for k in range(len(ivlist)-1):
+                    for j in range(len(ivlist[k])):
+                        # rg3tha zy ma kant
+                        # shlt lenvlist-1. k2enny 3mltlha visit. w b3den l2tha goal fa hlwnha lon visited. then lon goal
+                        # btnlist[vlist[j]].config(bg="lawn green")
+                        # time.sleep(2)
+                        root.after(i, lambda x=j, h=k: btnlist[ivlist[h][x]].config(bg="lawn green"))
+                        i = i + 1000
+                    root.after(i, lambda: reset_illumination())
+                    i=i+1000
+                last_ivlist_ind = len(ivlist)-1
+                for j in range(len(ivlist[last_ivlist_ind])-1):
+                    root.after(i, lambda x=j, h=last_ivlist_ind: btnlist[ivlist[h][x]].config(bg="lawn green"))
+                    i = i + 1000
+                last_element_ind = len(ivlist[last_ivlist_ind])-1
+                if len(vlist) > 0:
+                    root.after(i, lambda x=last_element_ind, h=last_ivlist_ind: btnlist[ivlist[h][x]].config(bg="firebrick1"))
+        else:
+            print("LENGTH OF VLIST: ", len(vlist))
+            i = 1000
+            for j in range(len(vlist) - 1):
+                # rg3tha zy ma kant
+                # shlt lenvlist-1. k2enny 3mltlha visit. w b3den l2tha goal fa hlwnha lon visited. then lon goal
+                # btnlist[vlist[j]].config(bg="lawn green")
+                # time.sleep(2)
+                root.after(i, lambda x=j: btnlist[vlist[x]].config(bg="lawn green"))
+                i = i + 1000
+
+            if len(vlist) > 0:
+                root.after(i, lambda k=(vlist[len(vlist) - 1]): btnlist[k].config(bg="firebrick1"))
+            # btnlist[len(vlist)-1].config(bg="SeaGreen1")
+            # sleep 0.5s
+            # KOLLOHOM F FUNCTION W7DA
+
         if len(plist)>0:
             i = i + 1000
             root.after(i, lambda p=plist: illuminatePath(p, on_off=1))
@@ -373,9 +417,35 @@ def main():
         reset_illumination()
         #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
+    def changeModeBool2_DLIM():
+        #global no_of_goals
+        global mode_bool
+        mode_bool = 2
+        global which_search
+        which_search = Searches.D_LIMITED
+        reset_illumination()
+        global depthlimit
+        depthlimit = simpledialog.askinteger("Enter maximum depth", "Depth limit? (>=0)", parent=root)
+
+    def changeModeBool2_ITERD():
+        #global no_of_goals
+        global mode_bool
+        mode_bool = 2
+        global which_search
+        which_search = Searches.D_ITER
+        reset_illumination()
+        #global depthlimit
+        #depthlimit = simpledialog.askinteger("Enter maximum depth", "Depth limit? (>=0)", parent=root)
+
 
     searchDFSbtn = Button(root, text='DFS', command=changeModeBool2_DFS)
     searchDFSbtn.pack(side='bottom')
+
+    searchDLimbtn = Button(root, text='Depth Limited', command=changeModeBool2_DLIM)
+    searchDLimbtn.pack(side='bottom')
+
+    searchIterDbtn = Button(root, text='Iterative Deepening', command=changeModeBool2_ITERD)
+    searchIterDbtn.pack(side='bottom')
 
     searchBFSbtn = Button(root, text='BFS', command=changeModeBool2_BFS)
     searchBFSbtn.pack(side='bottom')
