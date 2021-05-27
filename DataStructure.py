@@ -211,7 +211,7 @@ class Graph:
             #print("been here")
             current_node = stack_list.pop(-1)
             #print(current_node.get_visited())
-            if current_node.get_label() in visited:
+            if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
                 self.vlist = visited.copy()
@@ -268,7 +268,7 @@ class Graph:
         visited = []
         while len(queue_list) >= 1:
             current_node = queue_list.pop(0)
-            if current_node.get_label() in visited:
+            if current_node.get_visited() or current_node.get_label() in visited:
                 continue
             if current_node.get_goal():
                 self.vlist = visited.copy()
@@ -315,7 +315,7 @@ class Graph:
                 continue
 
             if current_node.get_goal() == True:
-            #-----------------------GUI
+
                 self.vlist = visited.copy()
                 self.vlist.append(current_node.get_label())
 
@@ -330,7 +330,6 @@ class Graph:
                 self.reset_visited()
                 fringe.clear()
                 visited.clear()
-            #-------------GUI-------
                 return current_node
 
             current_node.set_visited()
@@ -372,8 +371,10 @@ class Graph:
             testednode = fringe.pop(-1)
             if testednode.get_depth() > limit and testednode.get_goal() == False: #3AYZ 23ML LL 3ND L LIMIT VISIT BRDO
                 continue
+
             elif testednode.get_label() in visited:
                 continue
+
             elif testednode.get_goal() == True:
                 print("ENTERED HERE")
                 self.vlist = visited.copy()
@@ -404,19 +405,22 @@ class Graph:
             visited.append(testednode.get_label())
 
             #LW HIYA 3ND L LIMIT MSH H7OT L CHILDREN BTO3HA
+
             if testednode.get_depth() == limit:  # 3AYZ 23ML LL 3ND L LIMIT VISIT BRDO
                 if testednode.get_children():
                     newlimit = testednode.get_depth() + 1
                     if self.maxlimit < newlimit:
                         print("NEW LIMIT: ", newlimit)
                         self.maxlimit=newlimit
+
             if testednode.get_depth() < limit:
                 for node in sorted(testednode.get_children(), reverse=True, key=lambda x: x.get_label()):
-                        newnode = Node()
-                        newnode.copy_node(node)
-                        newnode.set_parent(testednode)
-                        newnode.set_depth(testednode.get_depth() + 1)
-                        fringe.append(newnode)
+
+                    newnode = Node()
+                    newnode.copy_node(node)
+                    newnode.set_parent(testednode)
+                    newnode.set_depth(testednode.get_depth() + 1)
+                    fringe.append(newnode)
 
 
         #self.stop_iter = True
@@ -475,7 +479,6 @@ class Graph:
             visited.append(current_node.get_label())
 
             for node in current_node.get_children():
-                #if node.get_label() not in visited:
                 newnode = Node()
                 newnode.copy_node(node)
                 newnode.set_parent(current_node)
@@ -513,6 +516,8 @@ class Graph:
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
+                print(visited)
+
                 self.reset_visited()
                 fringe.clear()
                 visited.clear()
@@ -524,7 +529,7 @@ class Graph:
             visited.append(current_node.get_label())
 
             visited_nodes_values[current_node.get_label()] = current_node.get_astar_value()
-            # current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
+            #current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
 
             for edge in current_node.get_edges():
                 print("entered edge loop")
@@ -536,20 +541,22 @@ class Graph:
                 if edge.get_start_node().get_label() == current_node.get_label():
                     newnode = Node()
                     newnode.copy_node(edge.get_end_node())
-                    newval = current_node.get_node_value() + edge.get_value()
+                    newval = current_node.get_node_value() + edge.get_value() + newnode.get_heuristic()
                     if (edge.get_end_node().get_label() not in visited) or (
                             visited_nodes_values[edge.get_end_node().get_label()] > newval):
                         newnode.set_parent(current_node)
-                        newnode.set_node_value(newval)
+                        newnode.set_node_value(current_node.get_node_value() + edge.get_value())
+                        newnode.set_astar_value(newval)
                         fringe.append(newnode)
                 elif edge.get_end_node().get_label() == current_node.get_label():
                     newnode = Node()
                     newnode.copy_node(edge.get_start_node())
-                    newval = edge.get_value() + edge.get_end_node().get_node_value()
+                    newval = current_node.get_node_value() + edge.get_value() + newnode.get_heuristic()
                     if (edge.get_start_node().get_label() not in visited) or (
                             visited_nodes_values[edge.get_start_node().get_label()] > newval):
                         newnode.set_parent(current_node)
-                        newnode.set_node_value(newval)
+                        newnode.set_node_value(current_node.get_node_value() + edge.get_value())
+                        newnode.set_astar_value(newval)
                         fringe.append(newnode)
                     # code for tree
                     #self.tree_draw_sequence.append(newnode)
@@ -637,6 +644,7 @@ class Graph:
             self.nodeObjList[x].reset_goal()
             self.nodeObjList[x].reset_parent()
             self.nodeObjList[x].set_node_value(0)
+            self.nodeObjList[x].set_astar_value(0)
             #print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
             #print("GOAL THING after", self.nodeObjList[x].get_goal())
 
