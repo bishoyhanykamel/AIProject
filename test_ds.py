@@ -53,4 +53,5 @@ for key, val in g1.tree_level_dictionary.items():
 # graph.tree_visit_sequence is sequence of path of nodes LABELS! not nodes themselves, use goal.get_path() instead
 # graph.parent_dictionary is a dictionary - keys are nodes that represent parents - values are nodes inside them
 for key, val in g1.parent_dictionary.items():
-    print("Key: {} --- \n\t Val: {}".format(key, val))
+    for node in val:
+        print("Key: {} -- node: {}".format(key, node))

@@ -22,6 +22,7 @@ class Node:
             self.tree_level = 0
             self.tree_children = list()
             self.depth = depth
+            self.index = 0
 
     def set_depth(self, depth):
         self.depth = depth
@@ -42,6 +43,8 @@ class Node:
         self.edges = node.edges
         self.astar_value = node.get_astar_value()
         self.edges = node.get_edges()
+        self.index = node.index
+
 
     def get_tree_level(self):
         return self.tree_level
@@ -215,12 +218,23 @@ class Graph:
 
     pass
 
+    def get_children_nodes(self, node):
+        return self.parent_dictionary[node.index]
+
     def create_parent_dictionary(self):
+        index = 0
+        previous_node = Node()
         for node in self.tree_draw_sequence:
             if node.parent is None:
                 continue
-            self.parent_dictionary[node.parent] = self.parent_dictionary.get(node.parent, list()) \
-            + [node]
+            if previous_node.parent is not node.parent:
+                index += 1
+                previous_node = node
+
+            node.parent.index = index
+            self.parent_dictionary[node.parent.index] = self.parent_dictionary.get(node.parent.index, list()) \
+                + [node]
+
         pass
 
     def reset_levels(self):
