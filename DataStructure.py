@@ -152,7 +152,7 @@ class Node:
             parent = "None"
         else:
             parent = self.get_parent().get_label()
-        return "Node {} - Parent {}".format(self.get_label(), parent)
+        return "Node {} - Parent {}".format(self.get_label(), parent.get_label())
 
 
 # =======================================================================================
