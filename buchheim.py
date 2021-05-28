@@ -169,6 +169,6 @@ t=buchheim(trees[12])
 
 
 
-print(t.x)
+print(t)
 # print(t.children)
-# print(t.tree)
+print(t.tree)

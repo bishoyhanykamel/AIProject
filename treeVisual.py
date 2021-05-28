@@ -2,7 +2,7 @@ import copy
 import tkinter
 from tkinter import YES, BOTH
 from tkinter.ttk import *
-
+from test_ds import treeLevelNodeToBucNodeDict,treeSequence
 
 mainWindow = tkinter.Tk()
 mainWindow.geometry('1080x720+150+10')
@@ -40,37 +40,37 @@ for i in range(cols):
 
 #
 
-labelList[0].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
-labelList[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='2',padx='2',pady='2'))
-labelList[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='3',padx='2',pady='2'))
-labelList[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='4',padx='2',pady='2'))
-labelList[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='5',padx='2',pady='2'))
-labelList[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='6',padx='2',pady='2'))
-labelList[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='7',padx='2',pady='2'))
+# labelList[0].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
+# labelList[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='2',padx='2',pady='2'))
+# labelList[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='3',padx='2',pady='2'))
+# labelList[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='4',padx='2',pady='2'))
+# labelList[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='5',padx='2',pady='2'))
+# labelList[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='6',padx='2',pady='2'))
+# labelList[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='7',padx='2',pady='2'))
+#
+#
+#
+# nodeDict[0]=[]
+# nodeDict[0].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
 
 
 
-nodeDict[0]=[]
-nodeDict[0].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
 
 
-
-
-
-nodeDict[1]=[]
-nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='2',padx='2',pady='2'))
-nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='3',padx='2',pady='2'))
-nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='4',padx='2',pady='2'))
-nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
-nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
-
-
-nodeDict[2]=[]
-nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='5',padx='2',pady='2'))
-nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='6',padx='2',pady='2'))
-nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
-nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
-nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
+# nodeDict[1]=[]
+# nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='2',padx='2',pady='2'))
+# nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='3',padx='2',pady='2'))
+# nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='4',padx='2',pady='2'))
+# nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
+# nodeDict[1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
+#
+#
+# nodeDict[2]=[]
+# nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='5',padx='2',pady='2'))
+# nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='6',padx='2',pady='2'))
+# nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
+# nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
+# nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='1',padx='2',pady='2'))
 
 
 
@@ -89,27 +89,27 @@ nodeDict[2].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='s
 # nodeDict[2][1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='4',padx='2',pady='2'))
 # nodeDict[2][1].append(tkinter.Label(mainCanvas,borderwidth=4, bg='white', relief='solid', width=2, height=2,text='5',padx='2',pady='2'))
 
-gridColList={}
-
-
-
-print(nodeDict)
-print(gridColList)
-
-
-def calcCoords(numberOfNodes,level):
-    nodeGridPosition[level]=[]
-    dist=cols//(numberOfNodes+1)
-    nodeGridPosition[level].append(dist)
-    for x in range(numberOfNodes-1):
-        nodeGridPosition[level].append(dist*(x+2))
 
 
 
 
-calcCoords(len(nodeDict[0]),0)
-calcCoords(len(nodeDict[1]),1)
-calcCoords(len(nodeDict[2]),2)
+# print(nodeDict)
+# print(gridColList)
+#
+#
+# def calcCoords(numberOfNodes,level):
+#     nodeGridPosition[level]=[]
+#     dist=cols//(numberOfNodes+1)
+#     nodeGridPosition[level].append(dist)
+#     for x in range(numberOfNodes-1):
+#         nodeGridPosition[level].append(dist*(x+2))
+#
+#
+#
+#
+# calcCoords(len(nodeDict[0]),0)
+# calcCoords(len(nodeDict[1]),1)
+# calcCoords(len(nodeDict[2]),2)
 
 
 
@@ -145,8 +145,8 @@ calcCoords(len(nodeDict[2]),2)
 #
 
 
-
-
+print('test')
+print(treeLevelNodeToBucNodeDict[treeSequence[0]].y)
 
 
 def updatePos():
@@ -158,9 +158,14 @@ def updatePos():
                           ,edgeDict[i][1].winfo_y())
 
 
+becNodeToGridLabelDict=dict()
 
-def delayNode(nodeDict,iNodeDict,jNodeDict,columnGrid):
-    nodeDict[iNodeDict][jNodeDict].grid(row=iNodeDict, column=columnGrid)
+def delayNode(becToDsNode):
+    lbl=tkinter.Label(mainCanvas,borderwidth=4, relief='solid',height=2,width=2,text=becToDsNode.tree,padx='2',pady='2')
+    xCord=becToDsNode.x*2
+    becNodeToGridLabelDict[becToDsNode]=lbl
+    lbl.grid(row=int(becToDsNode.y),column=int(xCord)+10)
+    Label()
     updatePos()
     mainWindow.update()
 
@@ -194,12 +199,11 @@ def delayEdge(startNode,endNode):
         updatePos()
 
 
-def drawTree(delayTime,nodeDict):
+def drawTree(delayTime,treeseq):
 
 
-    for i in range (len(nodeDict)):
-        for j in range (len(nodeDict[i])):
-            mainCanvas.after(delayTime, delayNode(nodeDict, i, j, nodeGridPosition[i][j]))
+    for i in range (len(treeseq)):
+        mainCanvas.after(delayTime, delayNode(treeLevelNodeToBucNodeDict[treeSequence[i]]))
 
 
 
@@ -209,7 +213,7 @@ def drawTree(delayTime,nodeDict):
         mainWindow.update()
 
 
-drawTree(1000,nodeDict)
+drawTree(1000,treeSequence)
 # mainCanvas.after(1000, delayNode(0, 0, 10))
 # updatePos()
 # mainWindow.update()
