@@ -1,6 +1,7 @@
 import DataStructure as ds
 from naryTree import Tree
 from buchheim import buchheim
+
 # from treeDemo import trees
 
 # The following are just test data
@@ -22,7 +23,6 @@ c.add_child(s)
 b.add_child(a)
 a.add_child(b)
 b.add_child(c)
-c.add_child(c)
 c.add_child(b)
 c.add_child(g)
 g.add_child(c)
@@ -38,18 +38,18 @@ print("\n")
 for node in g1.tree_visit_sequence:
     print(node, node.parent, node.tree_level)
 
-print("\n")
-print("\n")
-print("\t\tBFS Tree:")
-goal = g1.breadth_first_search()
-for node in g1.tree_draw_sequence:
-    print(node, node.parent, node.tree_level)
-print("\n")
-for node in g1.tree_visit_sequence:
-    print(node, node.parent, node.tree_level)
-
-for key, val in g1.tree_level_dictionary.items():
-    print(key, val)
+# print("\n")
+# print("\n")
+# print("\t\tBFS Tree:")
+# goal = g1.breadth_first_search()
+# for node in g1.tree_draw_sequence:
+#     print(node, node.parent, node.tree_level)
+# print("\n")
+# for node in g1.tree_visit_sequence:
+#     print(node, node.parent, node.tree_level)
+#
+# for key, val in g1.tree_level_dictionary.items():
+#     print(key, val)
 
 # notes for usage
 # graph.tree_level_dictionary is an attribute - returns a dictionary, each level is key to identify nodes in such level
@@ -60,24 +60,21 @@ for key, val in g1.parent_dictionary.items():
     for node in val:
         print("Key: {} -- node: {}".format(key, node))
 
-
 # for key, val in g1.parent_dictionary.items():
 #     print("Key: {} --- \n\t Val: {}".format(key, val))
 
 # print(g1.tree_level_dictionary)
-x=len(g1.tree_level_dictionary)-1
+x = len(g1.tree_level_dictionary) - 1
 # print(x)
 
 
-
-
-parentLevelDict=dict()
+parentLevelDict = dict()
 
 # bishoyToBucDict=dict()
 
-y=len(g1.tree_level_dictionary)
+y = len(g1.tree_level_dictionary)
 
-while y>1:
+while y > 1:
 
     for i in range(len(g1.tree_level_dictionary[y])):
         # p = Tree(g1.tree_level_dictionary[y][i].get_label())
@@ -89,15 +86,12 @@ while y>1:
         else:
             parentLevelDict[key].append(node)
 
-    y=y-1
+    y = y - 1
 
+treeDict = dict()
 
-
-treeDict=dict()
-
-
-y=len(g1.tree_level_dictionary)
-while y>1:
+y = len(g1.tree_level_dictionary)
+while y > 1:
 
     for i in range(len(g1.tree_level_dictionary[y])):
 
@@ -107,27 +101,25 @@ while y>1:
 
             p = Tree(node.get_label())
             # bishoyToBucDict[node]=p
-            treeDict[node]=[]
+            treeDict[node] = []
             treeDict[node].append(p)
         else:
             childList = []
-            for k in range (len(parentLevelDict[node])):
-
-                child=parentLevelDict[node][k]
+            for k in range(len(parentLevelDict[node])):
+                child = parentLevelDict[node][k]
                 childList.append(treeDict[child][0])
                 print(treeDict[child][0])
 
             print(node.get_label(), childList)
-            theNewGeneratedTree=Tree(node.get_label(), *childList)
-            treeDict[node]=[]
+            theNewGeneratedTree = Tree(node.get_label(), *childList)
+            treeDict[node] = []
             treeDict[node].append(theNewGeneratedTree)
 
+    y = y - 1
 
-    y=y-1
-
-y=len(g1.tree_level_dictionary[1])
+y = len(g1.tree_level_dictionary[1])
 print('----------------------------------------------------------')
-while y>0:
+while y > 0:
 
     for i in range(len(g1.tree_level_dictionary[y])):
 
@@ -136,27 +128,25 @@ while y>0:
         if parentLevelDict.get(node) == None:
 
             p = Tree(node.get_label())
-            treeDict[node]=[]
+            treeDict[node] = []
             treeDict[node].append(p)
         else:
             childList = []
-            for k in range (len(parentLevelDict[node])):
-
-                child=parentLevelDict[node][k]
+            for k in range(len(parentLevelDict[node])):
+                child = parentLevelDict[node][k]
                 childList.append(treeDict[child][0])
                 print(treeDict[child][0])
 
             print(node.get_label(), childList)
-            theNewGeneratedTree=Tree(node.get_label(), *childList)
+            theNewGeneratedTree = Tree(node.get_label(), *childList)
 
             # print(node.get_label(),'  : ',theNewGeneratedTree,'---------------09 ')
-            treeDict[node]=[]
+            treeDict[node] = []
             treeDict[node].append(theNewGeneratedTree)
 
+    y = y - 1
 
-    y=y-1
-
-y=1
+y = 1
 
 node = g1.tree_level_dictionary[y][0]
 key = node.get_parent()
@@ -167,20 +157,19 @@ key = node.get_parent()
 #     treeDict[node].append(p)
 print('heloooooo')
 childList = []
-for k in range (len(g1.tree_level_dictionary[y])-1):
-
-    child=g1.tree_level_dictionary[y][k+1]
+for k in range(len(g1.tree_level_dictionary[y]) - 1):
+    child = g1.tree_level_dictionary[y][k + 1]
     childList.append(treeDict[child][0])
     print(treeDict[child][0])
 
 print(node.get_label(), childList)
-theNewGeneratedTree=Tree(node.get_label(), *childList)
+theNewGeneratedTree = Tree(node.get_label(), *childList)
 # bishoyToBucDict[node]=theNewGeneratedTree
-treeDict[node]=[]
+treeDict[node] = []
 treeDict[node].append(theNewGeneratedTree)
 print('---------------------------------')
 
-bucTree= buchheim(theNewGeneratedTree)
+bucTree = buchheim(theNewGeneratedTree)
 # print(bucTree.children[0].parent," hwa da")
 # print(bucTree)
 # print(bucTree.children)
@@ -192,55 +181,51 @@ bucTree= buchheim(theNewGeneratedTree)
 # p=bucTree
 
 
-nodeToXcoordDict=dict()
-levelToBucObjectDict=dict()
-treeLevelNodeToBucNodeDict=dict()
+nodeToXcoordDict = dict()
+levelToBucObjectDict = dict()
+treeLevelNodeToBucNodeDict = dict()
 
-
-levelToBucObjectDict[0]=[]
+levelToBucObjectDict[0] = []
 for key in g1.tree_level_dictionary:
-    levelToBucObjectDict[key]=[]
+    levelToBucObjectDict[key] = []
 
-print(levelToBucObjectDict,' levelbucdec')
+print(levelToBucObjectDict, ' levelbucdec')
+
 
 # The x coordinate dict is useless
 
 def generate_BucLevel_BucRow_Dict(bucNode):
-    if (len(bucNode.children)==0):
-        nodeToXcoordDict[bucNode]=bucNode.x
+    if (len(bucNode.children) == 0):
+        nodeToXcoordDict[bucNode] = bucNode.x
         levelToBucObjectDict[bucNode.y].append(bucNode)
         return
     else:
         for children in bucNode.children:
             generate_BucLevel_BucRow_Dict(children)
-        nodeToXcoordDict[bucNode]=bucNode.x
+        nodeToXcoordDict[bucNode] = bucNode.x
         levelToBucObjectDict[bucNode.y].append(bucNode)
+
 
 generate_BucLevel_BucRow_Dict(bucTree)
 
-treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[1][0]]=levelToBucObjectDict[0][0]
+treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[1][0]] = levelToBucObjectDict[0][0]
 # print(treeLevelNodeToBucNodeDict)
 
 # print(bucTree.y,'treeeeeeeeebuc')
 # print(bucTree.children[0].y)
 # print(bucTree.children[1].y)
 
-for i in range(len(g1.tree_level_dictionary[1])-1):
-    treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[1][i+1]]=levelToBucObjectDict[1][i]
+for i in range(len(g1.tree_level_dictionary[1]) - 1):
+    treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[1][i + 1]] = levelToBucObjectDict[1][i]
 
-
-
-y=len(g1.tree_level_dictionary)
-while y>1:
+y = len(g1.tree_level_dictionary)
+while y > 1:
     for i in range(len(g1.tree_level_dictionary[y])):
-        treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[y][i]]=levelToBucObjectDict[y][i]
+        treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[y][i]] = levelToBucObjectDict[y][i]
 
-    y=y-1
+    y = y - 1
 
-treeSequence=g1.tree_draw_sequence
-
-
-
+treeSequence = g1.tree_draw_sequence
 
 # print('seqqqqqq')
 # print(treeSequence)
@@ -248,7 +233,6 @@ treeSequence=g1.tree_draw_sequence
 # for key in treeLevelNodeToBucNodeDict:
 #     print(treeLevelNodeToBucNodeDict[key].tree," : ",key.get_label())
 #
-
 
 
 # print(g1.tree_level_dictionary)

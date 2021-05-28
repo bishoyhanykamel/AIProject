@@ -9,7 +9,6 @@ class Node:
         if cpy_node is not None:
             self.copy_node(cpy_node)
         else:
-            self.depth = depth
             self.value = val
             self.label = label
             self.children = list()
@@ -226,7 +225,7 @@ class Graph:
         return self.parent_dictionary[node.index]
 
     def create_parent_dictionary(self):
-        index = 0
+        index = 1
         previous_node = Node()
         for node in self.tree_draw_sequence:
             if node.parent is None:
@@ -681,10 +680,10 @@ class Graph:
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
-                self.reset_visited()
+                #self.reset_visited()
                 fringe.clear()
                 visited.clear()
-                # self.reset_levels()
+                self.reset_levels()
                 return current_node
 
             current_node.set_visited()

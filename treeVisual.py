@@ -2,7 +2,7 @@ import copy
 import tkinter
 from tkinter import YES, BOTH
 from tkinter.ttk import *
-from test_ds import treeLevelNodeToBucNodeDict,treeSequence
+from test_ds import treeLevelNodeToBucNodeDict, treeSequence
 
 mainWindow = tkinter.Tk()
 mainWindow.geometry('1080x720+150+10')
