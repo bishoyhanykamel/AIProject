@@ -1,7 +1,7 @@
 from naryTree import Tree, gentree
 from operator import lt, gt
 from sys import stdout
-# from treeDemo import trees
+from treeDemo import trees
 
 
 class DrawTree(object):
