@@ -45,7 +45,6 @@ class Node:
         self.edges = node.get_edges()
         self.index = node.index
 
-
     def get_tree_level(self):
         return self.tree_level
 
@@ -214,7 +213,7 @@ class Graph:
     def create_level_dictionary(self):
         for node in self.tree_draw_sequence:
             self.tree_level_dictionary[node.tree_level] = self.tree_level_dictionary.get(node.tree_level, list()) \
-                                                       + [node]
+                                                          + [node]
 
     pass
 
@@ -233,7 +232,7 @@ class Graph:
 
             node.parent.index = index
             self.parent_dictionary[node.parent.index] = self.parent_dictionary.get(node.parent.index, list()) \
-                + [node]
+                                                        + [node]
 
         pass
 
@@ -494,6 +493,7 @@ class Graph:
         visited.clear()
         print("No goal found - Uniform Cost Search")
         pass
+
     def depth_limited_search(self, limit):
         self.initial_node.set_depth(0)
         inode = Node()
@@ -502,7 +502,7 @@ class Graph:
         visited = []
         while fringe:
             testednode = fringe.pop(-1)
-            if testednode.get_depth()>=limit and testednode.get_goal() ==False:
+            if testednode.get_depth() >= limit and testednode.get_goal() == False:
                 continue
             elif testednode.get_goal() == True:
                 return testednode
@@ -517,6 +517,7 @@ class Graph:
                         fringe.append(newnode)
 
         return None
+
     def iterative_deepening(self, maxlimit):
         # for i in range(1, maxlimit + 1):
         #     dls_result = self.depth_limited_search(i)
@@ -621,16 +622,18 @@ class Graph:
                 if edge.get_start_node().get_label() == current_node.get_label():
                     newnode = Node()
                     newnode.copy_node(edge.get_end_node())
-                    newval=current_node.get_node_value()+edge.get_value()
-                    if (edge.get_end_node().get_label() not in visited) or(visited_nodes_values[edge.get_end_node().get_label()]>newval):
+                    newval = current_node.get_node_value() + edge.get_value()
+                    if (edge.get_end_node().get_label() not in visited) or (
+                            visited_nodes_values[edge.get_end_node().get_label()] > newval):
                         newnode.set_parent(current_node)
                         newnode.set_node_value(newval)
                         fringe.append(newnode)
                 elif edge.get_end_node().get_label() == current_node.get_label():
                     newnode = Node()
                     newnode.copy_node(edge.get_start_node())
-                    newval=edge.get_value()+edge.get_end_node().get_node_value()
-                    if (edge.get_start_node().get_label() not in visited) or(visited_nodes_values[edge.get_start_node().get_label()]>newval):
+                    newval = edge.get_value() + edge.get_end_node().get_node_value()
+                    if (edge.get_start_node().get_label() not in visited) or (
+                            visited_nodes_values[edge.get_start_node().get_label()] > newval):
                         newnode.set_parent(current_node)
                         newnode.set_node_value(newval)
                         fringe.append(newnode)
