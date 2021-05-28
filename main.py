@@ -118,9 +118,6 @@ def main():
 
     #______________________________
 
-
-
-
     def modeSelect (c):
         global mode_bool
         if mode_bool == 0:
@@ -276,7 +273,7 @@ def main():
 
         global which_search
 
-        if which_search==Searches.D_ITER:
+        if which_search == Searches.D_ITER:
             if iter_goal_found:
                 i = 1000
                 for k in range(len(ivlist)-1):
