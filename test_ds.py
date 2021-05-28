@@ -1,7 +1,8 @@
 import DataStructure as ds
 from naryTree import Tree
 from buchheim import buchheim
-from treeDemo import trees
+# from treeDemo import trees
+
 # The following are just test data
 a = ds.Node("A", 0)
 b = ds.Node("B", 0)
