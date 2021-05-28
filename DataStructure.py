@@ -140,6 +140,14 @@ class Node:
     def set_node_value(self, value):
         self.value = value
 
+    #def get_path(self):
+    #    prev_node = self.get_parent()
+    #    temp_list = []
+    #    while prev_node is not None:
+    #        temp_list.insert(0, prev_node)
+    #        prev_node = prev_node.get_parent()
+    #    return temp_list
+
     def get_path(self):
         path_list = []
         tempnode = self
@@ -209,6 +217,11 @@ class Graph:
         self.tree_visit_sequence = list()
         self.tree_level_dictionary = dict()
         self.parent_dictionary = dict()
+        self.stop_iter = False
+        self.maxlimit = 0
+        self.iter_bool = False
+        self.ivlist = list()
+        self.iter_goal_found = False
         pass
 
     def create_level_dictionary(self):
@@ -262,6 +275,11 @@ class Graph:
         self.create_level_dictionary()
         self.parent_dictionary.clear()
         self.create_parent_dictionary()
+        self.stop_iter = False
+        self.maxlimit = 0
+        self.iter_bool = False
+        self.ivlist = list()
+        self.iter_goal_found = False
         pass
 
     def depth_first_search(self):
@@ -330,6 +348,12 @@ class Graph:
                 # continue algorithm
 
             pass
+        self.initial_node.visited = False
+        #print(current_node.get_visited())
+        self.reset_visited()
+        stack_list.clear()
+        visited.clear()
+        #print(current_node.get_visited())
         return "No goal found - Depth First Search"
         pass
 
@@ -374,56 +398,12 @@ class Graph:
                 self.tree_draw_sequence.append(temp_node)
                 # continue algorithm
             pass
+        self.initial_node.visited = False
+        self.reset_visited()
+        queue_list.clear()
+        visited.clear()
         return "No goal found - Breadth First Search"
         pass
-
-    #    def uniform_cost_search(self):
-    #        self.initial_node.set_node_value(0)
-    #        inode = Node()
-    #        inode.copy_node(self.initial_node)
-    #        fringe = [inode]
-    #        visited = []
-    #        while len(fringe) >= 1:
-    #            print("entered here")
-    #            current_node = fringe.pop(0)
-
-    #            if current_node.get_visited() or current_node.get_label() in visited:
-    #                continue
-
-    #            if current_node.get_goal() == True:
-    #                self.reset_visited()
-    #                fringe.clear()
-    #                visited.clear()
-    #                return current_node
-
-    #            current_node.set_visited()
-    #            visited.append(current_node.get_label())
-
-    #            for edge in current_node.get_edges():
-    #                print("entered edge loop")
-    #                print(edge.get_start_node().get_label())
-    #                print(edge.get_end_node().get_label())
-
-    # if edge.get_end_node().get_label() == current_node.get_label():
-
-    #    if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
-    #         print("this was done")
-    #          new_node = Node()
-    #           if edge.get_end_node().get_label() == current_node.get_label():
-    #                new_node.copy_node(edge.get_start_node())
-    #             else:
-    #                  new_node.copy_node(edge.get_end_node())
-    #               new_node.set_parent(current_node)
-    #                new_node.set_node_value(current_node.get_node_value() + edge.get_value())
-    #                 fringe.append(new_node)
-
-    #          fringe.sort(key=lambda x: x.get_node_value())
-
-    #       self.reset_visited()
-    #        fringe.clear()
-    #        visited.clear()
-    #        print("No goal found - Uniform Cost Search")
-    #        pass
 
     def uniform_cost_search(self):
         self.initial_node.set_node_value(0)
@@ -442,7 +422,7 @@ class Graph:
             print("entered here")
             current_node = fringe.pop(0)
 
-            if current_node.get_visited() or current_node.get_label() in visited:
+            if current_node.get_label() in visited:
                 continue
 
             if current_node.get_goal() == True:
@@ -461,11 +441,9 @@ class Graph:
                 self.reset_visited()
                 fringe.clear()
                 visited.clear()
-                self.reset_levels()
                 return current_node
 
             current_node.set_visited()
-            self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
 
             for edge in current_node.get_edges():
@@ -473,27 +451,26 @@ class Graph:
                 print(edge.get_start_node().get_label())
                 print(edge.get_end_node().get_label())
 
-                # if edge.get_end_node().get_label() == current_node.get_label():
+                #if edge.get_end_node().get_label() == current_node.get_label():
 
-                if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
-                    print("this was done")
-                    new_node = Node()
-                    if edge.get_end_node().get_label() == current_node.get_label():
-                        new_node.copy_node(edge.get_start_node())
-                    else:
-                        new_node.copy_node(edge.get_end_node())
-                    new_node.set_parent(current_node)
-                    new_node.set_node_value(current_node.get_node_value() + edge.get_value())
-                    fringe.append(new_node)
-                    # code for tree
-                    self.tree_draw_sequence.append(new_node)
-                    # continue algorithm
+                #if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
+                print("this was done")
+                new_node = Node()
+                if edge.get_end_node().get_label() == current_node.get_label():
+                    new_node.copy_node(edge.get_start_node())
+                else:
+                    new_node.copy_node(edge.get_end_node())
+                new_node.set_parent(current_node)
+                new_node.set_node_value(current_node.get_node_value() + edge.get_value())
+                fringe.append(new_node)
+
             fringe.sort(key=lambda x: x.get_node_value())
         self.reset_visited()
         fringe.clear()
         visited.clear()
         print("No goal found - Uniform Cost Search")
         pass
+
     def depth_limited_search(self, limit):
         self.initial_node.set_depth(0)
         inode = Node()
@@ -502,27 +479,82 @@ class Graph:
         visited = []
         while fringe:
             testednode = fringe.pop(-1)
-            if testednode.get_depth()>=limit and testednode.get_goal() ==False:
+            if testednode.get_depth() > limit and testednode.get_goal() == False: #3AYZ 23ML LL 3ND L LIMIT VISIT BRDO
                 continue
-            elif testednode.get_goal() == True:
-                return testednode
-            else:
-                visited.append(testednode.get_label())
-                for node in testednode.get_children():
-                    if node.get_label() not in visited:
-                        newnode = Node()
-                        newnode.copy_node(node)
-                        newnode.set_parent(testednode)
-                        newnode.set_depth(testednode.get_depth() + 1)
-                        fringe.append(newnode)
 
-        return None
-    def iterative_deepening(self, maxlimit):
-        # for i in range(1, maxlimit + 1):
-        #     dls_result = self.depth_limited_search(i)
-        #     if not dls_result == -1:
-        #         break
-        # return dls_result
+            elif testednode.get_label() in visited:
+                continue
+
+            elif testednode.get_goal() == True:
+                print("ENTERED HERE")
+                self.vlist = visited.copy()
+                self.vlist.append(testednode.get_label())
+
+                if self.iter_bool:
+                    self.ivlist.append(self.vlist.copy())
+
+                pathlist = testednode.get_path()
+                print("path found by depth limited: ", end=" ")
+                while len(pathlist) > 0:
+                    self.plist.append(pathlist[len(pathlist) - 1].get_label())
+
+                    print(pathlist.pop().get_label(), end=" ")
+                print(" ")
+
+                #self.reset_visited()
+                fringe.clear()
+                visited.clear()
+
+                if self.iter_bool:
+                    self.iter_goal_found=True
+
+                self.stop_iter = True
+
+                return testednode
+
+            visited.append(testednode.get_label())
+
+            #LW HIYA 3ND L LIMIT MSH H7OT L CHILDREN BTO3HA
+
+            if testednode.get_depth() == limit:  # 3AYZ 23ML LL 3ND L LIMIT VISIT BRDO
+                if testednode.get_children():
+                    newlimit = testednode.get_depth() + 1
+                    if self.maxlimit < newlimit:
+                        print("NEW LIMIT: ", newlimit)
+                        self.maxlimit=newlimit
+
+            if testednode.get_depth() < limit:
+                for node in sorted(testednode.get_children(), reverse=True, key=lambda x: x.get_label()):
+
+                    newnode = Node()
+                    newnode.copy_node(node)
+                    newnode.set_parent(testednode)
+                    newnode.set_depth(testednode.get_depth() + 1)
+                    fringe.append(newnode)
+
+
+        #self.stop_iter = True
+        #self.reset_visited()
+
+        if self.iter_bool:
+            self.ivlist.append(visited.copy())
+
+        fringe.clear()
+        visited.clear()
+        print("No goal found - Depth Limited Search")
+        pass
+
+
+    def iterative_deepening(self):
+        i = 0
+        self.iter_bool=True
+        #while(not self.stop_iter): #mknsh bybtdy mn level 0
+        while (i <= self.maxlimit):  # mknsh bybtdy mn level 0
+            self.depth_limited_search(i)
+            print("ITERATION LEVEL: ", i)
+            i = i+1
+            if self.stop_iter:
+                break
         pass
 
     def greedy_search(self):
@@ -537,7 +569,11 @@ class Graph:
         # continue algorithm
         while fringe:
             current_node = fringe.pop(0)
-            if current_node.get_goal() == True:
+
+            if current_node.get_label() in visited:
+                continue
+
+            if (current_node.get_goal() == True):
                 self.vlist = visited.copy()
                 self.vlist.append(current_node.get_label())
 
@@ -557,14 +593,10 @@ class Graph:
             self.tree_visit_sequence.append(current_node)
             visited.append(current_node.get_label())
             for node in current_node.get_children():
-                if node.get_label() not in visited:
-                    newnode = Node()
-                    newnode.copy_node(node)
-                    newnode.set_parent(current_node)
-                    fringe.append(newnode)
-                    # code for tree
-                    self.tree_draw_sequence.append(newnode)
-                    # continue algorithm
+                newnode = Node()
+                newnode.copy_node(node)
+                newnode.set_parent(current_node)
+                fringe.append(newnode)
             fringe.sort(key=lambda x: x.get_heuristic())
 
         self.reset_visited()
@@ -581,12 +613,16 @@ class Graph:
         visited = []
         visited_nodes_values = {}
         # code for tree
-        self.tree_draw_sequence.clear()
-        self.tree_visit_sequence.clear()
-        self.tree_draw_sequence.append(inode)
+        #self.tree_draw_sequence.clear()
+        #self.tree_visit_sequence.clear()
+        #self.tree_draw_sequence.append(inode)
         # continue algorithm
         while fringe:
             current_node = fringe.pop(0)
+
+            if current_node.get_visited() or current_node.get_label() in visited:
+                continue
+
             if current_node.get_goal() == True:
                 self.vlist = visited.copy()
                 self.vlist.append(current_node.get_label())
@@ -597,6 +633,8 @@ class Graph:
 
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
+
+                print(visited)
 
                 self.reset_visited()
                 fringe.clear()
@@ -609,7 +647,7 @@ class Graph:
             visited.append(current_node.get_label())
 
             visited_nodes_values[current_node.get_label()] = current_node.get_astar_value()
-            # current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
+            #current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
 
             for edge in current_node.get_edges():
                 print("entered edge loop")
@@ -621,21 +659,25 @@ class Graph:
                 if edge.get_start_node().get_label() == current_node.get_label():
                     newnode = Node()
                     newnode.copy_node(edge.get_end_node())
-                    newval=current_node.get_node_value()+edge.get_value()
-                    if (edge.get_end_node().get_label() not in visited) or(visited_nodes_values[edge.get_end_node().get_label()]>newval):
+                    newval = current_node.get_node_value() + edge.get_value() + newnode.get_heuristic()
+                    if (edge.get_end_node().get_label() not in visited) or (
+                            visited_nodes_values[edge.get_end_node().get_label()] > newval):
                         newnode.set_parent(current_node)
-                        newnode.set_node_value(newval)
+                        newnode.set_node_value(current_node.get_node_value() + edge.get_value())
+                        newnode.set_astar_value(newval)
                         fringe.append(newnode)
                 elif edge.get_end_node().get_label() == current_node.get_label():
                     newnode = Node()
                     newnode.copy_node(edge.get_start_node())
-                    newval=edge.get_value()+edge.get_end_node().get_node_value()
-                    if (edge.get_start_node().get_label() not in visited) or(visited_nodes_values[edge.get_start_node().get_label()]>newval):
+                    newval = current_node.get_node_value() + edge.get_value() + newnode.get_heuristic()
+                    if (edge.get_start_node().get_label() not in visited) or (
+                            visited_nodes_values[edge.get_start_node().get_label()] > newval):
                         newnode.set_parent(current_node)
-                        newnode.set_node_value(newval)
+                        newnode.set_node_value(current_node.get_node_value() + edge.get_value())
+                        newnode.set_astar_value(newval)
                         fringe.append(newnode)
                     # code for tree
-                    self.tree_draw_sequence.append(newnode)
+                    #self.tree_draw_sequence.append(newnode)
                     # continue algorithm
             fringe.sort(key=lambda x: x.get_astar_value())
 
@@ -657,9 +699,17 @@ class Graph:
             self.nodeObjList[x].set_node_value(0)
             # print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
             # print("GOAL THING after", self.nodeObjList[x].get_goal())
+            self.nodeObjList[x].set_astar_value(0)
+            #print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
+            #print("GOAL THING after", self.nodeObjList[x].get_goal())
 
     def reset_vlist(self):
         self.vlist = list()
+
+
+    def reset_ivlist(self):
+        self.ivlist = list()
+
 
     def reset_plist(self):
         self.plist = list()
