@@ -10,15 +10,16 @@ import enum
 
 
 class Searches(enum.Enum):
-   DFS = 0
-   BFS = 1
-   UCS = 2
-   D_LIMITED = 3
-   D_ITER = 4
-   GREEDY = 5
-   A_STAR = 6
+    DFS = 0
+    BFS = 1
+    UCS = 2
+    D_LIMITED = 3
+    D_ITER = 4
+    GREEDY = 5
+    A_STAR = 6
 
-#import random
+
+# import random
 
 
 # class Example(Frame):
@@ -49,7 +50,7 @@ class Searches(enum.Enum):
 #
 #         canvas.pack(fill=BOTH, expand=1)
 
-mode_bool=0
+mode_bool = 0
 
 which_search = 0
 
@@ -61,22 +62,23 @@ edgeObjList = list()
 
 depthlimit = 0
 
-#no_of_goals = 1
 
-#start_bool=False
+# no_of_goals = 1
 
-#btnlist = list()
+# start_bool=False
 
-#btnlistc=list()
+# btnlist = list()
 
-#def illuminateNode(ind):
+# btnlistc=list()
+
+# def illuminateNode(ind):
 #    print(len(btnlistc))
 #    #    #    global btnlist
 #    btnlistc[ind].config(bg="lawn green")
 
-#visited_list = list()
+# visited_list = list()
 
-#def illuminateNode(vlist):
+# def illuminateNode(vlist):
 #    global visited_list
 #    #visited_list = g.visited()
 #    visited_list = vlist
@@ -84,44 +86,39 @@ depthlimit = 0
 
 
 def main():
-
-
     root = Tk()
     # ex = Example()
     canvas = Canvas()
     nodeimg = PhotoImage(file='C:/Users/mohgh/Desktop/rednode2.png')
     # img = nodeimg.zoom(2)
 
-    #most recent
-    #btns = list()
-    #btns.append(Button(root, text="A", image=nodeimg, width=30,height=30))
-    #btns.append(Button(root, image=nodeimg, text="A", width=30, height=30))
+    # most recent
+    # btns = list()
+    # btns.append(Button(root, text="A", image=nodeimg, width=30,height=30))
+    # btns.append(Button(root, image=nodeimg, text="A", width=30, height=30))
 
     # btn = Button(root, image=nodeimg, width=30,height=30)
 
-    #most recent
-    #lbl = Label(text="A")
-    #btns[0].place(x=250.5,y=0)
-    #btns[1].place(x=250, y=50)
-    #lbl.place(x=250,y=0)
+    # most recent
+    # lbl = Label(text="A")
+    # btns[0].place(x=250.5,y=0)
+    # btns[1].place(x=250, y=50)
+    # lbl.place(x=250,y=0)
 
-    #root.attributes("-fullscreen", True)
-    #root.overrideredirect(False)
+    # root.attributes("-fullscreen", True)
+    # root.overrideredirect(False)
 
-    #root.geometry("400x250+300+300")
-    #root.geometry("400x400")
+    # root.geometry("400x250+300+300")
+    # root.geometry("400x400")
 
     root.state('zoomed')
 
-    #w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-    #root.geometry("%dx%d+0+0" % (w-10, h-100))
+    # w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+    # root.geometry("%dx%d+0+0" % (w-10, h-100))
 
-    #______________________________
+    # ______________________________
 
-
-
-
-    def modeSelect (c):
+    def modeSelect(c):
         global mode_bool
         if mode_bool == 0:
             move(c)
@@ -132,21 +129,20 @@ def main():
         else:
             startSearch(c)
 
-    def createLine (c):
+    def createLine(c):
         global btnIndices
         btnIndices.append(c)
         functLine()
 
-
-    def startSearch (c):
+    def startSearch(c):
         global startGoalIndices
-        #global start_bool
+        # global start_bool
         startGoalIndices.append(c)
-        #startandGoal()
+        # startandGoal()
         if len(startGoalIndices) == 1:
             btnlist[startGoalIndices[0]].config(bg="pale green")
         if len(startGoalIndices) > 1:
-            btnlist[startGoalIndices[len(startGoalIndices)-1]].config(bg="IndianRed1")
+            btnlist[startGoalIndices[len(startGoalIndices) - 1]].config(bg="IndianRed1")
 
     def startandGoal():
 
@@ -160,22 +156,22 @@ def main():
 
         global depthlimit
 
-        #if len(startGoalIndices) == 1:
+        # if len(startGoalIndices) == 1:
         #    btnlist[startGoalIndices[0]].config(bg="pale green")
-        #if len(startGoalIndices) > 1:
+        # if len(startGoalIndices) > 1:
         #    btnlist[startGoalIndices[len(startGoalIndices)-1]].config(bg="IndianRed1")
         #    nodeObjList[startGoalIndices[len(startGoalIndices)-1]].SET_AS_GOAL()
 
         if len(startGoalIndices) > 1:
 
             startNode = startGoalIndices[0]
-            #goalNode = startGoalIndices[1]
+            # goalNode = startGoalIndices[1]
             g = ds.Graph(nodeObjList[startNode], nodeObjList, edgeObjList)
 
-            no_of_goals=len(startGoalIndices)-1
+            no_of_goals = len(startGoalIndices) - 1
             for j in range(no_of_goals):
-                print("index set as goal:", startGoalIndices[j+1])
-                nodeObjList[startGoalIndices[j+1]].SET_AS_GOAL()
+                print("index set as goal:", startGoalIndices[j + 1])
+                nodeObjList[startGoalIndices[j + 1]].SET_AS_GOAL()
 
             if which_search == Searches.DFS:
                 path = g.depth_first_search()
@@ -213,73 +209,73 @@ def main():
             g.reset_plist()
             g.iter_bool = False
             g.maxlimit = 0
-            g.stop_iter=False
+            g.stop_iter = False
 
             startGoalIndices.clear()
             mode_bool = 0
 
-    #______________________________
+    # ______________________________
 
-    #UNDO THIS
+    # UNDO THIS
     btnlist = list()
 
     heuristicList = list()
 
-    #btnlistc = btnlist
-    #nodeObjList = list()
+    # btnlistc = btnlist
+    # nodeObjList = list()
 
-    #edgeObjList = list()
+    # edgeObjList = list()
 
-    #globalY=0
+    # globalY=0
     def mybtnClick():
-        #global globalY
-        #global bb
-        #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): move(c)))
-        #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): print(c)))
+        # global globalY
+        # global bb
+        # btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): move(c)))
+        # btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): print(c)))
 
         global nodeObjList
 
-        #global btnlist
+        # global btnlist
 
-        #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): move(c)))
-        #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): modeSelect(c)))
+        # btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): move(c)))
+        # btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=len(btnlist): modeSelect(c)))
         btnlist.append(Button(root, text=len(btnlist), width=3, height=1, command=lambda c=len(btnlist): modeSelect(c)))
 
         heuristicList.append(Label(root, text="h=?", bg="CadetBlue4", fg="black"))
 
         nodeObjList.append(ds.Node(label=len(nodeObjList)))
 
-        #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=move))
-        btnlist[len(btnlist)-1].pack()
-        btnline_Dict[len(btnlist)-1] = list()
+        # btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=move))
+        btnlist[len(btnlist) - 1].pack()
+        btnline_Dict[len(btnlist) - 1] = list()
 
-        #heuristicx = btnlist[len(btnlist)-1].winfo_rootx()
-        #heuristicy = btnlist[len(btnlist)-1].winfo_rooty()-10
-        #heuristicList[len(heuristicList) - 1].place(x=heuristicx, y=heuristicy)
+        # heuristicx = btnlist[len(btnlist)-1].winfo_rootx()
+        # heuristicy = btnlist[len(btnlist)-1].winfo_rooty()-10
+        # heuristicList[len(heuristicList) - 1].place(x=heuristicx, y=heuristicy)
 
-        #bb = bb + 1
-        #bttn = Button(root, image=nodeimg, width=30,height=30)
-        #bttn.pack()
+        # bb = bb + 1
+        # bttn = Button(root, image=nodeimg, width=30,height=30)
+        # bttn.pack()
 
-    #i=i+1
-    #command = lambda: [funct1(), funct2()]
-    #command = lambda c=i: move(c)
-    #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=i: move(c)))
+    # i=i+1
+    # command = lambda: [funct1(), funct2()]
+    # command = lambda c=i: move(c)
+    # btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=lambda c=i: move(c)))
 
-    #btn.append(Button(root, text=files[i], command=lambda c=i: print(btn[c].cget("text"))))
+    # btn.append(Button(root, text=files[i], command=lambda c=i: print(btn[c].cget("text"))))
 
     mybtn = Button(root, text="Create node", command=mybtnClick)
     mybtn.pack(side='bottom')
 
     def illuminateNodes(vlist, ivlist, plist, iter_goal_found):
-        #IF WHICHSEARCH = ITER
+        # IF WHICHSEARCH = ITER
 
         global which_search
 
-        if which_search==Searches.D_ITER:
+        if which_search == Searches.D_ITER:
             if iter_goal_found:
                 i = 1000
-                for k in range(len(ivlist)-1):
+                for k in range(len(ivlist) - 1):
                     for j in range(len(ivlist[k])):
                         # rg3tha zy ma kant
                         # shlt lenvlist-1. k2enny 3mltlha visit. w b3den l2tha goal fa hlwnha lon visited. then lon goal
@@ -288,14 +284,15 @@ def main():
                         root.after(i, lambda x=j, h=k: btnlist[ivlist[h][x]].config(bg="lawn green"))
                         i = i + 1000
                     root.after(i, lambda: reset_illumination())
-                    i=i+1000
-                last_ivlist_ind = len(ivlist)-1
-                for j in range(len(ivlist[last_ivlist_ind])-1):
+                    i = i + 1000
+                last_ivlist_ind = len(ivlist) - 1
+                for j in range(len(ivlist[last_ivlist_ind]) - 1):
                     root.after(i, lambda x=j, h=last_ivlist_ind: btnlist[ivlist[h][x]].config(bg="lawn green"))
                     i = i + 1000
-                last_element_ind = len(ivlist[last_ivlist_ind])-1
+                last_element_ind = len(ivlist[last_ivlist_ind]) - 1
                 if len(vlist) > 0:
-                    root.after(i, lambda x=last_element_ind, h=last_ivlist_ind: btnlist[ivlist[h][x]].config(bg="firebrick1"))
+                    root.after(i, lambda x=last_element_ind, h=last_ivlist_ind: btnlist[ivlist[h][x]].config(
+                        bg="firebrick1"))
         else:
             print("LENGTH OF VLIST: ", len(vlist))
             i = 1000
@@ -313,7 +310,7 @@ def main():
             # sleep 0.5s
             # KOLLOHOM F FUNCTION W7DA
 
-        if len(plist)>0:
+        if len(plist) > 0:
             i = i + 1000
             root.after(i, lambda p=plist: illuminatePath(p, on_off=1))
             i = i + 1000
@@ -326,23 +323,23 @@ def main():
             root.after(i, lambda p=plist: illuminatePath(p, on_off=1))
 
             print("PATH LIST AFTER REVERSE: ", plist)
-            #5ALLIHA T FLASH 5 MARRAT W B3DEN TFDL MNWRA
+            # 5ALLIHA T FLASH 5 MARRAT W B3DEN TFDL MNWRA
 
-        #ELSE HA SHOW MESSAGE NO PATH FOUND
+        # ELSE HA SHOW MESSAGE NO PATH FOUND
 
     def illuminatePath(path, on_off):
         print(len(path))
         for j in range(len(path) - 1):
             line_start_index = path[j]
-            line_end_index = path[j+1]
-            for i in range (len(btnline_Dict[line_start_index])):
+            line_end_index = path[j + 1]
+            for i in range(len(btnline_Dict[line_start_index])):
                 line_index = btnline_Dict[line_start_index][i]
                 if linePoints_Dict[line_index][0] == line_end_index or linePoints_Dict[line_index][1] == line_end_index:
-                    if on_off==1:
+                    if on_off == 1:
                         my_canvas.itemconfig(lineList[line_index], fill="magenta2")
                     else:
                         my_canvas.itemconfig(lineList[line_index], fill="#000")
-                        #lineList[line_index].config()  # or mayb add the index to a list then color them all. 34an a flash
+                        # lineList[line_index].config()  # or mayb add the index to a list then color them all. 34an a flash
 
     def reset_illumination():
         for x in range(len(btnlist)):
@@ -350,75 +347,74 @@ def main():
         for y in range(len(lineList)):
             my_canvas.itemconfig(lineList[y], fill="#000")
 
-    #def illuminateNode(ind):
+    # def illuminateNode(ind):
     #    #    global btnlist
     #    btnlist[ind].config(bg="lawn green")
 
     def costPopUp():
         for x in range(len(labelList)):
             labelList[x].config(bg="VioletRed1")
-            e_cost = simpledialog.askstring("Enter costs", "Enter edge "+str(x)+" cost:", parent=root)
+            e_cost = simpledialog.askstring("Enter costs", "Enter edge " + str(x) + " cost:", parent=root)
             set_e_cost(x, e_cost)
 
-            #ASKINTEGER
+            # ASKINTEGER
 
     def set_e_cost(x, e_cost):
         global edgeObjList
         labelList[x].config(text="cost " + e_cost, bg="RoyalBlue1")
         edgeObjList[x].set_value(int(e_cost))
-        #AND EDGEOBJLIST SET VAL
+        # AND EDGEOBJLIST SET VAL
 
     costbtn = Button(root, text='Enter costs', command=costPopUp)
     costbtn.pack(side='bottom')
 
-
     def changeModeBool2_DFS():
-        #global no_of_goals
+        # global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.DFS
         reset_illumination()
-        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
+        # no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_BFS():
-        #global no_of_goals
+        # global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.BFS
         reset_illumination()
-        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
+        # no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_UCS():
-        #global no_of_goals
+        # global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.UCS
         reset_illumination()
-        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
+        # no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_GREEDY():
-        #global no_of_goals
+        # global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.GREEDY
         reset_illumination()
-        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
+        # no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_ASTAR():
-        #global no_of_goals
+        # global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.A_STAR
         reset_illumination()
-        #no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
+        # no_of_goals = simpledialog.askinteger("Enter number of goals", "How many goals? (>=1)", parent=root)
 
     def changeModeBool2_DLIM():
-        #global no_of_goals
+        # global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
@@ -428,15 +424,14 @@ def main():
         depthlimit = simpledialog.askinteger("Enter maximum depth", "Depth limit? (>=0)", parent=root)
 
     def changeModeBool2_ITERD():
-        #global no_of_goals
+        # global no_of_goals
         global mode_bool
         mode_bool = 2
         global which_search
         which_search = Searches.D_ITER
         reset_illumination()
-        #global depthlimit
-        #depthlimit = simpledialog.askinteger("Enter maximum depth", "Depth limit? (>=0)", parent=root)
-
+        # global depthlimit
+        # depthlimit = simpledialog.askinteger("Enter maximum depth", "Depth limit? (>=0)", parent=root)
 
     searchDFSbtn = Button(root, text='DFS', command=changeModeBool2_DFS)
     searchDFSbtn.pack(side='bottom')
@@ -459,22 +454,22 @@ def main():
     searchASTRbtn = Button(root, text='A*', command=changeModeBool2_ASTAR)
     searchASTRbtn.pack(side='bottom')
 
-    #mybtn.place()
+    # mybtn.place()
 
-    #______________________________
+    # ______________________________
 
-    #bttn2 = Button(root, image=nodeimg, width=30, height=30)
-    #bttn2.pack()
+    # bttn2 = Button(root, image=nodeimg, width=30, height=30)
+    # bttn2.pack()
 
-    #def move(e):
+    # def move(e):
     #    bttn2.place(x=e.x, y=e.y)
 
-    buttonInd=-1
+    buttonInd = -1
 
     def move(v):
         global moveBtn
         global buttonInd
-        buttonInd=v
+        buttonInd = v
         print((v))
 
         if moveBtn:
@@ -482,41 +477,40 @@ def main():
         else:
             moveBtn = True
 
-    #moving_button = Button(root, text='Click Meee', command=move)
+    # moving_button = Button(root, text='Click Meee', command=move)
 
-    #moving_button.place(x=50, y=50)
+    # moving_button.place(x=50, y=50)
 
     def motion(event):
         global buttonInd
 
-        #global btnlist
-        #x, y = event.x, event.y
+        # global btnlist
+        # x, y = event.x, event.y
         x, y = event.widget.winfo_pointerxy()
-        #print(moveBtn)
+        # print(moveBtn)
         if moveBtn == True:
             # moving_button.place(x=x-800, y=y-410)
-            #moving_button = Button(root, text='Click Meee', command=move)
+            # moving_button = Button(root, text='Click Meee', command=move)
 
-            #moving_button.place(x=event.x, y=event.y, anchor="s")
-            #moving_button.place(x=x, y=y, anchor="s")
+            # moving_button.place(x=event.x, y=event.y, anchor="s")
+            # moving_button.place(x=x, y=y, anchor="s")
             btnlist[buttonInd].place(x=x, y=y, anchor="s")
             heuristicList[buttonInd].place(x=x, y=y)
 
-            #myLabel.config(text="Coords: x: "+ str(event.x) + " y: "+ str(event.y))
+            # myLabel.config(text="Coords: x: "+ str(event.x) + " y: "+ str(event.y))
 
             for x in range(len(btnline_Dict[buttonInd])):
-            # print("sss" + str(btnline_Dict[buttonInd]))
-                lineInd=btnline_Dict[buttonInd][x]
+                # print("sss" + str(btnline_Dict[buttonInd]))
+                lineInd = btnline_Dict[buttonInd][x]
                 print(btnline_Dict)
                 print(lineInd)
-                #print(btnline_Dict[0][0])
-                btnStartInd=linePoints_Dict[lineInd][0]
+                # print(btnline_Dict[0][0])
+                btnStartInd = linePoints_Dict[lineInd][0]
                 print(btnStartInd)
                 btnEndInd = linePoints_Dict[lineInd][1]
 
                 xx1, yy1 = btnlist[btnStartInd].winfo_rootx(), btnlist[btnStartInd].winfo_rooty()
                 xx2, yy2 = btnlist[btnEndInd].winfo_rootx(), btnlist[btnEndInd].winfo_rooty()
-
 
                 print("xx1:" + str(xx1))
                 print("yy1:" + str(yy1))
@@ -529,35 +523,29 @@ def main():
                 yymid = (yy1 + yy2) / 2
                 labelList[lineInd].place(x=xxmid, y=yymid)
 
+    # coordinates label
+    # myLabel = Label(root, text="")
+    # myLabel.pack()
 
-
-    #coordinates label
-    #myLabel = Label(root, text="")
-    #myLabel.pack()
-
-
-    #PROBLEM WHEN CURSOR TOUCHES THE BUTTON. IS INSIDE THE BUTTON
-    #CHANGE RELEASE MAYB
-    #or winfopointerx
+    # PROBLEM WHEN CURSOR TOUCHES THE BUTTON. IS INSIDE THE BUTTON
+    # CHANGE RELEASE MAYB
+    # or winfopointerx
     root.bind('<Motion>', motion)
 
-
-
-    #___________________________________________________
+    # ___________________________________________________
 
     def hInputPopUp():
         for x in range(len(heuristicList)):
             heuristicList[x].config(bg="PaleVioletRed1")
-            h_val = simpledialog.askstring("Enter heuristics", "Enter node "+str(x)+" heuristic value:", parent=hpop)
+            h_val = simpledialog.askstring("Enter heuristics", "Enter node " + str(x) + " heuristic value:",
+                                           parent=hpop)
             set_h_val(x, h_val)
-
 
     def set_h_val(x, h_val):
         global nodeObjList
         heuristicList[x].config(text="h=" + h_val, bg="CadetBlue2")
         nodeObjList[x].set_heuristic(int(h_val))
-        #AND EDGEOBJLIST SET VAL
-
+        # AND EDGEOBJLIST SET VAL
 
     def calc_eucl_h(g_ind):
         global nodeObjList
@@ -567,12 +555,11 @@ def main():
         for i in range(len(btnlist)):
             x = btnlist[i].winfo_x()
             y = btnlist[i].winfo_y()
-            delta_x = abs(x_goal-x)
-            delta_y = abs(y_goal-y)
+            delta_x = abs(x_goal - x)
+            delta_y = abs(y_goal - y)
             h = math.sqrt(delta_x ^ 2 + delta_y ^ 2)
             heuristicList[i].config(text="h=" + str(int(h)), bg="CadetBlue2")
             nodeObjList[i].set_heuristic(int(h))
-
 
     def calc_manh_h(g_ind):
         global nodeObjList
@@ -586,33 +573,30 @@ def main():
         goal_ind = simpledialog.askstring("Enter goal", "Goal index:", parent=hpop)
         calc_manh_h(goal_ind)
 
-
     def heuristicOptionsPopUp():
         global hpop
         hpop = Toplevel(root)
         hpop.title("Heuristic Options")
 
-        manhattanbtn = Button(hpop, text='Manhattan Distance (could be inadmissible)', command=hManhPopUp) #no command yet
+        manhattanbtn = Button(hpop, text='Manhattan Distance (could be inadmissible)',
+                              command=hManhPopUp)  # no command yet
         euclbtn = Button(hpop, text='Euclidean Distance (could be inadmissible)', command=hEuclPopUp)  # no command yet
         hinputbtn = Button(hpop, text='User Input', command=hInputPopUp)
         manhattanbtn.pack(padx=50, pady=10)
         euclbtn.pack()
         hinputbtn.pack(pady=10)
 
-
     heuristicBtn = Button(root, text='Choose a heuristic', command=heuristicOptionsPopUp)
     heuristicBtn.pack(side='bottom')
 
-
-
     # ___________________________________________________
 
-    #HOMA FEN HOMA FEN HOMA FEN
-    #mybtn1 = Button(root, text="Node1")
-    #mybtn1.place(x=500, y=410)
+    # HOMA FEN HOMA FEN HOMA FEN
+    # mybtn1 = Button(root, text="Node1")
+    # mybtn1.place(x=500, y=410)
 
-    #mybtn2 = Button(root, text="Node2")
-    #mybtn2.place(x=100, y=200)
+    # mybtn2 = Button(root, text="Node2")
+    # mybtn2.place(x=100, y=200)
 
     my_canvas = Canvas(root, width=300, height=200, bg="bisque2")
     my_canvas.pack(fill=BOTH, expand=1)
@@ -623,13 +607,12 @@ def main():
     linePoints_Dict = dict()
 
     labelList = list()
-    #lineLabel_Dict = dict() #might need it
+    # lineLabel_Dict = dict() #might need it
 
-
-    #tmp = list()
-    #tmp.append('A')
-    #tmp.append('B')
-    #btnline_Dict[4] = tmp
+    # tmp = list()
+    # tmp.append('A')
+    # tmp.append('B')
+    # btnline_Dict[4] = tmp
 
     startbtn = Button(root, text="START", command=startandGoal)
     startbtn.pack(side='bottom')
@@ -641,11 +624,11 @@ def main():
 
         global edgeObjList
 
-        #global btnlist
+        # global btnlist
 
-        #x1, y1 = root.btnlist[0].winfo_rootx(), root.btnlist[0].winfo_rooty()
-        #x2, y2 = root.btnlist[1].winfo_rootx(), root.btnlist[1].winfo_rooty()
-        if len(btnIndices)==2:
+        # x1, y1 = root.btnlist[0].winfo_rootx(), root.btnlist[0].winfo_rooty()
+        # x2, y2 = root.btnlist[1].winfo_rootx(), root.btnlist[1].winfo_rooty()
+        if len(btnIndices) == 2:
             x1, y1 = btnlist[btnIndices[0]].winfo_rootx(), btnlist[btnIndices[0]].winfo_rooty()
             x2, y2 = btnlist[btnIndices[1]].winfo_rootx(), btnlist[btnIndices[1]].winfo_rooty()
             print(x1)
@@ -655,11 +638,10 @@ def main():
             lineList.append(my_canvas.create_line(x1, y1, x2, y2, fill="#000", width=2))
             print(len(lineList))
 
-            labelList.append(Label(root, text="edge "+ str(len(labelList)), bg="#FFFF00", fg="black"))
+            labelList.append(Label(root, text="edge " + str(len(labelList)), bg="#FFFF00", fg="black"))
             labelx = (x1 + x2) / 2
             labely = (y1 + y2) / 2
-            labelList[len(labelList)-1].place(x=labelx, y=labely)
-
+            labelList[len(labelList) - 1].place(x=labelx, y=labely)
 
             # myLabel = Label(root, text="")
             # myLabel.pack()
@@ -668,11 +650,10 @@ def main():
             nodeObjList[btnIndices[0]].add_child(nodeObjList[btnIndices[1]])
             nodeObjList[btnIndices[1]].add_child(nodeObjList[btnIndices[0]])
 
-            nodeObjList[btnIndices[0]].add_edge(edgeObjList[len(edgeObjList)-1])
-            nodeObjList[btnIndices[1]].add_edge(edgeObjList[len(edgeObjList)-1])
+            nodeObjList[btnIndices[0]].add_edge(edgeObjList[len(edgeObjList) - 1])
+            nodeObjList[btnIndices[1]].add_edge(edgeObjList[len(edgeObjList) - 1])
 
-
-            linePoints_Dict[(len(lineList)-1)]=list()
+            linePoints_Dict[(len(lineList) - 1)] = list()
             linePoints_Dict[(len(lineList) - 1)].append(btnIndices[0])
             linePoints_Dict[(len(lineList) - 1)].append(btnIndices[1])
             print(linePoints_Dict)
@@ -680,8 +661,7 @@ def main():
             btnline_Dict[btnIndices[0]].append(len(lineList) - 1)
             btnline_Dict[btnIndices[1]].append(len(lineList) - 1)
             btnIndices.clear()
-            mode_bool=0
-
+            mode_bool = 0
 
     def changeModeBool():
         global mode_bool
@@ -690,7 +670,7 @@ def main():
     linebtn = Button(root, text='Click Lineee', command=changeModeBool)
     linebtn.pack(side='bottom')
 
-    #my_canvas.pack(pady=20)
+    # my_canvas.pack(pady=20)
     #         canvas = Canvas(self)
     #         canvas.create_line(15, 25, 200, 10, fill="#AAA", width=2)
     #         canvas.create_line(15, 25, 200, 10, fill="#000", width=0.5)
