@@ -1,4 +1,4 @@
-from tkinter import Tk, Canvas, Frame, BOTH, PhotoImage, Button, Label, simpledialog, Toplevel
+from tkinter import Tk, Canvas, Frame, BOTH, PhotoImage, Button, Label, simpledialog, Toplevel, messagebox
 
 import DataStructure as ds
 from naryTree import Tree
@@ -227,6 +227,8 @@ def main():
             graph = g
 
 
+            goalMessage(g.goal_found_bool)
+
             illuminateNodes(g.vlist, g.ivlist, g.plist, g.iter_goal_found)
             g.reset_vlist()
             g.reset_ivlist()
@@ -251,6 +253,14 @@ def main():
     #edgeObjList = list()
 
     #globalY=0
+
+
+    def goalMessage(goal_found_bool):
+        if not goal_found_bool:
+            messagebox.showinfo("Result", "Goal not found!")
+
+
+
     def mybtnClick():
         #global globalY
         #global bb
@@ -487,9 +497,9 @@ def main():
     searchASTRbtn.place(x=920, y=640)
 
 
-    resetbtn = Button(root, text='Reset', width='15')
+    #resetbtn = Button(root, text='Reset', width='15')
     #searchASTRbtn.pack(side='bottom')
-    resetbtn.place(x=1100, y=640)
+    #resetbtn.place(x=1100, y=640)
 
 
 
@@ -608,17 +618,17 @@ def main():
             nodeObjList[i].set_heuristic(int(h))
 
 
-    def calc_manh_h(g_ind):
-        global nodeObjList
-        pass
+    #def calc_manh_h(g_ind):
+    #    global nodeObjList
+    #    pass
 
     def hEuclPopUp():
         goal_ind = simpledialog.askinteger("Enter goal", "Goal index:", parent=hpop)
         calc_eucl_h(goal_ind)
 
-    def hManhPopUp():
-        goal_ind = simpledialog.askstring("Enter goal", "Goal index:", parent=hpop)
-        calc_manh_h(goal_ind)
+    #def hManhPopUp():
+    #    goal_ind = simpledialog.askstring("Enter goal", "Goal index:", parent=hpop)
+    #    calc_manh_h(goal_ind)
 
 
     def heuristicOptionsPopUp():
@@ -626,11 +636,11 @@ def main():
         hpop = Toplevel(root)
         hpop.title("Heuristic Options")
 
-        manhattanbtn = Button(hpop, text='Manhattan Distance (could be inadmissible)', command=hManhPopUp) #no command yet
+        #manhattanbtn = Button(hpop, text='Manhattan Distance (could be inadmissible)', command=hManhPopUp) #no command yet
         euclbtn = Button(hpop, text='Euclidean Distance (could be inadmissible)', command=hEuclPopUp)  # no command yet
         hinputbtn = Button(hpop, text='User Input', command=hInputPopUp)
-        manhattanbtn.pack(padx=50, pady=10)
-        euclbtn.pack()
+        #manhattanbtn.pack(padx=50, pady=10)
+        euclbtn.pack(padx=50, pady=10)
         hinputbtn.pack(pady=10)
 
 
@@ -751,24 +761,27 @@ def main():
 
 
     def createTree(g1):
+
+        #if (len(g1.tree_level_dictionary))
         x = len(g1.tree_level_dictionary) - 1
-        parentLevelDict = dict()
+        #parentLevelDict = dict()
 
-        y = len(g1.tree_level_dictionary)
+        #y = len(g1.tree_level_dictionary)
 
-        while y > 1:
+        #while y >= 1:
+        #    print("y= ", y)
+        #    print(len(g1.tree_level_dictionary[y]))
+        #    for i in range(len(g1.tree_level_dictionary[y])):
+        #        # p = Tree(g1.tree_level_dictionary[y][i].get_label())
+        #        node = g1.tree_level_dictionary[y][i]
+        #        key = g1.tree_level_dictionary[y][i].get_parent()
+        #        if parentLevelDict.get(key) == None:
+        #            parentLevelDict[key] = []
+        #            parentLevelDict[key].append(node)
+        #        else:
+        #            parentLevelDict[key].append(node)
 
-            for i in range(len(g1.tree_level_dictionary[y])):
-                # p = Tree(g1.tree_level_dictionary[y][i].get_label())
-                node = g1.tree_level_dictionary[y][i]
-                key = g1.tree_level_dictionary[y][i].get_parent()
-                if parentLevelDict.get(key) == None:
-                    parentLevelDict[key] = []
-                    parentLevelDict[key].append(node)
-                else:
-                    parentLevelDict[key].append(node)
-
-            y = y - 1
+        #    y = y - 1
 
         treeDict = dict()
 
@@ -779,16 +792,16 @@ def main():
 
                 node = g1.tree_level_dictionary[y][i]
                 key = node.get_parent()
-                if parentLevelDict.get(node) == None:
-
+                if node not in g1.parent_dictionary.keys():
+                    print("Y LEVELLLLLL=", y)
                     p = Tree(node.get_label())
                     # bishoyToBucDict[node]=p
                     treeDict[node] = []
                     treeDict[node].append(p)
                 else:
                     childList = []
-                    for k in range(len(parentLevelDict[node])):
-                        child = parentLevelDict[node][k]
+                    for k in g1.get_children_nodes(node):
+                        child = k
                         childList.append(treeDict[child][0])
                         # print(treeDict[child][0])
 
@@ -800,37 +813,37 @@ def main():
 
         y = len(g1.tree_level_dictionary[1])
         # print('----------------------------------------------------------')
-        while y > 0:
+        #while y > 0:
 
-            for i in range(len(g1.tree_level_dictionary[y])):
+        for i in range(1,len(g1.tree_level_dictionary[1])):
+            print("index in level 1:", i)
+            node = g1.tree_level_dictionary[1][i]
+            key = node.get_parent()
+            if node not in g1.parent_dictionary.keys():
 
-                node = g1.tree_level_dictionary[y][i]
-                key = node.get_parent()
-                if parentLevelDict.get(node) == None:
+                p = Tree(node.get_label())
+                treeDict[node] = []
+                treeDict[node].append(p)
+            else:
+                childList = []
+                for k in g1.get_children_nodes(node):
+                    child = k
+                    childList.append(treeDict[child][0])
+                    # print(treeDict[child][0])
 
-                    p = Tree(node.get_label())
-                    treeDict[node] = []
-                    treeDict[node].append(p)
-                else:
-                    childList = []
-                    for k in range(len(parentLevelDict[node])):
-                        child = parentLevelDict[node][k]
-                        childList.append(treeDict[child][0])
-                        # print(treeDict[child][0])
+                # print(node.get_label(), childList)
+                print('--------------------')
+                print(childList)
+                print('--------------------')
+                # childList.reverse()
+                # print(revList,'rev list')
+                theNewGeneratedTree = Tree(node.get_label(), *childList)
 
-                    # print(node.get_label(), childList)
-                    print('--------------------')
-                    print(childList)
-                    print('--------------------')
-                    # childList.reverse()
-                    # print(revList,'rev list')
-                    theNewGeneratedTree = Tree(node.get_label(), *childList)
+                # print(node.get_label(),'  : ',theNewGeneratedTree,'---------------09 ')
+                treeDict[node] = []
+                treeDict[node].append(theNewGeneratedTree)
 
-                    # print(node.get_label(),'  : ',theNewGeneratedTree,'---------------09 ')
-                    treeDict[node] = []
-                    treeDict[node].append(theNewGeneratedTree)
-
-            y = y - 1
+            #y = y - 1
 
         y = 1
 
@@ -862,7 +875,8 @@ def main():
 
 
         def generate_BucLevel_BucRow_Dict(bucNode):
-            if (len(bucNode.children) == 0):
+            #if (len(bucNode.children) == 0):
+            if not (isinstance(bucNode.children, list)):
                 nodeToXcoordDict[bucNode] = bucNode.x
                 levelToBucObjectDict[bucNode.y].append(bucNode)
                 return
@@ -882,6 +896,11 @@ def main():
         y = len(g1.tree_level_dictionary)
         while y > 1:
             for i in range(len(g1.tree_level_dictionary[y])):
+                print("level:",y)
+                print("index:", i)
+                print(g1.tree_level_dictionary)
+                print(levelToBucObjectDict)
+                print(len(levelToBucObjectDict[y]))
                 treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[y][i]] = levelToBucObjectDict[y][i]
 
             y = y - 1
@@ -906,7 +925,7 @@ def main():
 
 
 
-    createTreebtn = Button(root, text='Create Tree', width='15', command=treePopUp)
+    createTreebtn = Button(root, text='Create Tree for DFS', width='18', command=treePopUp)
     #searchASTRbtn.pack(side='bottom')
     createTreebtn.place(x=1100, y=680)
 
