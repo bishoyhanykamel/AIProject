@@ -96,7 +96,7 @@ def main():
     root = Tk()
     # ex = Example()
     canvas = Canvas()
-    nodeimg = PhotoImage(file='C:/Users/mohgh/Desktop/rednode2.png')
+    #nodeimg = PhotoImage(file='C:/Users/mohgh/Desktop/rednode2.png')
     # img = nodeimg.zoom(2)
 
     #most recent
