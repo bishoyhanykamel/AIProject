@@ -4,7 +4,7 @@ import os
 class Tree:
     def __init__(self, node="", *children):
         self.node = node
-        self.width = len(node)
+        self.width = len(str(node))
         if children:
             self.children = children
         else:

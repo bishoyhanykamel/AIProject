@@ -66,7 +66,7 @@ edgeObjList = list()
 
 depthlimit = 0
 
-graph = None
+
 
 #no_of_goals = 1
 
@@ -96,7 +96,7 @@ def main():
     root = Tk()
     # ex = Example()
     canvas = Canvas()
-    nodeimg = PhotoImage(file='C:/Users/mohgh/Desktop/rednode2.png')
+    #nodeimg = PhotoImage(file='C:/Users/mohgh/Desktop/rednode2.png')
     # img = nodeimg.zoom(2)
 
     #most recent
@@ -195,36 +195,43 @@ def main():
 
             if which_search == Searches.DFS:
                 path = g.depth_first_search()
+                createTree(g)
                 print(path)
 
             elif which_search == Searches.BFS:
                 path = g.breadth_first_search()
+                createTree(g)
                 print(path)
 
             elif which_search == Searches.UCS:
                 path = g.uniform_cost_search()
+                createTree(g)
                 print(path)
 
             elif which_search == Searches.GREEDY:
                 path = g.greedy_search()
+                createTree(g)
                 print(path)
 
             elif which_search == Searches.A_STAR:
                 path = g.a_star_search()
+                createTree(g)
                 print(path)
 
             elif which_search == Searches.D_LIMITED:
                 path = g.depth_limited_search(depthlimit)
+                createTree(g)
                 print(path)
                 g.reset_visited()
 
             elif which_search == Searches.D_ITER:
                 path = g.iterative_deepening()
+                createTree(g)
                 print(path)
                 g.reset_visited()
 
             #createTree(g)
-            graph = g
+
 
 
             illuminateNodes(g.vlist, g.ivlist, g.plist, g.iter_goal_found)
@@ -268,6 +275,7 @@ def main():
         heuristicList.append(Label(root, text="h=?", bg="CadetBlue4", fg="black"))
 
         nodeObjList.append(ds.Node(label=len(nodeObjList)))
+
 
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=move))
         btnlist[len(btnlist)-1].pack(side='left')
@@ -798,11 +806,11 @@ def main():
 
             y = y - 1
 
-        y = len(g1.tree_level_dictionary[1])
+        y = len(g1.tree_level_dictionary[1]) - 1
         # print('----------------------------------------------------------')
         while y > 0:
 
-            for i in range(len(g1.tree_level_dictionary[y])):
+            for i in range(len(g1.tree_level_dictionary[y]) - 1):
 
                 node = g1.tree_level_dictionary[y][i]
                 key = node.get_parent()
@@ -860,7 +868,6 @@ def main():
         for key in g1.tree_level_dictionary:
             levelToBucObjectDict[key] = []
 
-
         def generate_BucLevel_BucRow_Dict(bucNode):
             if (len(bucNode.children) == 0):
                 nodeToXcoordDict[bucNode] = bucNode.x
@@ -887,26 +894,136 @@ def main():
             y = y - 1
 
         treeSequence = g1.tree_draw_sequence
-
-        treeVisual.treeVisualCall(treeLevelNodeToBucNodeDict, treeSequence)
-
-
-
-    def treePopUp():
-        #global treepop
-        global graph
-        #treepop = Toplevel(root)
-        #treepop.state('zoomed')
-        #treepop.title("TREEEEEE")
-        createTree(graph)
+        treeVisualCall(treeLevelNodeToBucNodeDict, treeSequence)
 
 
 
 
 
 
+    # def treePopUp():
+    #     # global treepop
+    #     global graph
+    #     # treepop = Toplevel(root)
+    #     # treepop.state('zoomed')
+    #     # treepop.title("TREEEEEE")
+    #     createTree(graph)
 
-    createTreebtn = Button(root, text='Create Tree', width='15', command=treePopUp)
+    def treeVisualCall(treeLevelNodeToBucNodeDict, treeSequence):
+        global mainWindow
+        mainWindow = Toplevel()
+        mainWindow.geometry('1080x720+150+10')
+        mainWindow.resizable(0, 0)
+
+        cols = 31
+        levels = 10
+        numberOfParentChildren = 2
+
+        mainWindow.title('Tree Visualization')
+        mainWindow.state('zoomed')
+
+        mainCanvas = Tk.Canvas(mainWindow, width=300, height=200, bg="bisque2")
+        mainCanvas.pack(expand=1, fill=BOTH)
+
+        nodeGridPosition = dict()
+        nodeDict = {}
+
+        edgeList = list()
+        edgeDict = dict()
+        frameList = [[] for i in range(levels)]
+        labelList = [[] for i in range(levels)]
+
+        # Adjusting row weight for Main window and Canvas
+        for i in range(levels):
+            mainCanvas.rowconfigure(i, weight=2)
+            mainWindow.rowconfigure(i, weight=2)
+
+        for i in range(cols):
+            mainCanvas.columnconfigure(i, weight=1)
+            mainWindow.columnconfigure(i, weight=1)
+
+        #
+
+        def updatePos():
+            for i in range(len(edgeList)):
+                mainCanvas.coords(edgeList[i],
+                                  edgeDict[i][0].winfo_x()
+                                  , edgeDict[i][0].winfo_y()
+                                  , edgeDict[i][1].winfo_x()
+                                  , edgeDict[i][1].winfo_y())
+
+        becNodeToGridLabelDict = dict()
+
+
+
+        def delayEdge(startNode, endNode):
+            mainWindow.update()
+            slope = ((endNode.winfo_y()) - startNode.winfo_y()) / ((endNode.winfo_x()) - startNode.winfo_x() + 1)
+            print(slope)
+            newEdge = mainCanvas.create_line(startNode.winfo_x() + 1,
+                                             startNode.winfo_y() + 1,
+                                             startNode.winfo_x() + 1,
+                                             startNode.winfo_y() + 1,
+                                             arrow=Tk.LAST)
+            mainWindow.update()
+            print(startNode.winfo_x(), startNode.winfo_y(),
+                  endNode.winfo_x(),
+                  endNode.winfo_y())
+            edgeList.append(newEdge)
+            edgeDict[len(edgeList) - 1] = list()
+            edgeDict[len(edgeList) - 1].append(startNode)
+            edgeDict[len(edgeList) - 1].append(endNode)
+
+            mainWindow.update()
+
+            for y_anim in range(startNode.winfo_y(), endNode.winfo_y(), 3):
+                # mainWindow.update()
+                x_anim = (endNode.winfo_x()) - (((endNode.winfo_y()) - y_anim) / (slope))
+                # print(startNode.winfo_x(), startNode.winfo_y(),
+                #       endNode.winfo_x(),
+                #       endNode.winfo_y())
+                mainCanvas.coords(newEdge, startNode.winfo_x() + 2,
+                                  startNode.winfo_y(),
+                                  x_anim,
+                                  y_anim,
+                                  )
+
+                mainWindow.update()
+                updatePos()
+
+        #
+        def drawTree(delayTime, treeseq):
+
+            for i in range(len(treeseq)):
+                mainCanvas.after(delayTime, delayNode(treeLevelNodeToBucNodeDict[treeSequence[i]]))
+                mainWindow.update()
+
+        drawTree(500, treeSequence)
+
+
+
+        def delayNode(becToDsNode):
+            lbl = Tk.Label(mainCanvas, borderwidth=4, relief='solid', height=2, width=2, text=becToDsNode.tree,
+                                padx='2', pady='2')
+            xCord = becToDsNode.x * 2
+            becNodeToGridLabelDict[becToDsNode] = lbl
+            lbl.grid(row=int(becToDsNode.y), column=int(xCord) + 13)
+            mainWindow.update()
+            if becToDsNode.parent == None:
+                return
+            else:
+                delayEdge(becNodeToGridLabelDict[becToDsNode.parent], becNodeToGridLabelDict[becToDsNode])
+                # updatePos()
+                # mainWindow.update()
+            updatePos()
+            mainWindow.update()
+
+        lbll = Tk.Label()
+        lbll.winfo_rootx()
+
+
+
+    createTreebtn = Button(root, text='Create Tree', width='15')
     #searchASTRbtn.pack(side='bottom')
     createTreebtn.place(x=1100, y=680)
 
