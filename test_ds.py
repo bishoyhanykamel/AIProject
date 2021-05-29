@@ -80,11 +80,12 @@ while y > 1:
         # p = Tree(g1.tree_level_dictionary[y][i].get_label())
         node = g1.tree_level_dictionary[y][i]
         key = g1.tree_level_dictionary[y][i].get_parent()
+        # edited here
         if parentLevelDict.get(key) == None:
-            parentLevelDict[key] = []
-            parentLevelDict[key].append(node)
-        else:
-            parentLevelDict[key].append(node)
+            parentLevelDict[key] = g1.get_children_nodes(key)
+            #parentLevelDict[key].append(node)
+        #else:
+           #parentLevelDict[key].append(node)
 
     y = y - 1
 
@@ -105,7 +106,7 @@ while y > 1:
             treeDict[node].append(p)
         else:
             childList = []
-            for k in range(len(parentLevelDict[node])):
+            for k in range(len(g1.get_children_nodes(node)) - 1):
                 child = parentLevelDict[node][k]
                 childList.append(treeDict[child][0])
                 print(treeDict[child][0])

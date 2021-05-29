@@ -680,7 +680,7 @@ class Graph:
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
-                #self.reset_visited()
+                # self.reset_visited()
                 fringe.clear()
                 visited.clear()
                 self.reset_levels()
