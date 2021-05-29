@@ -29,20 +29,20 @@ g1 = ds.Graph(s, list(), list())
 
 goal = g1.depth_first_search()
 
-print("\t\tDFS Tree:")
-for node in g1.tree_draw_sequence:
-    print(node, node.parent, node.tree_level)
-print("\n")
-for node in g1.tree_visit_sequence:
-    print(node, node.parent, node.tree_level)
+# print("\t\tDFS Tree:")
+# for node in g1.tree_draw_sequence:
+#     print(node, node.parent, node.tree_level)
+# print("\n")
+# for node in g1.tree_visit_sequence:
+#     print(node, node.parent, node.tree_level)
 
-print("\n")
-print("\n")
-print("\t\tBFS Tree:")
+# print("\n")
+# print("\n")
+# print("\t\tBFS Tree:")
 # goal = g1.breadth_first_search()
 # for node in g1.tree_draw_sequence:
 #     print(node, node.parent, node.tree_level)
-print("\n")
+# print("\n")
 # for node in g1.tree_visit_sequence:
 #     print(node, node.parent, node.tree_level)
 #
@@ -110,9 +110,9 @@ while y>1:
 
                 child=parentLevelDict[node][k]
                 childList.append(treeDict[child][0])
-                print(treeDict[child][0])
+                # print(treeDict[child][0])
 
-            print(node.get_label(), childList)
+
             theNewGeneratedTree=Tree(node.get_label(), *childList)
             treeDict[node]=[]
             treeDict[node].append(theNewGeneratedTree)
@@ -121,7 +121,7 @@ while y>1:
     y=y-1
 
 y=len(g1.tree_level_dictionary[1])
-print('----------------------------------------------------------')
+# print('----------------------------------------------------------')
 while y>0:
 
     for i in range(len(g1.tree_level_dictionary[y])):
@@ -139,9 +139,14 @@ while y>0:
 
                 child=parentLevelDict[node][k]
                 childList.append(treeDict[child][0])
-                print(treeDict[child][0])
+                # print(treeDict[child][0])
 
-            print(node.get_label(), childList)
+            # print(node.get_label(), childList)
+            print('--------------------')
+            print(childList)
+            print('--------------------')
+            # childList.reverse()
+            # print(revList,'rev list')
             theNewGeneratedTree=Tree(node.get_label(), *childList)
 
             # print(node.get_label(),'  : ',theNewGeneratedTree,'---------------09 ')
@@ -160,20 +165,20 @@ key = node.get_parent()
 #     p = Tree(node.get_label())
 #     treeDict[node]=[]
 #     treeDict[node].append(p)
-print('heloooooo')
+# print('heloooooo')
 childList = []
 for k in range (len(g1.tree_level_dictionary[y])-1):
 
     child=g1.tree_level_dictionary[y][k+1]
     childList.append(treeDict[child][0])
-    print(treeDict[child][0])
+    # print(treeDict[child][0])
 
-print(node.get_label(), childList)
+# print(node.get_label(), childList)
 theNewGeneratedTree=Tree(node.get_label(), *childList)
 # bishoyToBucDict[node]=theNewGeneratedTree
 treeDict[node]=[]
 treeDict[node].append(theNewGeneratedTree)
-print('---------------------------------')
+# print('---------------------------------')
 
 bucTree= buchheim(theNewGeneratedTree)
 # print(bucTree.children[0].parent," hwa da")
@@ -196,7 +201,7 @@ levelToBucObjectDict[0]=[]
 for key in g1.tree_level_dictionary:
     levelToBucObjectDict[key]=[]
 
-print(levelToBucObjectDict,' levelbucdec')
+# print(levelToBucObjectDict,' levelbucdec')
 
 # The x coordinate dict is useless
 
