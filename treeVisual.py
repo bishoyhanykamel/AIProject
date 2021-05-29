@@ -46,10 +46,10 @@ for i in range(cols):
 def updatePos():
     for i in range (len(edgeList)):
         mainCanvas.coords(edgeList[i],
-                          edgeDict[i][0].winfo_x()
-                          ,edgeDict[i][0].winfo_y()
-                          ,edgeDict[i][1].winfo_x()
-                          ,edgeDict[i][1].winfo_y())
+                          edgeDict[i][0].winfo_x()+15
+                          ,edgeDict[i][0].winfo_y()+15
+                          ,edgeDict[i][1].winfo_x()+15
+                          ,edgeDict[i][1].winfo_y()-2)
 
 
 becNodeToGridLabelDict=dict()
@@ -73,12 +73,12 @@ lbll.winfo_rootx()
 
 def delayEdge(startNode,endNode):
     mainWindow.update()
-    slope= ((endNode.winfo_y())-startNode.winfo_y())/((endNode.winfo_x())-startNode.winfo_x()+1)
+    slope= ((endNode.winfo_y())-startNode.winfo_y())/((endNode.winfo_x())-startNode.winfo_x()+0.000001)
     print(slope)
-    newEdge=mainCanvas.create_line(startNode.winfo_x()+1 ,
-                           startNode.winfo_y()+1 ,
-                           startNode.winfo_x()+1,
-                           startNode.winfo_y()+1,
+    newEdge=mainCanvas.create_line(startNode.winfo_x()+20,
+                           startNode.winfo_y()+15 ,
+                           startNode.winfo_x()+20,
+                           startNode.winfo_y()+15,
                            arrow=tkinter.LAST)
     mainWindow.update()
     print(startNode.winfo_x(),startNode.winfo_y() ,
@@ -97,7 +97,7 @@ def delayEdge(startNode,endNode):
         # print(startNode.winfo_x(), startNode.winfo_y(),
         #       endNode.winfo_x(),
         #       endNode.winfo_y())
-        mainCanvas.coords(newEdge, startNode.winfo_x()+2,
+        mainCanvas.coords(newEdge, startNode.winfo_x()+20,
                                    startNode.winfo_y() ,
                                    x_anim,
                                    y_anim,
