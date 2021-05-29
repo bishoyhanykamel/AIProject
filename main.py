@@ -880,6 +880,7 @@ def main():
     createTreebtn.place(x=1100, y=680)
 
     root.mainloop()
+    root.destroy()
 
 
 # if __name__ == '__main__':
