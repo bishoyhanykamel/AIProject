@@ -45,7 +45,6 @@ class Node:
         self.edges = node.get_edges()
         self.index = node.index
 
-
     def get_tree_level(self):
         return self.tree_level
 
@@ -140,7 +139,7 @@ class Node:
     def set_node_value(self, value):
         self.value = value
 
-    #def get_path(self):
+    # def get_path(self):
     #    prev_node = self.get_parent()
     #    temp_list = []
     #    while prev_node is not None:
@@ -213,21 +212,21 @@ class Graph:
         self.edgeObjList = edgeObjList
         self.vlist = list()
         self.plist = list()
-        self.tree_draw_sequence = list()
-        self.tree_visit_sequence = list()
-        self.tree_level_dictionary = dict()
-        self.parent_dictionary = dict()
         self.stop_iter = False
         self.maxlimit = 0
         self.iter_bool = False
         self.ivlist = list()
         self.iter_goal_found = False
+        self.tree_draw_sequence = list()
+        self.tree_visit_sequence = list()
+        self.tree_level_dictionary = dict()
+        self.parent_dictionary = dict()
         pass
 
     def create_level_dictionary(self):
         for node in self.tree_draw_sequence:
             self.tree_level_dictionary[node.tree_level] = self.tree_level_dictionary.get(node.tree_level, list()) \
-                                                       + [node]
+                                                          + [node]
 
     pass
 
@@ -235,7 +234,7 @@ class Graph:
         return self.parent_dictionary[node.index]
 
     def create_parent_dictionary(self):
-        index = 0
+        index = 1
         previous_node = Node()
         for node in self.tree_draw_sequence:
             if node.parent is None:
@@ -246,7 +245,7 @@ class Graph:
 
             node.parent.index = index
             self.parent_dictionary[node.parent.index] = self.parent_dictionary.get(node.parent.index, list()) \
-                + [node]
+                                                        + [node]
 
         pass
 
@@ -349,11 +348,10 @@ class Graph:
 
             pass
         self.initial_node.visited = False
-        #print(current_node.get_visited())
         self.reset_visited()
         stack_list.clear()
         visited.clear()
-        #print(current_node.get_visited())
+
         return "No goal found - Depth First Search"
         pass
 
@@ -382,9 +380,9 @@ class Graph:
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
-                self.reset_visited()
-                queue_list.clear()
-                visited.clear()
+                # self.reset_visited()
+                # queue_list.clear()
+                # visited.clear()
                 self.reset_levels()
                 return current_node
             current_node.set_visited()
@@ -402,6 +400,7 @@ class Graph:
         self.reset_visited()
         queue_list.clear()
         visited.clear()
+
         return "No goal found - Breadth First Search"
         pass
 
@@ -451,9 +450,9 @@ class Graph:
                 print(edge.get_start_node().get_label())
                 print(edge.get_end_node().get_label())
 
-                #if edge.get_end_node().get_label() == current_node.get_label():
+                # if edge.get_end_node().get_label() == current_node.get_label():
 
-                #if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
+                # if edge.get_end_node().get_label() not in visited or edge.get_start_node().get_label() not in visited:
                 print("this was done")
                 new_node = Node()
                 if edge.get_end_node().get_label() == current_node.get_label():
@@ -479,7 +478,7 @@ class Graph:
         visited = []
         while fringe:
             testednode = fringe.pop(-1)
-            if testednode.get_depth() > limit and testednode.get_goal() == False: #3AYZ 23ML LL 3ND L LIMIT VISIT BRDO
+            if testednode.get_depth() > limit and testednode.get_goal() == False:  # 3AYZ 23ML LL 3ND L LIMIT VISIT BRDO
                 continue
 
             elif testednode.get_label() in visited:
@@ -501,12 +500,12 @@ class Graph:
                     print(pathlist.pop().get_label(), end=" ")
                 print(" ")
 
-                #self.reset_visited()
+                # self.reset_visited()
                 fringe.clear()
                 visited.clear()
 
                 if self.iter_bool:
-                    self.iter_goal_found=True
+                    self.iter_goal_found = True
 
                 self.stop_iter = True
 
@@ -514,27 +513,25 @@ class Graph:
 
             visited.append(testednode.get_label())
 
-            #LW HIYA 3ND L LIMIT MSH H7OT L CHILDREN BTO3HA
+            # LW HIYA 3ND L LIMIT MSH H7OT L CHILDREN BTO3HA
 
             if testednode.get_depth() == limit:  # 3AYZ 23ML LL 3ND L LIMIT VISIT BRDO
                 if testednode.get_children():
                     newlimit = testednode.get_depth() + 1
                     if self.maxlimit < newlimit:
                         print("NEW LIMIT: ", newlimit)
-                        self.maxlimit=newlimit
+                        self.maxlimit = newlimit
 
             if testednode.get_depth() < limit:
                 for node in sorted(testednode.get_children(), reverse=True, key=lambda x: x.get_label()):
-
                     newnode = Node()
                     newnode.copy_node(node)
                     newnode.set_parent(testednode)
                     newnode.set_depth(testednode.get_depth() + 1)
                     fringe.append(newnode)
 
-
-        #self.stop_iter = True
-        #self.reset_visited()
+        # self.stop_iter = True
+        # self.reset_visited()
 
         if self.iter_bool:
             self.ivlist.append(visited.copy())
@@ -544,15 +541,14 @@ class Graph:
         print("No goal found - Depth Limited Search")
         pass
 
-
     def iterative_deepening(self):
         i = 0
-        self.iter_bool=True
-        #while(not self.stop_iter): #mknsh bybtdy mn level 0
+        self.iter_bool = True
+        # while(not self.stop_iter): #mknsh bybtdy mn level 0
         while (i <= self.maxlimit):  # mknsh bybtdy mn level 0
             self.depth_limited_search(i)
             print("ITERATION LEVEL: ", i)
-            i = i+1
+            i = i + 1
             if self.stop_iter:
                 break
         pass
@@ -613,9 +609,9 @@ class Graph:
         visited = []
         visited_nodes_values = {}
         # code for tree
-        #self.tree_draw_sequence.clear()
-        #self.tree_visit_sequence.clear()
-        #self.tree_draw_sequence.append(inode)
+        # self.tree_draw_sequence.clear()
+        # self.tree_visit_sequence.clear()
+        # self.tree_draw_sequence.append(inode)
         # continue algorithm
         while fringe:
             current_node = fringe.pop(0)
@@ -647,7 +643,7 @@ class Graph:
             visited.append(current_node.get_label())
 
             visited_nodes_values[current_node.get_label()] = current_node.get_astar_value()
-            #current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
+            # current_node.set_node_value(current_node.get_node_value() - current_node.get_heuristic())
 
             for edge in current_node.get_edges():
                 print("entered edge loop")
@@ -677,7 +673,7 @@ class Graph:
                         newnode.set_astar_value(newval)
                         fringe.append(newnode)
                     # code for tree
-                    #self.tree_draw_sequence.append(newnode)
+                    # self.tree_draw_sequence.append(newnode)
                     # continue algorithm
             fringe.sort(key=lambda x: x.get_astar_value())
 
@@ -700,16 +696,14 @@ class Graph:
             # print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
             # print("GOAL THING after", self.nodeObjList[x].get_goal())
             self.nodeObjList[x].set_astar_value(0)
-            #print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
-            #print("GOAL THING after", self.nodeObjList[x].get_goal())
+            # print("IN NODEOBJLIST", self.nodeObjList[x].get_visited())
+            # print("GOAL THING after", self.nodeObjList[x].get_goal())
 
     def reset_vlist(self):
         self.vlist = list()
 
-
     def reset_ivlist(self):
         self.ivlist = list()
-
 
     def reset_plist(self):
         self.plist = list()
