@@ -1,5 +1,10 @@
 from tkinter import Tk, Canvas, Frame, BOTH, PhotoImage, Button, Label, simpledialog, Toplevel
 
+import DataStructure as ds
+from naryTree import Tree
+from buchheim import buchheim
+import treeVisual
+
 import math
 
 import time
@@ -60,6 +65,8 @@ nodeObjList = list()
 edgeObjList = list()
 
 depthlimit = 0
+
+graph = None
 
 #no_of_goals = 1
 
@@ -167,6 +174,8 @@ def main():
 
         global depthlimit
 
+        global graph
+
         #if len(startGoalIndices) == 1:
         #    btnlist[startGoalIndices[0]].config(bg="pale green")
         #if len(startGoalIndices) > 1:
@@ -213,6 +222,10 @@ def main():
                 path = g.iterative_deepening()
                 print(path)
                 g.reset_visited()
+
+            #createTree(g)
+            graph = g
+
 
             illuminateNodes(g.vlist, g.ivlist, g.plist, g.iter_goal_found)
             g.reset_vlist()
@@ -478,21 +491,6 @@ def main():
     #searchASTRbtn.pack(side='bottom')
     resetbtn.place(x=1100, y=640)
 
-    def treePopUp():
-        global treepop
-        treepop = Toplevel(root)
-        treepop.title("TREEEEEE")
-
-        #manhattanbtn = Button(hpop, text='Manhattan Distance (could be inadmissible)', command=hManhPopUp)  # no command yet
-        #euclbtn = Button(hpop, text='Euclidean Distance (could be inadmissible)', command=hEuclPopUp)  # no command yet
-        #hinputbtn = Button(hpop, text='User Input', command=hInputPopUp)
-        #manhattanbtn.pack(padx=50, pady=10)
-        #euclbtn.pack()
-        #hinputbtn.pack(pady=10)
-
-    createTreebtn = Button(root, text='Create Tree', width='15', command=treePopUp)
-    #searchASTRbtn.pack(side='bottom')
-    createTreebtn.place(x=1100, y=680)
 
 
     #mybtn.place()
@@ -638,7 +636,6 @@ def main():
 
 
 
-
     # ___________________________________________________
 
     #HOMA FEN HOMA FEN HOMA FEN
@@ -752,27 +749,176 @@ def main():
     bpush10 = Button(root)
     bpush10.pack(side='left')
 
-    #my_canvas.pack(pady=20)
-    #         canvas = Canvas(self)
-    #         canvas.create_line(15, 25, 200, 10, fill="#AAA", width=2)
-    #         canvas.create_line(15, 25, 200, 10, fill="#000", width=0.5)
-    #         # canvas.create_line(15, 10, 200, 0, width=10)
-    #         # canvas.create_line(300, 35, 300, 200, dash=(4, 2))
-    #         # canvas.create_line(55, 85, 155, 85, 105, 180, 55, 85, width=5)
-    #
-    #         nodeimg = PhotoImage(file='C:/Users/mohgh/Desktop/testnode.png')
-    #         btn = Button(self.master, image=nodeimg)
-    #         btn.pack()
-    #
-    #
-    #         canvas.pack(fill=BOTH, expand=1)
+
+    def createTree(g1):
+        x = len(g1.tree_level_dictionary) - 1
+        parentLevelDict = dict()
+
+        y = len(g1.tree_level_dictionary)
+
+        while y > 1:
+
+            for i in range(len(g1.tree_level_dictionary[y])):
+                # p = Tree(g1.tree_level_dictionary[y][i].get_label())
+                node = g1.tree_level_dictionary[y][i]
+                key = g1.tree_level_dictionary[y][i].get_parent()
+                if parentLevelDict.get(key) == None:
+                    parentLevelDict[key] = []
+                    parentLevelDict[key].append(node)
+                else:
+                    parentLevelDict[key].append(node)
+
+            y = y - 1
+
+        treeDict = dict()
+
+        y = len(g1.tree_level_dictionary)
+        while y > 1:
+
+            for i in range(len(g1.tree_level_dictionary[y])):
+
+                node = g1.tree_level_dictionary[y][i]
+                key = node.get_parent()
+                if parentLevelDict.get(node) == None:
+
+                    p = Tree(node.get_label())
+                    # bishoyToBucDict[node]=p
+                    treeDict[node] = []
+                    treeDict[node].append(p)
+                else:
+                    childList = []
+                    for k in range(len(parentLevelDict[node])):
+                        child = parentLevelDict[node][k]
+                        childList.append(treeDict[child][0])
+                        # print(treeDict[child][0])
+
+                    theNewGeneratedTree = Tree(node.get_label(), *childList)
+                    treeDict[node] = []
+                    treeDict[node].append(theNewGeneratedTree)
+
+            y = y - 1
+
+        y = len(g1.tree_level_dictionary[1])
+        # print('----------------------------------------------------------')
+        while y > 0:
+
+            for i in range(len(g1.tree_level_dictionary[y])):
+
+                node = g1.tree_level_dictionary[y][i]
+                key = node.get_parent()
+                if parentLevelDict.get(node) == None:
+
+                    p = Tree(node.get_label())
+                    treeDict[node] = []
+                    treeDict[node].append(p)
+                else:
+                    childList = []
+                    for k in range(len(parentLevelDict[node])):
+                        child = parentLevelDict[node][k]
+                        childList.append(treeDict[child][0])
+                        # print(treeDict[child][0])
+
+                    # print(node.get_label(), childList)
+                    print('--------------------')
+                    print(childList)
+                    print('--------------------')
+                    # childList.reverse()
+                    # print(revList,'rev list')
+                    theNewGeneratedTree = Tree(node.get_label(), *childList)
+
+                    # print(node.get_label(),'  : ',theNewGeneratedTree,'---------------09 ')
+                    treeDict[node] = []
+                    treeDict[node].append(theNewGeneratedTree)
+
+            y = y - 1
+
+        y = 1
+
+        node = g1.tree_level_dictionary[y][0]
+        key = node.get_parent()
+
+        childList = []
+        for k in range(len(g1.tree_level_dictionary[y]) - 1):
+            child = g1.tree_level_dictionary[y][k + 1]
+            childList.append(treeDict[child][0])
+            # print(treeDict[child][0])
+
+        # print(node.get_label(), childList)
+        theNewGeneratedTree = Tree(node.get_label(), *childList)
+        # bishoyToBucDict[node]=theNewGeneratedTree
+        treeDict[node] = []
+        treeDict[node].append(theNewGeneratedTree)
+        # print('---------------------------------')
+
+        bucTree = buchheim(theNewGeneratedTree)
+
+        nodeToXcoordDict = dict()
+        levelToBucObjectDict = dict()
+        treeLevelNodeToBucNodeDict = dict()
+
+        levelToBucObjectDict[0] = []
+        for key in g1.tree_level_dictionary:
+            levelToBucObjectDict[key] = []
+
+
+        def generate_BucLevel_BucRow_Dict(bucNode):
+            if (len(bucNode.children) == 0):
+                nodeToXcoordDict[bucNode] = bucNode.x
+                levelToBucObjectDict[bucNode.y].append(bucNode)
+                return
+            else:
+                for children in bucNode.children:
+                    generate_BucLevel_BucRow_Dict(children)
+                nodeToXcoordDict[bucNode] = bucNode.x
+                levelToBucObjectDict[bucNode.y].append(bucNode)
+
+        generate_BucLevel_BucRow_Dict(bucTree)
+
+        treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[1][0]] = levelToBucObjectDict[0][0]
+
+        for i in range(len(g1.tree_level_dictionary[1]) - 1):
+            treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[1][i + 1]] = levelToBucObjectDict[1][i]
+
+        y = len(g1.tree_level_dictionary)
+        while y > 1:
+            for i in range(len(g1.tree_level_dictionary[y])):
+                treeLevelNodeToBucNodeDict[g1.tree_level_dictionary[y][i]] = levelToBucObjectDict[y][i]
+
+            y = y - 1
+
+        treeSequence = g1.tree_draw_sequence
+
+        treeVisual.treeVisualCall(treeLevelNodeToBucNodeDict, treeSequence)
+
+
+
+    def treePopUp():
+        #global treepop
+        global graph
+        #treepop = Toplevel(root)
+        #treepop.state('zoomed')
+        #treepop.title("TREEEEEE")
+        createTree(graph)
+
+
+
+
+
+
+
+    createTreebtn = Button(root, text='Create Tree', width='15', command=treePopUp)
+    #searchASTRbtn.pack(side='bottom')
+    createTreebtn.place(x=1100, y=680)
+
+
+
 
     root.mainloop()
 
 
-if __name__ == '__main__':
-    print(type(main()))
-    main()
+#if __name__ == '__main__':
+print(type(main()))
+main()
 ################################################################################
 # from tkinter import *
 #
