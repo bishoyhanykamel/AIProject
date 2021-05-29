@@ -113,6 +113,16 @@ def main():
 
     root.state('zoomed')
 
+
+
+    bpush = Button(root, borderwidth=0)
+    bpush.pack(side='bottom')
+
+
+
+
+
+
     #w, h = root.winfo_screenwidth(), root.winfo_screenheight()
     #root.geometry("%dx%d+0+0" % (w-10, h-100))
 
@@ -247,7 +257,7 @@ def main():
         nodeObjList.append(ds.Node(label=len(nodeObjList)))
 
         #btnlist.append(Button(root, image=nodeimg, width=30, height=30, command=move))
-        btnlist[len(btnlist)-1].pack()
+        btnlist[len(btnlist)-1].pack(side='left')
         btnline_Dict[len(btnlist)-1] = list()
 
         #heuristicx = btnlist[len(btnlist)-1].winfo_rootx()
@@ -265,8 +275,9 @@ def main():
 
     #btn.append(Button(root, text=files[i], command=lambda c=i: print(btn[c].cget("text"))))
 
-    mybtn = Button(root, text="Create node", command=mybtnClick)
-    mybtn.pack(side='bottom')
+    #mybtn = Button(root, text="Create node", command=mybtnClick)
+    #mybtn.pack(side='bottom')
+    #mybtn.place(x=400, y=600)
 
     def illuminateNodes(vlist, ivlist, plist, iter_goal_found):
         #IF WHICHSEARCH = ITER
@@ -365,8 +376,7 @@ def main():
         edgeObjList[x].set_value(int(e_cost))
         #AND EDGEOBJLIST SET VAL
 
-    costbtn = Button(root, text='Enter costs', command=costPopUp)
-    costbtn.pack(side='bottom')
+
 
 
     def changeModeBool2_DFS():
@@ -435,26 +445,55 @@ def main():
         #depthlimit = simpledialog.askinteger("Enter maximum depth", "Depth limit? (>=0)", parent=root)
 
 
-    searchDFSbtn = Button(root, text='DFS', command=changeModeBool2_DFS)
-    searchDFSbtn.pack(side='bottom')
+    searchDFSbtn = Button(root, text='DFS', width='15', command=changeModeBool2_DFS)
+    #searchDFSbtn.pack(side='bottom')
+    searchDFSbtn.place(x=500, y=610)
 
-    searchDLimbtn = Button(root, text='Depth Limited', command=changeModeBool2_DLIM)
-    searchDLimbtn.pack(side='bottom')
+    searchDLimbtn = Button(root, text='Depth Limited', width='15', command=changeModeBool2_DLIM)
+    #searchDLimbtn.pack(side='bottom')
+    searchDLimbtn.place(x=500, y=700)
 
-    searchIterDbtn = Button(root, text='Iterative Deepening', command=changeModeBool2_ITERD)
-    searchIterDbtn.pack(side='bottom')
+    searchIterDbtn = Button(root, text='Iterative Deepening', width='15', command=changeModeBool2_ITERD)
+    #searchIterDbtn.pack(side='bottom')
+    searchIterDbtn.place(x=500, y=730)
 
-    searchBFSbtn = Button(root, text='BFS', command=changeModeBool2_BFS)
-    searchBFSbtn.pack(side='bottom')
+    searchBFSbtn = Button(root, text='BFS', width='15', command=changeModeBool2_BFS)
+    #searchBFSbtn.pack(side='bottom')
+    searchBFSbtn.place(x=500, y=640)
 
-    searchUCSbtn = Button(root, text='Uniform Cost', command=changeModeBool2_UCS)
-    searchUCSbtn.pack(side='bottom')
+    searchUCSbtn = Button(root, text='Uniform Cost', width='15', command=changeModeBool2_UCS)
+    #searchUCSbtn.pack(side='bottom')
+    searchUCSbtn.place(x=500, y=670)
 
-    searchGDYbtn = Button(root, text='Greedy', command=changeModeBool2_GREEDY)
-    searchGDYbtn.pack(side='bottom')
+    searchGDYbtn = Button(root, text='Greedy', width='15', command=changeModeBool2_GREEDY)
+    #searchGDYbtn.pack(side='bottom')
+    searchGDYbtn.place(x=920, y=610)
 
-    searchASTRbtn = Button(root, text='A*', command=changeModeBool2_ASTAR)
-    searchASTRbtn.pack(side='bottom')
+    searchASTRbtn = Button(root, text='A*', width='15', command=changeModeBool2_ASTAR)
+    #searchASTRbtn.pack(side='bottom')
+    searchASTRbtn.place(x=920, y=640)
+
+
+    resetbtn = Button(root, text='Reset', width='15')
+    #searchASTRbtn.pack(side='bottom')
+    resetbtn.place(x=1100, y=640)
+
+    def treePopUp():
+        global treepop
+        treepop = Toplevel(root)
+        treepop.title("TREEEEEE")
+
+        #manhattanbtn = Button(hpop, text='Manhattan Distance (could be inadmissible)', command=hManhPopUp)  # no command yet
+        #euclbtn = Button(hpop, text='Euclidean Distance (could be inadmissible)', command=hEuclPopUp)  # no command yet
+        #hinputbtn = Button(hpop, text='User Input', command=hInputPopUp)
+        #manhattanbtn.pack(padx=50, pady=10)
+        #euclbtn.pack()
+        #hinputbtn.pack(pady=10)
+
+    createTreebtn = Button(root, text='Create Tree', width='15', command=treePopUp)
+    #searchASTRbtn.pack(side='bottom')
+    createTreebtn.place(x=1100, y=680)
+
 
     #mybtn.place()
 
@@ -597,8 +636,6 @@ def main():
         hinputbtn.pack(pady=10)
 
 
-    heuristicBtn = Button(root, text='Choose a heuristic', command=heuristicOptionsPopUp)
-    heuristicBtn.pack(side='bottom')
 
 
 
@@ -684,8 +721,36 @@ def main():
         global mode_bool
         mode_bool = 1
 
-    linebtn = Button(root, text='Click Lineee', command=changeModeBool)
+
+    bpush3 = Button(root, borderwidth=0)
+    bpush3.pack(side='bottom')
+
+
+    heuristicBtn = Button(root, text='Choose a heuristic', width='15', command=heuristicOptionsPopUp)
+    heuristicBtn.pack(side='bottom')
+
+    costbtn = Button(root, text='Enter costs', width='15', command=costPopUp)
+    costbtn.pack(side='bottom')
+
+
+    bpush5 = Button(root, borderwidth=0)
+    bpush5.pack(side='bottom')
+
+
+    linebtn = Button(root, text='Edge', width='15', command=changeModeBool)
     linebtn.pack(side='bottom')
+    #linebtn.place(x=400, y=650)
+
+    mybtn = Button(root, text="Node", width='15', command=mybtnClick)
+    mybtn.pack(side='bottom')
+
+
+
+    bpush111 = Button(root, width='10', borderwidth=1)
+    bpush111.pack(side='left')
+
+    bpush10 = Button(root)
+    bpush10.pack(side='left')
 
     #my_canvas.pack(pady=20)
     #         canvas = Canvas(self)
